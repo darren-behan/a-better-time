@@ -34,20 +34,16 @@
   <div class="container">
     <h1>A Better Time</h1>
     <img class="centreImage" src="./assets/images/bigbird.png">
+    <h2>would you like to go out in the day or night?</h2>
     <div class="initButtons">
-      <button class="button is-dark initBtnOne">Stay in</button>
-      <button class="button is-dark initBtnTwo">Go out</button>
+      <button class="button is-dark initBtnOne">day</button>
+      <button class="button is-dark initBtnTwo">night</button>
     </div>
   </div>
 
   <!-- 'stay in' movies/food page -->
   <div class="contain">
     <h1>Explore</h1>
-    <div class="toggle">
-      <button class="movieBtn">movies</button>
-      <button class="foodBtn">food</button>
-    </div>
-    <input class="input" type="text" placeholder="Title">
 
     <table class="table is-hoverable">
       <thead>
@@ -57,28 +53,41 @@
       </thead>
       <tbody class="tableContent">
         <tr>
-          <th class="cat">action/ adventure</th>
+          <th class="cat">events</th>
         </tr>
         <tr>
-          <th class="cat">comedy</th>
+          <th class="cat">food</th>
         </tr>
         <tr>
-          <th class="cat">romance</th>
-        </tr>
-        <tr>
-          <th class="cat">drama</th>
-        </tr>
-        <tr>
-          <th class="cat">sci-fi</th>
-        </tr>
-        <tr>
-          <th class="cat">horror</th>
+          <th class="cat">movies</th>
         </tr>
       </tbody>
     </table>
-    <button class="button is-dark searchBtn">SEARCH</button>
+
+    <div class="buttons has-addons costRefine">cost
+      <button class="button is-dark">$</button>
+      <button class="button is-dark">$$</button>
+      <button class="button is-dark">$$$</button>
+    </div>
+    <div class="buttons has-addons locRefine">location
+      <button class="button is-dark">near</button>
+      <button class="button is-dark">local</button>
+      <button class="button is-dark">far</button>
+    </div>
+    <div class="buttons has-addons timeRefine">time
+      <button class="button is-dark"> 1h </button>
+      <button class="button is-dark"> 1-2h </button>
+      <button class="button is-dark"> 3-6h </button>
+    </div>
+
+    <button class="button is-dark searchBtn">refine</button>
   </div>
-  <div class="results"></div>
+  <div class="results">
+    <section id="resultOne"></section>
+    <section id="resultTwo"></section>
+    <section id="resultThr"></section>
+    <section id="resultFou"></section>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="assets/js/script.js"></script>
