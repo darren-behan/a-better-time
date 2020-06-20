@@ -36,23 +36,23 @@ $(".cat").on("click", function () {
 })
 
 
-  // in order for zoomato to work correctly, a location ID must be provided.
-  // this id is based on the user latx - laty location settings under geocoding.
-  // first function will be to get the users ID 
+// in order for zoomato to work correctly, a location ID must be provided.
+// this id is based on the user latx - laty location settings under geocoding.
+// first function will be to get the users ID 
 
 
-  function getGeoLocations () {
+function getGeoLocations() {
 
-    if ('geolocation' in navigator) {
-      /* geolocation is available */
-    
-      console.log("I am succesful");
-     
+  if ('geolocation' in navigator) {
+    /* geolocation is available */
 
-      navigator.geolocation.getCurrentPosition((position) => {
-          latitude = position.coords.latitude;
-          longitude = position.coords.longitude;          
-      });
+    console.log("I am succesful");
+
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+    });
 
 
     if (latitude !== parseInt(latitude, 10)) {
@@ -61,31 +61,31 @@ $(".cat").on("click", function () {
       // the call failed - use the IP address
       console.log("the call failed");
       $.ajax('http://ip-api.com/json')
-      .then(
+        .then(
           function success(response) {
             console.log(response);
-  
-          
-          latitude = response.lat;
-            longitude = response.lon;     
-              console.log("lat " + latitude + " long + :" + longitude);
-         
-    },
-    
+
+
+            latitude = response.lat;
+            longitude = response.lon;
+            console.log("lat " + latitude + " long + :" + longitude);
+
+          },
+
           function fail(data, status) {
-              // If this fails, we need to get the users ip address to find location settings.
-                      console.log('Request failed.  Returned status of',
-                          status);
+            // If this fails, we need to get the users ip address to find location settings.
+            console.log('Request failed.  Returned status of',
+              status);
           }
-      );
+        );
 
-        }
-     }
-  } 
+    }
+  }
+}
 
 
 
-  
+
 
 
 
