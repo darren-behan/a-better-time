@@ -33,6 +33,57 @@ $(".cat").on("click", function () {
 })
 
 
+function getGeoLocations() {
+
+  if ('geolocation' in navigator) {
+    /* geolocation is available */
+
+    console.log("I am succesful");
+
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+    });
+
+
+    if (latitude !== parseInt(latitude, 10)) {
+
+
+      // the call failed - use the IP address
+      console.log("the call failed");
+      $.ajax('http://ip-api.com/json')
+        .then(
+          function success(response) {
+            console.log(response);
+
+
+            latitude = response.lat;
+            longitude = response.lon;
+            console.log("lat " + latitude + " long + :" + longitude);
+
+          },
+
+          function fail(data, status) {
+            // If this fails, we need to get the users ip address to find location settings.
+            console.log('Request failed.  Returned status of',
+              status);
+          }
+        );
+
+    }
+  }
+}
+
+
+
+
+
+
+
+getGeoLocations();
+
+
 
 var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
 var ticketMasterURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=" + apiTicketmaster;
