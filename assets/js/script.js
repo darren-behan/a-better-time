@@ -5,8 +5,8 @@ var romance = false;
 var drama = false;
 var sci = false;
 var horror = false;
-var latitude;
-var longitude;
+var latitude = 'undefined';
+var longitude = 'undefined';
 
 $(document).ready(function () {
   // stay in button start page
@@ -49,19 +49,17 @@ $(document).ready(function () {
     });
   }
 
-  function getGeoLocations() {
+  function getGeoLocations(requestType) {
     if ("geolocation" in navigator) {
-      // set latitude to correct state
-      //latitude = 'undefined';
-      // longitude = 'undefined';
-
+     
       navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
         zaMato(latitude, longitude);
       });
-
-      if (latitude !== parseInt(latitude, 10) || latitude !== "undefined") {
+    }  
+       
+    if (latitude !== parseInt(latitude, 10) || latitude === "undefined") {
         // the call failed - use the IP address
 
         $.ajax("http://ip-api.com/json").then(
@@ -69,19 +67,21 @@ $(document).ready(function () {
             latitude = response.lat;
             longitude = response.lon;
             console.log("lat " + latitude + " long + :" + longitude);
-            zaMato(latitude, longitude);
+           
           },
 
           function fail(data, status) {
             // If this fails, we need to get the users ip address to find location settings.
-            console.log("Request failed.  Returned status of", status);
+            //console.log("Request failed.  Returned status of", status);
           }
         );
-      }
-    }
+      }  
   }
 
+  // this needs to be run straight away to assign the variables.
   getGeoLocations();
+
+
 
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
@@ -106,6 +106,7 @@ $(document).ready(function () {
   }
 
   moviesGlu();
+
 
   function moviesGlu() {
     var settings = {
