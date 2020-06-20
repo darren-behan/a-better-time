@@ -1,24 +1,36 @@
-// for when you click the category buttons it would change the appropriate state to true
-var action = false;
-var comedy = false;
-var romance = false;
-var drama = false;
-var sci = false;
-var horror = false;
 var latitude;
 var longitude;
 
-$(document).ready(function () {
-  // stay in button start page
+$(document).ready(function() {
+
   $(".initBtnOne").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
-        $(".contain").css("display", "block");
-        $(".results").css("display", "block");
+        $(".contain").css("display", "block")
+        $(".results").css("display", "flex")
+        $("header").css("display", "block")
       }, 1000);
     }, 500);
   });
+  
+
+  $(".initBtnTwo").on("click", function () {
+    setInterval(function () {
+      $(".container").fadeOut("slow");
+      setInterval(function () {
+        $(".contain").css("display", "block")
+        $(".results").css("display", "flex")
+        $("header").css("display", "block")
+      }, 1000);
+    }, 500);
+  })
+
+  // category selection
+  $(".cat").on("click", function () {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+    $(this).css("background-color", "#757575")
+  })
 
   // category selection
   $(".cat").on("click", function () {
@@ -125,5 +137,5 @@ $(document).ready(function () {
     $.ajax(settings).done(function (response) {
       console.log(response);
     });
-  }
+  };
 });

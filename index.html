@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,54 +43,84 @@
   </div>
 
   <!-- 'stay in' movies/food page -->
-  <div class="contain">
-    <h1>Explore</h1>
+  <header>explore</header>
+  <div class="columns is-mobile is-multiline">
+    <div class="contain column is-one-third-desktop is-one-half-tablet is-full-mobile">
+      <table class="table is-hoverable">
+        <thead>
+          <tr class="tableHeader">
+            <th>categories</th>
+          </tr>
+        </thead>
+        <tbody class="tableContent">
+          <tr>
+            <th class="cat">events</th>
+          </tr>
+          <tr>
+            <th class="cat">food</th>
+          </tr>
+          <tr>
+            <th class="cat">movies</th>
+          </tr>
+        </tbody>
+      </table>
 
-    <table class="table is-hoverable">
-      <thead>
-        <tr class="tableHeader">
-          <th>categories</th>
-        </tr>
-      </thead>
-      <tbody class="tableContent">
-        <tr>
-          <th class="cat">events</th>
-        </tr>
-        <tr>
-          <th class="cat">food</th>
-        </tr>
-        <tr>
-          <th class="cat">movies</th>
-        </tr>
-      </tbody>
-    </table>
+      <div class="buttons has-addons is-right costRefine">
+        <span>cost</span>
+        <button class="button is-medium refineBtn">$ </button>
+        <button class="button is-medium refineBtn">$$ </button>
+        <button class="button is-medium refineBtn">$$$ </button>
+      </div>
+      <div class="buttons has-addons is-right locRefine">
+        <span>location</span>
+        <button class="button is-medium refineBtn">near </button>
+        <button class="button is-medium refineBtn">local </button>
+        <button class="button is-medium refineBtn">far </button>
+      </div>
+      <div class="buttons has-addons is-right timeRefine">
+        <span>time</span>
+        <button class="button is-medium refineBtn">1h </button>
+        <button class="button is-medium refineBtn">1-2h </button>
+        <button class="button is-medium refineBtn">3-6h </button>
+      </div>
 
-    <div class="buttons has-addons costRefine">cost
-      <button class="button is-dark">$</button>
-      <button class="button is-dark">$$</button>
-      <button class="button is-dark">$$$</button>
+      <button class="button is-dark searchBtn">refine</button>
     </div>
-    <div class="buttons has-addons locRefine">location
-      <button class="button is-dark">near</button>
-      <button class="button is-dark">local</button>
-      <button class="button is-dark">far</button>
-    </div>
-    <div class="buttons has-addons timeRefine">time
-      <button class="button is-dark"> 1h </button>
-      <button class="button is-dark"> 1-2h </button>
-      <button class="button is-dark"> 3-6h </button>
+
+    <!-- Results Section -->
+    <div class="results column">
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-8">
+          <div class="tile">
+            <div class="tile is-parent is-vertical resultOne">
+              <article class="tile is-child notification is-info">
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child notification is-info resultTwo">
+              </article>
+            </div>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child notification is-info resultThr">
+              <div class="content">
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="tile is-parent">
+          <article class="tile is-child notification is-info resultFou">
+            <div class="content">
+              <div class="content">
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
     </div>
 
-    <button class="button is-dark searchBtn">refine</button>
-  </div>
-  <div class="results">
-    <section id="resultOne"></section>
-    <section id="resultTwo"></section>
-    <section id="resultThr"></section>
-    <section id="resultFou"></section>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="assets/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
+
 </html>
