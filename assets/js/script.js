@@ -33,12 +33,25 @@ $(".cat").on("click", function () {
 })
 
 
+  function zaMato() {
+    $.ajax({
+			"url": """,
+			"method": "GET",
+			"success": function (response) {
+        console.log("Dumping getGeoLocal results");
+
+
+      }
+    })
+  }
+
+
 function getGeoLocations() {
 
   if ('geolocation' in navigator) {
-    /* geolocation is available */
-
-    console.log("I am succesful");
+    
+    // set latitude to correct state  
+    latitude = 'undefined';
 
 
     navigator.geolocation.getCurrentPosition((position) => {
@@ -47,7 +60,7 @@ function getGeoLocations() {
     });
 
 
-    if (latitude !== parseInt(latitude, 10)) {
+    if ((latitude !== parseInt(latitude, 10)) && (latitude !== 'undefined')) {
 
 
       // the call failed - use the IP address
