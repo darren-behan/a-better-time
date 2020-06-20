@@ -91,3 +91,22 @@ function getGeoLocations() {
 
 getGeoLocations();
 
+
+var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
+var ticketMasterURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=" + apiTicketmaster;
+
+console.log(ticketMasterURL)
+
+$.ajax({
+  type:"GET",
+  url:ticketMasterURL,
+  async:true,
+  dataType: "json",
+  success: function(json) {
+              console.log(json);
+            
+           },
+  error: function(xhr, status, err) {
+              // This time, we do not end up here!
+           }
+});
