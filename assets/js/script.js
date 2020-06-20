@@ -55,8 +55,7 @@ $(document).ready(function () {
       navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
-        zaMato(latitude, longitude);
-      });
+        });
     }  
        
     if (latitude !== parseInt(latitude, 10) || latitude === "undefined") {
