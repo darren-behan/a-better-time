@@ -45,8 +45,16 @@ body {
     font-size: 80px;
     z-index: 999;
   }
+  .container h2 {
+    text-align: center;
+    margin: 32px auto;
+    color: #EDEDED;
+    font-size: 35px;
 
-  .button {
+  }
+
+  .initBtnOne,
+  .initBtnTwo {
     display: flex;
     padding: 30px 60px 30px 60px;
     margin: 30px 10px 0 10px;
@@ -84,53 +92,9 @@ body {
     font-size: 25px;
   }
 
-  .toggle {
-    display: flex;
-    justify-content: left;
-    margin-left: 50px;
-    z-index: 2;
-  }
-
-  .movieBtn,
-  .foodBtn {
-    display: flex;
-    width: 189px;
-    height: 65px;
-    margin-top: 141px;
-    margin: right;
-    color: #EDEDED;
-    padding-top: 15px;
-    padding-left: 12px;
-    font-size: 25px;
-    justify-items: left;
-    justify-self: left;
-    font-family: 'Righteous', cursive;
-    background: rgba(30, 30, 30, 0.6);
-    z-index: 2;
-  }
-
-  .movieBtn {
-    box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px 0px 0px 8px;
-  }
-
-  .foodBtn {
-    background: linear-gradient(180deg, #929292 0%, rgba(33, 33, 33, 0) 100%);
-    border-radius: 0px 8px 8px 0px;
-    box-shadow:
-  }
-
-  .input {
-    display: flex;
-    width: 369px;
-    height: 60px;
-    margin: 32px 0 0 50px;
-    font-size: 24px;
-    font-family: 'Righteous', cursive;
-    z-index: 2;
-  }
-
   .table {
+    position: absolute;
+    top: 200px;
     width: 369px;
     margin: 32px 0 0 50px;
     border-radius: 8px;
@@ -154,6 +118,8 @@ body {
   }
 
   .searchBtn {
+    position: absolute;
+    top: 800px;
     background: linear-gradient(180deg, #929292 0%, rgba(33, 33, 33, 0) 100%);
     border-radius: 8px;
     font-family: 'Righteous', cursive;
@@ -162,6 +128,32 @@ body {
     margin: 32px 0 0 204px;
     z-index: 2;
   }
+  .costRefine {
+    display: flex;
+    position: relative;
+    top: 587px;
+    left: 74px;
+    align-items: flex-start;
+    height: 60px;
+    width: 369px;
+  }
+  .locRefine {
+    position: absolute;
+    top: 680px;
+    left: 74px;
+    height: 60px;
+    width: 369px;
+  }
+  .timeRefine {
+    background-color: #525252;
+    justify-items: right;
+    position: absolute;
+    top: 756px;
+    left: 74px;
+    height: 40px;
+    width: 369px;
+  }
+
   
   /* Results container */
   .results {
@@ -174,6 +166,43 @@ body {
     background-color: #737373;
     border-radius: 8px;
     z-index: 1.5;
+  }
+
+  #resultOne {
+    position: absolute;
+    top: 40px;
+    left: 390px;
+    height: 300px;
+    width: 300px;
+    background-color: lightblue;
+    z-index: 2;
+  }
+  #resultTwo {
+    position: absolute;
+    top: 40px;
+    left: 710px;
+    height: 300px;
+    width: 300px;
+    background-color: lightblue;
+    z-index: 2;
+  }
+  #resultThr {
+    position: absolute;
+    top: 360px;
+    left: 390px;
+    height: 300px;
+    width: 300px;
+    background-color: lightblue;
+    z-index: 2;
+  }
+  #resultFou {
+    position: absolute;
+    top: 360px;
+    left: 710px;
+    height: 300px;
+    width: 300px;
+    background-color: lightblue;
+    z-index: 2;
   }
 
 
@@ -212,13 +241,7 @@ body {
     }
 
     /* stay in screen */
-    .toggle {
-      display: flex;
-      justify-content: center;
-      margin-left: 0;
-    }
 
-    .input,
     .table {
       margin: 32px auto;
     }
