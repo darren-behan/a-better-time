@@ -17,20 +17,34 @@ $(".initBtnOne").on("click", function () {
   }, 500);
 })
 
-// $(".initBtnTwo").on("click", function () {
-//   setInterval(function () {
-//     $(".container").fadeOut("slow");
-//     setInterval(function () {
-//       $(".contain").css("display", "block")
-//     }, 1000);
-//   }, 500);
-// })
 
 // category selection
 $(".cat").on("click", function () {
   $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
   $(this).css("background-color", "#757575")
 })
+
+
+function zaMato() {
+
+  // curl -X GET --header "Accept: application/json" --header "user-key: 8ad7cae02b2d6a7122357d5b80d69935" "https://developers.zomato.com/api/v2.1/locations?query=docklands&lat=-38.0765&lon=145.1277&count=5"
+
+console.log("dumping lat and long" + latitude + longitude);
+
+  var settings = {
+    "url": "https://developers.zomato.com/api/v2.1/locations?query=docklands&lat=-38.0765&lon=145.1277&count=5",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Accept": "application/json",
+      "user-key": "8ad7cae02b2d6a7122357d5b80d69935",
+    },
+  };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+  });
+}
 
 
 
@@ -49,10 +63,10 @@ $.ajax({
 function getGeoLocations() {
 
   if ('geolocation' in navigator) {
-    
+
     // set latitude to correct state  
     latitude = 'undefined';
-
+    longitude = 'undefined';
 
     navigator.geolocation.getCurrentPosition((position) => {
       latitude = position.coords.latitude;
@@ -60,7 +74,7 @@ function getGeoLocations() {
     });
 
 
-    if ((latitude !== parseInt(latitude, 10)) && (latitude !== 'undefined')) {
+    if ((latitude !== parseInt(latitude, 10)) || (latitude !== 'undefined')) {
 
 
       // the call failed - use the IP address
@@ -85,6 +99,9 @@ function getGeoLocations() {
         );
 
     }
+
+    console.log(latitude, longitude);
+
   }
 }
 
@@ -95,6 +112,8 @@ function getGeoLocations() {
 
 
 getGeoLocations();
+//console.log(latitude, longitude);
+zaMato();
 
 
 
@@ -104,15 +123,15 @@ var ticketMasterURL = "https://app.ticketmaster.com/discovery/v2/events.json?siz
 console.log(ticketMasterURL)
 
 $.ajax({
-  type:"GET",
-  url:ticketMasterURL,
-  async:true,
+  type: "GET",
+  url: ticketMasterURL,
+  async: true,
   dataType: "json",
-  success: function(json) {
-              console.log(json);
-            
-           },
-  error: function(xhr, status, err) {
-              // This time, we do not end up here!
-           }
+  success: function (json) {
+    console.log(json);
+
+  },
+  error: function (xhr, status, err) {
+    // This time, we do not end up here!
+  }
 });
