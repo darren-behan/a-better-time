@@ -25,7 +25,6 @@ $(".cat").on("click", function () {
 })
 
 
-<<<<<<< HEAD
 function zaMato() {
 
   // curl -X GET --header "Accept: application/json" --header "user-key: 8ad7cae02b2d6a7122357d5b80d69935" "https://developers.zomato.com/api/v2.1/locations?query=docklands&lat=-38.0765&lon=145.1277&count=5"
@@ -48,7 +47,6 @@ console.log("dumping lat and long" + latitude + longitude);
 }
 
 
-=======
 
 var zomatoApiKey = "8ad7cae02b2d6a7122357d5b80d69935";
 $.ajax({
@@ -61,7 +59,6 @@ $.ajax({
     }
   }
 })
->>>>>>> 518df2a01102ec3008dd11e24e3364165ae74800
 
 function getGeoLocations() {
 
