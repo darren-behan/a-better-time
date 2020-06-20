@@ -33,18 +33,18 @@ $(".cat").on("click", function () {
 })
 
 
-  function zaMato() {
-    $.ajax({
-			"url": """,
-			"method": "GET",
-			"success": function (response) {
-        console.log("Dumping getGeoLocal results");
 
-
-      }
-    })
+var zomatoApiKey = "8ad7cae02b2d6a7122357d5b80d69935";
+$.ajax({
+  "url": "https://developers.zomato.com/api/v2.1/geocode?lat=-37.971237&lon=144.4926845&apikey=" + zomatoApiKey,
+  "method": "GET",
+  "success": function(response) {
+    var restaurants = response.nearby_restaurants;
+    for (var i = 0; i < restaurants.length; i++) {
+      console.log(restaurants[i].restaurant.name);
+    }
   }
-
+})
 
 function getGeoLocations() {
 
