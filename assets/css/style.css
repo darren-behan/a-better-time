@@ -1,5 +1,4 @@
 body {
-    position: relative;
     height: 1000px;
     background-color: #595959;
     font-family: 'Righteous', cursive;
@@ -45,6 +44,7 @@ body {
     font-size: 80px;
     z-index: 999;
   }
+
   .container h2 {
     text-align: center;
     margin: 32px auto;
@@ -73,32 +73,31 @@ body {
   }
 
   /* stay in screen */
-  .contain {
+  header {
     display: none;
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    top: 0px;
-    z-index: 2;
-  }
-
-  .contain h1 {
-    position: absolute;
-    left: 50px;
-    top: 90px;
+    margin: 40px 50px 20px 50px;
+    height: 60px;
+    padding: 10px 0 14px 18px;
     color: white;
     font-family: 'Righteous', cursive;
     font-size: 25px;
+    border-radius: 4px;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(20px);
+  }
+
+  .contain {
+    display: none;
+    width: 400px;
+    margin: 0 0 0 50px;
+    z-index: 2;
   }
 
   .table {
-    position: absolute;
-    top: 200px;
     width: 369px;
-    margin: 32px 0 0 50px;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 24px;
+    background-color: #737373;
     color: #EDEDED;
     z-index: 2;
   }
@@ -107,6 +106,7 @@ body {
     background-color: #525252;
     color: #EDEDED;
     border-color: #363636;
+    border-radius: 4px;
     z-index: 2;
   }
 
@@ -114,97 +114,58 @@ body {
     background-color: #888888;
     color: #EDEDED;
     border-color: #363636;
+    border-radius: 4px;
     z-index: 2;
   }
 
   .searchBtn {
-    position: absolute;
-    top: 800px;
     background: linear-gradient(180deg, #929292 0%, rgba(33, 33, 33, 0) 100%);
     border-radius: 8px;
     font-family: 'Righteous', cursive;
     font-size: 24px;
     color: #EDEDED;
-    margin: 32px 0 0 204px;
+    margin: 40px 0 0 255px;
     z-index: 2;
   }
-  .costRefine {
-    display: flex;
-    position: relative;
-    top: 587px;
-    left: 74px;
-    align-items: flex-start;
-    height: 60px;
-    width: 369px;
-  }
-  .locRefine {
-    position: absolute;
-    top: 680px;
-    left: 74px;
-    height: 60px;
-    width: 369px;
-  }
+
+  .costRefine,
+  .locRefine,
   .timeRefine {
+    position: relative;
     background-color: #525252;
-    justify-items: right;
-    position: absolute;
-    top: 756px;
-    left: 74px;
-    height: 40px;
+    height: 50px;
     width: 369px;
+    border-radius: 4px;
   }
 
-  
+  .timeRefine span,
+  .locRefine span,
+  .costRefine span {
+    position: absolute;
+    left: 16px;
+    font-size: 24px;
+    color: #EDEDED;
+  }
+
+  .refineBtn {
+    background-color: #888888;
+    border-color: #888888;
+    color: #EDEDED;
+  }
+
   /* Results container */
-  .results {
+    .results {
     display: none;
-    position: absolute;
-    top: 141px;
-    bottom: 100px;
-    left: 42px;
-    right: 50px;
-    background-color: #737373;
-    border-radius: 8px;
-    z-index: 1.5;
+    margin: 12px 62px 0 0;
+    background-color: grey;
+    border-radius: 4px;
   }
 
-  #resultOne {
-    position: absolute;
-    top: 40px;
-    left: 390px;
-    height: 300px;
-    width: 300px;
-    background-color: lightblue;
-    z-index: 2;
+  @media screen and (max-width: 1120px) {
+    .results {
+      margin-left: 50px;
+    }
   }
-  #resultTwo {
-    position: absolute;
-    top: 40px;
-    left: 710px;
-    height: 300px;
-    width: 300px;
-    background-color: lightblue;
-    z-index: 2;
-  }
-  #resultThr {
-    position: absolute;
-    top: 360px;
-    left: 390px;
-    height: 300px;
-    width: 300px;
-    background-color: lightblue;
-    z-index: 2;
-  }
-  #resultFou {
-    position: absolute;
-    top: 360px;
-    left: 710px;
-    height: 300px;
-    width: 300px;
-    background-color: lightblue;
-    z-index: 2;
-  }
-
 
   @media screen and (max-width: 940px) {
 
@@ -215,6 +176,10 @@ body {
       right: 20px;
       font-size: 31px;
       font-family: 'Righteous', cursive;
+    }
+
+    .container h2 {
+      font-size: 16px;
     }
 
     .container {
@@ -228,8 +193,11 @@ body {
       width: 240px;
     }
 
-    .button {
-      padding: 15px 30px 15px 30px;
+    .initBtnOne,
+    .initBtnTwo {
+      font-size: 16px;
+      padding: 5px 25px 5px 25px !important;
+      border-radius: 4px;
     }
 
     .navTitle {
@@ -243,23 +211,36 @@ body {
     /* stay in screen */
 
     .table {
-      margin: 32px auto;
-    }
-
-    .contain h1 {
-      position: absolute;
-      left: 16px;
+      margin: 0 auto;
     }
 
     .searchBtn {
-      margin: 32px auto;
+      margin: 20px auto;
+      display: flex;
+      justify-self: center;
+    }
+
+    .contain {
+      margin: 0 auto;
+      justify-items: center;
     }
 
     .results {
-      position: absolute;
-      top: 141px;
-      bottom: 100px;
-      left: 8px;
-      right: 8px;
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+
+    .costRefine,
+    .locRefine,
+    .timeRefine {
+      margin: 16px auto;
     }
   }
+
+ @media screen and (max-width: 770px) {
+  header {
+    /* display: inline-block; */
+    width: 369px;
+    margin: 40px auto;
+  }
+ }

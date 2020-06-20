@@ -12,19 +12,22 @@ $(".initBtnOne").on("click", function () {
     $(".container").fadeOut("slow");
     setInterval(function () {
       $(".contain").css("display", "block")
-      $(".results").css("display", "block")
+      $(".results").css("display", "flex")
+      $("header").css("display", "block")
     }, 1000);
   }, 500);
 })
 
-// $(".initBtnTwo").on("click", function () {
-//   setInterval(function () {
-//     $(".container").fadeOut("slow");
-//     setInterval(function () {
-//       $(".contain").css("display", "block")
-//     }, 1000);
-//   }, 500);
-// })
+$(".initBtnTwo").on("click", function () {
+  setInterval(function () {
+    $(".container").fadeOut("slow");
+    setInterval(function () {
+      $(".contain").css("display", "block")
+      $(".results").css("display", "flex")
+      $("header").css("display", "block")
+    }, 1000);
+  }, 500);
+})
 
 // category selection
 $(".cat").on("click", function () {
