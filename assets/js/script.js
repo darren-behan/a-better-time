@@ -39,16 +39,10 @@ $.ajax({
   "url": "https://developers.zomato.com/api/v2.1/geocode?lat=-37.971237&lon=144.4926845&apikey=" + zomatoApiKey,
   "method": "GET",
   "success": function(response) {
-    console.log(response);
-    console.log(response.nearby_restaurants[0].restaurant.name);
-    console.log(response.nearby_restaurants[1].restaurant.name);
-    console.log(response.nearby_restaurants[2].restaurant.name);
-    console.log(response.nearby_restaurants[3].restaurant.name);
-    console.log(response.nearby_restaurants[4].restaurant.name);
-    console.log(response.nearby_restaurants[5].restaurant.name);
-    console.log(response.nearby_restaurants[6].restaurant.name);
-    console.log(response.nearby_restaurants[7].restaurant.name);
-    console.log(response.nearby_restaurants[8].restaurant.name);
+    var restaurants = response.nearby_restaurants;
+    for (var i = 0; i < restaurants.length; i++) {
+      console.log(restaurants[i].restaurant.name);
+    }
   }
 })
 
