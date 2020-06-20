@@ -31,9 +31,10 @@ $(".cat").on("click", function () {
 
 
 function zaMato(lat, lon) {
+console.log(lat, lon);
 
   var settings = {
-    "url": "https://developers.zomato.com/api/v2.1/locations?lat=" + lat + "lon=" + lon + "count=5",
+    "url": "https://developers.zomato.com/api/v2.1/geocode?lat=" + lat + "&lon=" + lon + "&count=5",
     "method": "GET",
     "timeout": 0,
     "headers": {
@@ -48,7 +49,7 @@ function zaMato(lat, lon) {
 }
 
 
-
+function zamatoapi() {
 var zomatoApiKey = "8ad7cae02b2d6a7122357d5b80d69935";
 $.ajax({
   "url": "https://developers.zomato.com/api/v2.1/geocode?lat=-37.971237&lon=144.4926845&apikey=" + zomatoApiKey,
@@ -60,6 +61,7 @@ $.ajax({
     }
   }
 })
+}
 
 function getGeoLocations() {
 
@@ -113,7 +115,7 @@ function getGeoLocations() {
 getGeoLocations();
 
 
-
+function ticketMaster() {
 
 var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
 var ticketMasterURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=" + apiTicketmaster;
@@ -133,5 +135,6 @@ $.ajax({
     // This time, we do not end up here!
   }
 });
+}
 
 })
