@@ -100,6 +100,7 @@ $(document).ready(function() {
   getGeoLocations();
 
 
+  ticketMaster();
 
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
@@ -116,12 +117,17 @@ $(document).ready(function() {
       dataType: "json",
       success: function (json) {
         console.log(json);
-      },
-      error: function (xhr, status, err) {
-        // This time, we do not end up here!
-      },
-    });
-  }
+      }
+    }).then(function(response) {
+      var eventTitle = response._embedded.events[0].name;
+      var imageURL = response._embedded.events[0].images[8].url
+      var eventImage = $("<img>").attr("src", imageURL);
+
+      console.log(eventTitle)
+      $(".resultOne").text(eventTitle)
+      $(".resultOne").prepend(eventImage);
+  
+  })};
 
   moviesGlu();
 
