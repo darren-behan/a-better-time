@@ -75,16 +75,13 @@ $(document).ready(function() {
     dropdown.classList.toggle('is-active');
   });
 
-  function zaMato(lat, lon) {
-    console.log(lat, lon);
+  zomatoAPI();
+
+  function zomatoAPI() {
 
     var settings = {
       url:
-        "https://developers.zomato.com/api/v2.1/geocode?lat=" +
-        lat +
-        "&lon=" +
-        lon +
-        "&count=5",
+        "https://developers.zomato.com/api/v2.1/geocode?lat=-37.96182&lon=145.14314&count=5",
       method: "GET",
       timeout: 0,
       headers: {
@@ -93,8 +90,18 @@ $(document).ready(function() {
       },
     };
 
-    $.ajax(settings).done(function (response) {
+    $.ajax(settings).done(function(response) {
       console.log(response);
+      var restaurants = response.nearby_restaurants;
+      for (var i = 0; i < restaurants.length; i++) {
+        var restaurantName = restaurants[i].restaurant.name;
+        var restaurantCuisine = restaurants[i].restaurant.cuisines;
+        var restaurantPriceRange = restaurants[i].restaurant.price_range;
+        var restaurantAvgCostForTwo = restaurants[i].restaurant.average_cost_for_two;
+
+        var foodTd = $("<td>").text(restaurantName);
+        $("#food").append(foodTd);
+      }
     });
   }
 
