@@ -100,7 +100,7 @@ $(document).ready(function() {
         var restaurantAvgCostForTwo = restaurants[i].restaurant.average_cost_for_two;
 
         var foodTd = $("<td>").text(restaurantName);
-        $("#food").append(foodTd);
+        $("#resultTwo").append(foodTd);
       }
     });
   }
