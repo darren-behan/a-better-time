@@ -162,6 +162,7 @@ $(document).ready(function() {
   var timeDelay = 500;
   setTimeout(ticketMaster(), timeDelay);
 
+
 // moviesGlu();
 
 
@@ -222,6 +223,4 @@ function moviesBox() {
     console.log(response);
   });
 }
-
-
 });
