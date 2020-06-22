@@ -74,12 +74,14 @@ $(document).ready(function () {
     dropdown.classList.toggle("is-active");
   });
 
-  zomatoAPI();
-
   function zomatoAPI() {
+    var latlong = latitude +
+    "&lon=" +
+    longitude;
     var settings = {
       url:
-        "https://developers.zomato.com/api/v2.1/geocode?lat=-37.96182&lon=145.14314&count=5",
+        "https://developers.zomato.com/api/v2.1/geocode?lat=" + latlong +
+        "&count=5",
       method: "GET",
       timeout: 0,
       headers: {
@@ -89,48 +91,42 @@ $(document).ready(function () {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
+      var restaurants = [];
       var restaurantList = response.nearby_restaurants;
-      var randomRestaurantIndex = Math.floor(
-        Math.random() * response.nearby_restaurants.length
-      );
-      var restaurantName =
-        restaurantList[randomRestaurantIndex].restaurant.name;
-      var restaurantCuisine =
-        restaurantList[randomRestaurantIndex].restaurant.cuisines;
-      var restaurantPriceRange =
-        restaurantList[randomRestaurantIndex].restaurant.price_range;
-      var restaurantAvgCostForTwo =
-        restaurantList[randomRestaurantIndex].restaurant.average_cost_for_two;
-      var restaurantUrl = restaurantList[randomRestaurantIndex].restaurant.url;
-      var restaurantFeaturedImg = restaurantList[randomRestaurantIndex].restaurant.featured_image;
+      for (var restaurant of restaurantList) {
+        var data = restaurant.restaurant;
+        // object deconstructing
+        var {
+          name,
+          price_range,
+          url,
+          featured_image,
+          location: {
+            locality
+          },
+        } = data;
+        var restaurantTime = "12:00:00";
+        var restaurantCat = "food";
 
-      $("#resultTwo").append(
-        $("<div>").text("Restaurant Name: " + restaurantName)
-      );
-      $("#resultTwo").append(
-        $("<div>").text("Restaurant Cuisine: " + restaurantCuisine)
-      );
-      $("#resultTwo").append(
-        $("<div>").text("Restaurant Price Range: " + restaurantPriceRange)
-      );
-      $("#resultTwo").append(
-        $("<div>").text(
-          "Restaurant Avg. Cost for two: " + restaurantAvgCostForTwo
-        )
-      );
-      $("#resultTwo").append(
-        $("<div>").html(
-          $("<a>").attr("href", restaurantUrl).text("Restaurant Website")
-        )
-      );
-      $("#resultTwo").append(
-        $("<img>").attr(
-          "src", restaurantFeaturedImg
-        )
-      );
+        restaurants.push({
+          name: name,
+          cost: price_range,
+          url: url,
+          img: featured_image,
+          shortdesc: name +  " specializes in " + data.cuisines + ".",
+          location: locality,
+          longdesc: name + " is the best restaurant in " + locality + ".",
+          time: restaurantTime,
+          cat: restaurantCat
+        });
+      }
+      console.log(restaurants);
+      return restaurants;
     });
   }
+
+  var timeDelay = 500;
+  setTimeout(zomatoAPI, timeDelay);
 
   function getGeoLocations(requestType) {
     if ("geolocation" in navigator) {
@@ -195,41 +191,41 @@ $(document).ready(function () {
   var timeDelay = 500;
   setTimeout(ticketMaster(), timeDelay);
 
-moviesBox();
+  moviesBox();
 
-function moviesBox() {
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://box-office-buz1.p.rapidapi.com/videos",
-    "method": "GET",
-    "headers": {
-      Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
-      "x-rapidapi-host": "box-office-buz1.p.rapidapi.com",
-      "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
-    }
-  }
-  $.ajax(settings).done(function (response) {
-    var randNum = Math.floor(Math.random() * 25 );
-    console.log(randNum);
+  function moviesBox() {
+    var settings = {
+      async: true,
+      crossDomain: true,
+      url: "https://box-office-buz1.p.rapidapi.com/videos",
+      method: "GET",
+      headers: {
+        Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
+        "x-rapidapi-host": "box-office-buz1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0",
+      },
+    };
+    $.ajax(settings).done(function (response) {
+      var randNum = Math.floor(Math.random() * 25);
+      console.log(randNum);
       var movTitl = $("<h1>");
-      var moviesOne = movTitl.text(response.result[randNum].database_title)
+      var moviesOne = movTitl.text(response.result[randNum].database_title);
       var breakP = $("<br>");
       var breakPTwo = $("<br>");
 
       var movDes = $("<p>");
       movDes.css("color", "grey");
-      var movTwo = movDes.text(response.result[randNum].description)
+      var movTwo = movDes.text(response.result[randNum].description);
 
       var movTrl = $("<iframe>");
       var movThr = movTrl.attr("src", response.result[randNum].embed_url);
-      
+
       $("#resultThr").append(moviesOne);
       $("#resultThr").append(breakPTwo);
       $("#resultThr").append(movTwo);
       $("#resultThr").append(breakP);
       $("#resultThr").append(movThr);
-    console.log(response);
-  });
-}
+      console.log(response);
+    });
+  }
 });
