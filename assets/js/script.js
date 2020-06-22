@@ -128,14 +128,13 @@ $(document).ready(function() {
 
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
-
-
-
+ 
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
+    var latlong = latitude + "," + longitude;
     var ticketMasterURL =
-      "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=" +
-      apiTicketmaster;
+      "https://app.ticketmaster.com/discovery/v2/events.json?size=100&apikey=" +
+      apiTicketmaster + "&" + latlong;
 
     console.log(ticketMasterURL);
 
@@ -146,14 +145,24 @@ $(document).ready(function() {
       dataType: "json",
       success: function (json) {
         console.log(json);
-      },
-      error: function (xhr, status, err) {
-        // This time, we do not end up here!
-      },
-    });
-  }
+        // showEvents(json);
+      }
+    }).then(function(response) {
+      var eventTitle = response._embedded.events[0].name;
+      var imageURL = response._embedded.events[0].images[8].url
+      var eventImage = $("<img>").attr("src", imageURL);
 
-  moviesGlu();
+      console.log(eventTitle)
+      // $("#resultFou").text(eventTitle)
+      // $("resultFou").prepend(eventImage);
+      
+    }
+  )};
+
+  var timeDelay = 500;
+  setTimeout(ticketMaster(), timeDelay);
+
+moviesGlu();
 
 
   function moviesGlu() {
