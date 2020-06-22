@@ -149,13 +149,24 @@ $(document).ready(function() {
       }
     }).then(function(response) {
       var eventTitle = response._embedded.events[0].name;
-      var imageURL = response._embedded.events[0].images[8].url
-      var eventImage = $("<img>").attr("src", imageURL);
+      var eventCost = "$$$"
+      var eventTime = response._embedded.events[0].dates.start.localTime
+      var eventLocation = response._embedded.events[0]._embedded.venues[0].city.name
+      var eventShortDescription = "Promoted by: " + response._embedded.events[0].promoter.name
+      var eventURL = response._embedded.events[0].url
+      var eventLongDescription = response._embedded.events[0]
+      var eventImageURL = response._embedded.events[0].images[8].url
+      var categoryEvent = "Events"
+      
 
       console.log(eventTitle)
-      // $("#resultFou").text(eventTitle)
-      // $("resultFou").prepend(eventImage);
-      
+      console.log(eventCost)
+      console.log(eventTime)
+      console.log(eventLocation)
+      console.log(eventShortDescription)
+      console.log(eventURL)
+      console.log(eventImageURL)
+      console.log(categoryEvent)
     }
   )};
 
