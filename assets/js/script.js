@@ -98,11 +98,13 @@ $(document).ready(function() {
       var restaurantCuisine = restaurantList[randomRestaurantIndex].restaurant.cuisines;
       var restaurantPriceRange = restaurantList[randomRestaurantIndex].restaurant.price_range;
       var restaurantAvgCostForTwo = restaurantList[randomRestaurantIndex].restaurant.average_cost_for_two;
+      var restaurantUrl = restaurantList[randomRestaurantIndex].restaurant.url;
 
       $("#resultTwo").append($("<div>").text("Restaurant Name: " + restaurantName));
       $("#resultTwo").append($("<div>").text("Restaurant Cuisine: " + restaurantCuisine));
       $("#resultTwo").append($("<div>").text("Restaurant Price Range: " + restaurantPriceRange));
       $("#resultTwo").append($("<div>").text("Restaurant Avg. Cost for two: " + restaurantAvgCostForTwo));
+      $("#resultTwo").append($("<div>").html($("<a>").attr("href", restaurantUrl).text("Restaurant Website")));
     });
   }
 
