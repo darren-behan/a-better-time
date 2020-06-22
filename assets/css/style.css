@@ -1,10 +1,16 @@
-body {
-    height: 1000px;
-    background-color: #595959;
+  /* All */
+  html {
+    background-color: rgb(32, 32, 32);
+  }
+
+  body {
     font-family: 'Righteous', cursive;
   }
 
+  /* Initial Page */
+  /* Navbar */
   .navbar {
+    visibility: hidden;
     background-color: #5C9CC0;
   }
 
@@ -16,11 +22,12 @@ body {
   }
 
   .birdLogo {
-    padding-left: 10px;
+    margin: 0 16px 0 4px;
     height: 35px;
     width: 45px;
   }
 
+  /* Center logo */
   .centreImage {
     position: relative;
     height: 440px;
@@ -42,7 +49,7 @@ body {
     text-align: center;
     color: white;
     font-size: 80px;
-    z-index: 999;
+    z-index: 998;
   }
 
   .container h2 {
@@ -53,6 +60,7 @@ body {
 
   }
 
+  /* Initial page buttons */
   .initBtnOne,
   .initBtnTwo {
     display: flex;
@@ -60,8 +68,8 @@ body {
     margin: 30px 10px 0 10px;
     justify-self: center;
     justify-items: center;
-    background: linear-gradient(180deg, #929292 0%, rgba(33, 33, 33, 0) 100%);
-    border-radius: 8px;
+    background-color: rgb(50, 50, 50);
+    border-radius: 4px;
     font-family: 'Righteous', cursive;
     font-size: 24px;
     color: #EDEDED;
@@ -72,69 +80,81 @@ body {
     justify-content: center;
   }
 
-  /* stay in screen */
-  header {
+  /* Explore screen */
+  /* Header/ Drop down menu */
+  .header {
+    position: relative;
     display: none;
-    margin: 40px 50px 20px 50px;
+    margin: 20px auto;
+    width: 90vw;
     height: 60px;
-    padding: 10px 0 14px 18px;
+    background-color: rgb(32, 32, 32);;
     color: white;
-    font-family: 'Righteous', cursive;
-    font-size: 25px;
     border-radius: 4px;
-    background: rgba(30, 30, 30, 0.6);
-    backdrop-filter: blur(20px);
+    font-size: 25px;
+    padding: 10px 0 0 18px;
+    z-index: 3;
   }
 
-  .contain {
-    display: none;
-    width: 400px;
-    margin: 0 0 0 50px;
-    z-index: 2;
+  .dropMenu {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    z-index: 999;
+  }
+
+  .dropdown-content {
+    background-color: rgb(50, 50, 50);
+    padding-bottom: 18px;
+  }
+
+  .refineDrop {
+    background-color: rgb(32, 32, 32);
+    font-family: 'Righteous', cursive;
+    color: #EDEDED;
+    font-size: 18px;
+    border: none;
+  }
+
+  .refineDrop:hover {
+    color: #cecccc;
+  }
+
+  .refineDrop:focus {
+    color: #bbbaba;
   }
 
   .table {
-    width: 369px;
+    width: 300px;
     border-radius: 4px;
-    font-size: 24px;
-    background-color: #737373;
-    color: #EDEDED;
-    z-index: 2;
+    font-size: 16px;
+    background-color: rgb(32, 32, 32);
+    color: rgb(125, 125, 125);
   }
 
   .tableHeader th {
-    background-color: #525252;
-    color: #EDEDED;
-    border-color: #363636;
+    background-color: rgb(32, 32, 32);
+    color: rgb(179, 179, 179) !important;
+    border-color: rgb(32, 32, 32);
     border-radius: 4px;
-    z-index: 2;
+    font-weight: 300;
   }
 
   .tableContent th {
-    background-color: #888888;
-    color: #EDEDED;
+    background-color: rgb(80, 80, 80);
+    color: rgb(179, 179, 179);
     border-color: #363636;
     border-radius: 4px;
-    z-index: 2;
-  }
-
-  .searchBtn {
-    background: linear-gradient(180deg, #929292 0%, rgba(33, 33, 33, 0) 100%);
-    border-radius: 8px;
-    font-family: 'Righteous', cursive;
-    font-size: 24px;
-    color: #EDEDED;
-    margin: 40px 0 0 255px;
-    z-index: 2;
+    font-weight: 300;
   }
 
   .costRefine,
   .locRefine,
   .timeRefine {
     position: relative;
-    background-color: #525252;
-    height: 50px;
-    width: 369px;
+    background-color: rgb(80, 80, 80);
+    height: 41px;
+    width: 300px;
     border-radius: 4px;
   }
 
@@ -143,30 +163,65 @@ body {
   .costRefine span {
     position: absolute;
     left: 16px;
-    font-size: 24px;
-    color: #EDEDED;
+    font-size: 16px;
+    color: rgb(179, 179, 179);
   }
 
   .refineBtn {
-    background-color: #888888;
-    border-color: #888888;
+    padding: 20px 12px 19px 12px !important;
+    margin: 0 !important;
+    background-color: rgb(80, 80, 80);
+    border-color: rgb(80, 80, 80);
+    color: rgb(179, 179, 179);
+  }
+
+  .refineSearch {
+    margin-top: 12px;
+    background-color: #5C9CC0;
+    color: #EDEDED;
+    font-family: 'Righteous', cursive;
+    font-size: 16px;
+    border-color: #5C9CC0;
+    border-radius: 4px !important;
+  }
+
+  .refineSearch:hover {
+    background-color: #4692bf;
+    border-color: #4692bf;
+    color: #EDEDED;
+  }
+
+  .refineSearch:focus {
+    background-color: #3787b6;
+    border-color: #3787b6;
     color: #EDEDED;
   }
 
   /* Results container */
     .results {
     display: none;
-    margin: 12px 62px 0 0;
-    background-color: grey;
+    width: 90vw;
+    height: 80vh;
+    margin: 10px auto;
+    background-color: rgb(32, 32, 32);
     border-radius: 4px;
   }
 
-  @media screen and (max-width: 1120px) {
-    .results {
-      margin-left: 50px;
-    }
+  /* Individual results containers */
+  #resultOne,
+  #resultTwo,
+  #resultThr,
+  #resultFou {
+    position: relative;
+    background: rgba(50, 50, 50);
+    padding: 16px !important;
   }
-
+  hr {
+    margin: 16px 0 16px 0;
+    background-color: rgb(32, 32, 32);
+  }
+  
+ /* Mobile responsiveness */
   @media screen and (max-width: 940px) {
 
     /* Initial screen */
@@ -203,44 +258,4 @@ body {
     .navTitle {
       display: none;
     }
-
-    .navbar-burger {
-      color: white;
-    }
-
-    /* stay in screen */
-
-    .table {
-      margin: 0 auto;
-    }
-
-    .searchBtn {
-      margin: 20px auto;
-      display: flex;
-      justify-self: center;
-    }
-
-    .contain {
-      margin: 0 auto;
-      justify-items: center;
-    }
-
-    .results {
-      margin-left: 16px;
-      margin-right: 16px;
-    }
-
-    .costRefine,
-    .locRefine,
-    .timeRefine {
-      margin: 16px auto;
-    }
   }
-
- @media screen and (max-width: 770px) {
-  header {
-    /* display: inline-block; */
-    width: 369px;
-    margin: 40px auto;
-  }
- }

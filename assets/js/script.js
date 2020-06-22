@@ -1,48 +1,78 @@
-// for when you click the category buttons it would change the appropriate state to true
-var action = false;
-var comedy = false;
-var romance = false;
-var drama = false;
-var sci = false;
-var horror = false;
+// Co-ordinates variables
 var latitude = 'undefined';
 var longitude = 'undefined';
 
+// Category variables(RE)
+var outdoors = false;
+var events = false;
+var food = true;
+var movies = true;
+var cost = "";
+var loc = "";
+var time = "";
+
 $(document).ready(function() {
 
+  // First page button - Day(RE)
   $(".initBtnOne").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
+        $(".navbar").css("visibility", "visible")
         $(".contain").css("display", "block")
         $(".results").css("display", "flex")
-        $("header").css("display", "block")
+        $(".header").css("display", "block")
       }, 1000);
     }, 500);
   });
   
-
+  // First page button - Night(RE)
   $(".initBtnTwo").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
+        $(".navbar").css("visibility", "visible")
         $(".contain").css("display", "block")
         $(".results").css("display", "flex")
-        $("header").css("display", "block")
+        $(".header").css("display", "block")
       }, 1000);
     }, 500);
-  })
+  });
 
-  // category selection
+  // Category selection when using filter dropdown(RE)
   $(".cat").on("click", function () {
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
     $(this).css("background-color", "#757575")
-  })
+    console.log($(this).text());
+    event.stopPropagation();
+  });
 
-  // category selection
-  $(".cat").on("click", function () {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
-    $(this).css("background-color", "#757575");
+  $(".cost").on("click", function() {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+    cost = $(this).text();
+    console.log($(this).text());
+    event.stopPropagation();
+  });
+
+  $(".loc").on("click", function() {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+    loc = $(this).text();
+    console.log($(this).text());
+    event.stopPropagation();
+  });
+
+  $(".time").on("click", function() {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+    time = $(this).text();
+    console.log($(this).text());
+    event.stopPropagation();
+  });
+
+  // Filter dropdown function(RE)
+  var dropdown = document.querySelector('.dropdown');
+    dropdown.addEventListener('click', function(event) {
+    event.stopPropagation();
+    dropdown.classList.toggle('is-active');
   });
 
   function zaMato(lat, lon) {
