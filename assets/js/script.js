@@ -181,76 +181,7 @@ function getRandomNumber(total){
     }
   )};
 
-<<<<<<< HEAD
-    var timeDelay = 500;
-      setTimeout(ticketMaster(), timeDelay);
-
-
-
-=======
   var timeDelay = 500;
   setTimeout(ticketMaster(), timeDelay);
 
-
-// moviesGlu();
-
-
-//   function moviesGlu() {
-//     var settings = {
-//       url: "https://api-gate2.movieglu.com/cinemasNearby/?n=5",
-//       method: "GET",
-//       timeout: 0,
-//       headers: {
-//         "api-version": "v200",
-//         Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
-//         client: "ABCD",
-//         "x-api-key": "W9UumBbfdk3conyLM2I4H2eQdH21OcHG2msJYtLK",
-//         "device-datetime": "2020-06-20T19:28:00.296Z",
-//         territory: "AU",
-//       },
-//     };
-
-//     $.ajax(settings).done(function (response) {
-//       console.log(response);
-//     });
-//   };
-
-moviesBox();
-
-function moviesBox() {
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://box-office-buz1.p.rapidapi.com/videos",
-    "method": "GET",
-    "headers": {
-      Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
-      "x-rapidapi-host": "box-office-buz1.p.rapidapi.com",
-      "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
-    }
-  }
-  $.ajax(settings).done(function (response) {
-    var randNum = Math.floor(Math.random() * 25 );
-    console.log(randNum);
-      var movTitl = $("<p>");
-      var moviesOne = movTitl.text(response.result[randNum].database_title)
-      var breakP = $("<br>");
-      var breakPTwo = $("<br>");
-
-      var movDes = $("<p>");
-      movDes.css("color", "grey");
-      var movTwo = movDes.text(response.result[randNum].description)
-
-      var movTrl = $("<iframe>");
-      var movThr = movTrl.attr("src", response.result[randNum].embed_url);
-      
-      $("#resultThr").append(moviesOne);
-      $("#resultThr").append(breakPTwo);
-      $("#resultThr").append(movTwo);
-      $("#resultThr").append(breakP);
-      $("#resultThr").append(movThr);
-    console.log(response);
-  });
-}
->>>>>>> 4a6fa7d1034826faef68a347cb2048799a79b06a
 });
