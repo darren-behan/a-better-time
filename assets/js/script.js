@@ -92,16 +92,17 @@ $(document).ready(function() {
 
     $.ajax(settings).done(function(response) {
       console.log(response);
-      var restaurants = response.nearby_restaurants;
-      for (var i = 0; i < restaurants.length; i++) {
-        var restaurantName = restaurants[i].restaurant.name;
-        var restaurantCuisine = restaurants[i].restaurant.cuisines;
-        var restaurantPriceRange = restaurants[i].restaurant.price_range;
-        var restaurantAvgCostForTwo = restaurants[i].restaurant.average_cost_for_two;
+      var restaurantList = response.nearby_restaurants
+      var randomRestaurantIndex = Math.floor(Math.random() * response.nearby_restaurants.length);
+      var restaurantName = restaurantList[randomRestaurantIndex].restaurant.name;
+      var restaurantCuisine = restaurantList[randomRestaurantIndex].restaurant.cuisines;
+      var restaurantPriceRange = restaurantList[randomRestaurantIndex].restaurant.price_range;
+      var restaurantAvgCostForTwo = restaurantList[randomRestaurantIndex].restaurant.average_cost_for_two;
 
-        var foodTd = $("<td>").text(restaurantName);
-        $("#resultTwo").append(foodTd);
-      }
+      $("#resultTwo").append($("<div>").text(restaurantName));
+      $("#resultTwo").append($("<div>").text(restaurantCuisine));
+      $("#resultTwo").append($("<div>").text(restaurantPriceRange));
+      $("#resultTwo").append($("<div>").text(restaurantAvgCostForTwo));
     });
   }
 
