@@ -179,37 +179,74 @@ $(document).ready(function () {
       },
     }).then(function (response) {
       var eventTitle = response._embedded.events[0].name;
-      var imageURL = response._embedded.events[0].images[8].url;
-      var eventImage = $("<img>").attr("src", imageURL);
+      var eventCost = "$$$"
+      var eventTime = response._embedded.events[0].dates.start.localTime
+      var eventLocation = response._embedded.events[0]._embedded.venues[0].city.name
+      var eventShortDescription = "Promoted by: " + response._embedded.events[0].promoter.name
+      var eventURL = response._embedded.events[0].url
+      var eventLongDescription = response._embedded.events[0]
+      var eventImageURL = response._embedded.events[0].images[8].url
+      var categoryEvent = "Events"
+      
 
-      console.log(eventTitle);
-      // $("#resultFou").text(eventTitle)
-      // $("resultFou").prepend(eventImage);
-    });
-  }
+      console.log(eventTitle)
+      console.log(eventCost)
+      console.log(eventTime)
+      console.log(eventLocation)
+      console.log(eventShortDescription)
+      console.log(eventURL)
+      console.log(eventImageURL)
+      console.log(categoryEvent)
+    }
+  )};
 
   var timeDelay = 500;
   setTimeout(ticketMaster(), timeDelay);
 
   moviesBox();
 
-  function moviesBox() {
-    var settings = {
-      async: true,
-      crossDomain: true,
-      url: "https://box-office-buz1.p.rapidapi.com/videos",
-      method: "GET",
-      headers: {
-        Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
-        "x-rapidapi-host": "box-office-buz1.p.rapidapi.com",
-        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0",
-      },
-    };
-    $.ajax(settings).done(function (response) {
-      var randNum = Math.floor(Math.random() * 25);
-      console.log(randNum);
-      var movTitl = $("<h1>");
-      var moviesOne = movTitl.text(response.result[randNum].database_title);
+// moviesGlu();
+
+
+//   function moviesGlu() {
+//     var settings = {
+//       url: "https://api-gate2.movieglu.com/cinemasNearby/?n=5",
+//       method: "GET",
+//       timeout: 0,
+//       headers: {
+//         "api-version": "v200",
+//         Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
+//         client: "ABCD",
+//         "x-api-key": "W9UumBbfdk3conyLM2I4H2eQdH21OcHG2msJYtLK",
+//         "device-datetime": "2020-06-20T19:28:00.296Z",
+//         territory: "AU",
+//       },
+//     };
+
+//     $.ajax(settings).done(function (response) {
+//       console.log(response);
+//     });
+//   };
+
+moviesBox();
+
+function moviesBox() {
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://box-office-buz1.p.rapidapi.com/videos",
+    "method": "GET",
+    "headers": {
+      Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
+      "x-rapidapi-host": "box-office-buz1.p.rapidapi.com",
+      "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+    }
+  }
+  $.ajax(settings).done(function (response) {
+    var randNum = Math.floor(Math.random() * 25 );
+    console.log(randNum);
+      var movTitl = $("<p>");
+      var moviesOne = movTitl.text(response.result[randNum].database_title)
       var breakP = $("<br>");
       var breakPTwo = $("<br>");
 
