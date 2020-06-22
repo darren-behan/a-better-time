@@ -203,7 +203,7 @@ function moviesBox() {
   $.ajax(settings).done(function (response) {
     var randNum = Math.floor(Math.random() * 25 );
     console.log(randNum);
-      var movTitl = $("<h1>");
+      var movTitl = $("<p>");
       var moviesOne = movTitl.text(response.result[randNum].database_title)
       var breakP = $("<br>");
       var breakPTwo = $("<br>");
