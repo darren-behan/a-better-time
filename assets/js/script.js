@@ -99,10 +99,10 @@ $(document).ready(function() {
       var restaurantPriceRange = restaurantList[randomRestaurantIndex].restaurant.price_range;
       var restaurantAvgCostForTwo = restaurantList[randomRestaurantIndex].restaurant.average_cost_for_two;
 
-      $("#resultTwo").append($("<div>").text(restaurantName));
-      $("#resultTwo").append($("<div>").text(restaurantCuisine));
-      $("#resultTwo").append($("<div>").text(restaurantPriceRange));
-      $("#resultTwo").append($("<div>").text(restaurantAvgCostForTwo));
+      $("#resultTwo").append($("<div>").text("Restaurant Name: " + restaurantName));
+      $("#resultTwo").append($("<div>").text("Restaurant Cuisine: " + restaurantCuisine));
+      $("#resultTwo").append($("<div>").text("Restaurant Price Range: " + restaurantPriceRange));
+      $("#resultTwo").append($("<div>").text("Restaurant Avg. Cost for two: " + restaurantAvgCostForTwo));
     });
   }
 
