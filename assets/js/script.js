@@ -8,7 +8,7 @@ var events = false;
 var food = true;
 var movies = true;
 var cost = "";
-var location = "";
+var loc = "";
 var time = "";
 
 $(document).ready(function() {
@@ -37,7 +37,7 @@ $(document).ready(function() {
         $(".header").css("display", "block")
       }, 1000);
     }, 500);
-  })
+  });
 
   // Category selection when using filter dropdown(RE)
   $(".cat").on("click", function () {
@@ -45,28 +45,28 @@ $(document).ready(function() {
     $(this).css("background-color", "#757575")
     console.log($(this).text());
     event.stopPropagation();
-  })
+  });
 
   $(".cost").on("click", function() {
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
     cost = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
-  })
+  });
 
   $(".loc").on("click", function() {
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
-    location = $(this).text();
+    loc = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
-  })
+  });
 
   $(".time").on("click", function() {
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
     time = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
-  })
+  });
 
   // Filter dropdown function(RE)
   var dropdown = document.querySelector('.dropdown');
