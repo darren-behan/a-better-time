@@ -1,7 +1,9 @@
   /* All */
-  body {
-    height: 1000px;
+  html {
     background-color: rgb(32, 32, 32);
+  }
+
+  body {
     font-family: 'Righteous', cursive;
   }
 
