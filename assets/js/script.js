@@ -200,15 +200,10 @@ $(document).ready(function () {
     })
   };
 
-
-
   function tripAd() {
 
     // Local to your area in melbourne (local) ----------------------------------
     // changing stucture of query to on-success in order to limit async var assignment issues.birdLogo
-
-
-
 
     var settings = {
       "async": true,
