@@ -1,6 +1,6 @@
 // Co-ordinates variables
-var latitude = "undefined";
-var longitude = "undefined";
+var latitude;
+var longitude;
 
 // Category variables(RE)
 var outdoors = false;
@@ -78,12 +78,10 @@ $(document).ready(function () {
   });
 
   function zomatoAPI() {
-    var latlong = latitude +
-    "&lon=" +
-    longitude;
-    var settings = {
+
+    $.ajax({
       url:
-        "https://developers.zomato.com/api/v2.1/geocode?lat=" + latlong +
+        "https://developers.zomato.com/api/v2.1/geocode?lat=" + latitude + "&lon=" + longitude +
         "&count=5",
       method: "GET",
       timeout: 0,
@@ -91,43 +89,44 @@ $(document).ready(function () {
         Accept: "application/json",
         "user-key": "8ad7cae02b2d6a7122357d5b80d69935",
       },
-    };
-
-    $.ajax(settings).done(function (response) {
-      var restaurants = [];
-      var restaurantList = response.nearby_restaurants;
-      for (var restaurant of restaurantList) {
-        var data = restaurant.restaurant;
-        // object deconstructing
-        var {
-          name,
-          price_range,
-          url,
-          featured_image,
-          location: {
-            locality
-          },
-        } = data;
-        var restaurantTime = "12:00:00";
-        var restaurantCat = "food";
-
-        restaurants.push({
-          name: name,
-          cost: price_range,
-          url: url,
-          img: featured_image,
-          shortdesc: name +  " specializes in " + data.cuisines + ".",
-          location: locality,
-          longdesc: name + " is the best restaurant in " + locality + ".",
-          time: restaurantTime,
-          cat: restaurantCat
-        });
-      }
-      console.log(restaurants + "the restaurants") ;
-      populateResults(restaurants,0);
-    });
-  }
-
+      success: function(response) {
+        console.log(response);
+        var restaurants = [];
+        var restaurantList = response.nearby_restaurants;
+        for (var restaurant of restaurantList) {
+          var data = restaurant.restaurant;
+          // object deconstructing
+          var {
+            name,
+            price_range,
+            url,
+            featured_image,
+            location: {
+              locality
+            },
+          } = data;
+          var restaurantTime = "12:00:00";
+          var restaurantCat = "food";
+  
+          restaurants.push({
+            name: name,
+            cost: price_range,
+            url: url,
+            img: featured_image,
+            shortdesc: name +  " specializes in " + data.cuisines + ".",
+            location: locality,
+            longdesc: name + " is the best restaurant in " + locality + ".",
+            time: restaurantTime,
+            cat: restaurantCat
+          });
+        }
+        console.log("the restaurants are")
+        console.log(restaurants + "the restaurants") ;
+        populateResults(restaurants,0);
+   
+			}
+		});
+	}
 
 
   function getGeoLocations(requestType) {
@@ -203,18 +202,20 @@ $(document).ready(function () {
 
 
     function returnRandom(number) {
-      return(Math.floor(Math.random() * number.length));
+      return(Math.floor(Math.random() * number));
     }
 
 
          function populateResults(populateThis, source) {
-          var sources = ['zaMato','ticketMaster','tripAdvisor']  
+          var sources = ['zomatoAPI','ticketMaster','tripAdvisor']  
+          var cost = ['$','$$','$$$','$$$$', '$$$$$']
           
             // cant really finish this until we have more than one API working.
 
           if (source === 0) {
-              zaMato = populateThis;
-                var useThis = returnRandom(populateThis);
+            zomatoAPI = populateThis;
+                console.log(zomatoAPI);
+                var useThis = returnRandom(populateThis.length);
                   console.log("record to use" + useThis);
                     var addThis = populateThis[useThis];
                       // each function will be like the above - however one piece of code
@@ -225,6 +226,63 @@ $(document).ready(function () {
 
                     }     
                   
+                      // if the variable is populated;
+                        // added classes - boxOne: nameClass, descClass, locationClass, timeClass, 
+                        // div 2
+                        // boxTwo: secondDivLongDesc, prettyPic
+
+            if (addThis) {
+
+              var newDivTitle = $("<p>");
+                  if (addThis.cat === "food") {newDivTitle.text("Something to eat?");}
+                      newDivTitle.attr("class","nameClassTitle boxOne");
+
+                  var newDiv = $("<p>");
+                  var theplaceTitle = addThis.name; // used in box 1 and 2
+                      newDiv.text(theplaceTitle);
+                      newDiv.attr("class","nameClass boxOne");
+                  
+                  var newDivDesc = $("<p>");
+                      newDivDesc.text(addThis.shortdesc);                      
+                      newDivDesc.attr("class","descClass boxOne");                       
+
+
+                  var newDivLocation = $("<p>");
+                      newDivLocation.text("Location : " + addThis.location);
+                      newDivLocation.attr("class","locationClass boxOne");
+
+                      
+                  var newDivOpening = $("<p>");
+                      newDivOpening.text("Time : " + addThis.time);
+                      newDivOpening.attr("class","timeClass boxOne");
+  
+                              
+             $("#resultOne").append(newDivTitle, newDiv,newDivDesc,newDivLocation,newDivOpening );
+                        $("#resultOne").on("click",function() {
+                          window.open(addThis.url);
+                        })
+
+             var secondDivTitle = $("<p>");
+                  secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
+                  secondDivTitle.attr("class","nameClass boxTwo");
+
+              var secondDivLongDesc = $("<p>");
+                  secondDivLongDesc.text(addThis.longdesc);
+                  secondDivLongDesc.attr("class","secondDivLongDesc boxTwo");
+
+              var prettyPic = $("<img>")
+                  prettyPic.attr("src",addThis.img);
+                  prettyPic.attr("class","prettyPic boxTwo");
+
+              
+        $("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
+
+                
+
+
+                  }
+
+
             }
 
 
@@ -233,7 +291,7 @@ $(document).ready(function () {
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
-  var timeDelay = 300;
+  var timeDelay = 2900;
   setTimeout(zomatoAPI, timeDelay);
   
   
