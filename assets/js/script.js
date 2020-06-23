@@ -157,8 +157,6 @@ $(document).ready(function () {
     }
   }
 
-
-
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
     var latlong = latitude + "," + longitude;
