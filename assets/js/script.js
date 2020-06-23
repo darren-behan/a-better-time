@@ -174,64 +174,61 @@ $(document).ready(function() {
   setTimeout(ticketMaster(), timeDelay);
 
 
-// moviesGlu();
+    setTimeout(function() {
+      tripAd();
 
+    }, 2000);
 
-//   function moviesGlu() {
-//     var settings = {
-//       url: "https://api-gate2.movieglu.com/cinemasNearby/?n=5",
-//       method: "GET",
-//       timeout: 0,
-//       headers: {
-//         "api-version": "v200",
-//         Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
-//         client: "ABCD",
-//         "x-api-key": "W9UumBbfdk3conyLM2I4H2eQdH21OcHG2msJYtLK",
-//         "device-datetime": "2020-06-20T19:28:00.296Z",
-//         territory: "AU",
-//       },
-//     };
+  function tripAd() {
 
-//     $.ajax(settings).done(function (response) {
-//       console.log(response);
-//     });
-//   };
-
-moviesBox();
-
-function moviesBox() {
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://box-office-buz1.p.rapidapi.com/videos",
-    "method": "GET",
-    "headers": {
-      Authorization: "Basic A1B2c3D4E5f6H7I8j911M12=",
-      "x-rapidapi-host": "box-office-buz1.p.rapidapi.com",
-      "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+    // Local to your area in melbourne (local)
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng?lunit=km&currency=USD&limit=30&distance=5&lang=en_US&longitude=" + longitude + "&latitude=" + latitude,
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+      }
     }
-  }
-  $.ajax(settings).done(function (response) {
-    var randNum = Math.floor(Math.random() * 25 );
-    console.log(randNum);
-      var movTitl = $("<p>");
-      var moviesOne = movTitl.text(response.result[randNum].database_title)
-      var breakP = $("<br>");
-      var breakPTwo = $("<br>");
+    
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
 
-      var movDes = $("<p>");
-      movDes.css("color", "grey");
-      var movTwo = movDes.text(response.result[randNum].description)
+    // activities out to melbourne area (near)
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://tripadvisor1.p.rapidapi.com/attractions/list?lang=en_US&currency=USD&sort=recommended&lunit=km&location_id=255099",
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      console.log(response)
+    });
 
-      var movTrl = $("<iframe>");
-      var movThr = movTrl.attr("src", response.result[randNum].embed_url);
-      
-      $("#resultThr").append(moviesOne);
-      $("#resultThr").append(breakPTwo);
-      $("#resultThr").append(movTwo);
-      $("#resultThr").append(breakP);
-      $("#resultThr").append(movThr);
-    console.log(response);
-  });
-}
+    // activities out to greater melbourne (near)
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://tripadvisor1.p.rapidapi.com/attractions/list?lang=en_US&currency=USD&sort=recommended&lunit=km&location_id=2699946",
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      console.log(response)
+    });
+  };
+
 });
+
