@@ -10,6 +10,9 @@ var movies = true;
 var cost = "";
 var loc = "";
 var time = "";
+var zaMato; // global variable for object
+var ticketM;
+
 
 $(document).ready(function () {
   // First page button - Day(RE)
@@ -120,13 +123,12 @@ $(document).ready(function () {
           cat: restaurantCat
         });
       }
-      console.log(restaurants);
-      return restaurants;
+      console.log(restaurants + "the restaurants") ;
+      populateResults(restaurants,0);
     });
   }
 
-  var timeDelay = 500;
-  setTimeout(zomatoAPI, timeDelay);
+
 
   function getGeoLocations(requestType) {
     if ("geolocation" in navigator) {
@@ -154,8 +156,7 @@ $(document).ready(function () {
     }
   }
 
-  // this needs to be run straight away to assign the variables.
-  getGeoLocations();
+
 
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
@@ -200,9 +201,41 @@ $(document).ready(function () {
     }
   )};
 
-  var timeDelay = 500;
-  setTimeout(ticketMaster(), timeDelay);
 
-  moviesBox();
+    function returnRandom(number) {
+      return(Math.floor(Math.random() * number.length));
+    }
+
+
+         function populateResults(populateThis, source) {
+          var sources = ['zaMato','ticketMaster','tripAdvisor']  
+          
+            // cant really finish this until we have more than one API working.
+
+          if (source === 0) {
+              zaMato = populateThis;
+                var useThis = returnRandom(populateThis);
+                  console.log("record to use" + useThis);
+                    var addThis = populateThis[useThis];
+                      // each function will be like the above - however one piece of code
+                      // the results will populate into the input box. with the values of the keys
+                      // remaining universal for all of them. 
+                    console.log("dumping here");
+                      console.log(addThis);
+
+                    }     
+                  
+            }
+
+
+
+   
+  // this needs to be run straight away to assign the variables.
+  getGeoLocations();
+
+  var timeDelay = 300;
+  setTimeout(zomatoAPI, timeDelay);
+  
+  
 
 });
