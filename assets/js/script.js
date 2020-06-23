@@ -80,19 +80,18 @@ $(document).ready(function () {
 
   function zomatoAPI() {
     var latlong = latitude +
-    "&lon=" +
-    longitude;
-   
+      "&lon=" +
+      longitude;
+
     $.ajax({
-      url:
-      "https://developers.zomato.com/api/v2.1/geocode?lat=" + latitude + "&lon=" + longitude +   "&count=5",
+      url: "https://developers.zomato.com/api/v2.1/geocode?lat=" + latitude + "&lon=" + longitude + "&count=5",
       method: "GET",
       timeout: 0,
       headers: {
         Accept: "application/json",
         "user-key": "8ad7cae02b2d6a7122357d5b80d69935",
       },
-      success: function(response) {
+      success: function (response) {
         console.log(response);
         var restaurants = [];
         var restaurantList = response.nearby_restaurants;
@@ -116,7 +115,7 @@ $(document).ready(function () {
             cost: price_range,
             url: url,
             img: featured_image,
-            shortdesc: name +  " specializes in " + data.cuisines + ".",
+            shortdesc: name + " specializes in " + data.cuisines + ".",
             location: locality,
             longdesc: name + " is the best restaurant in " + locality + ".",
             time: restaurantTime,
@@ -124,12 +123,12 @@ $(document).ready(function () {
           });
         }
         console.log("the restaurants are")
-        console.log(restaurants + "the restaurants") ;
-        populateResults(restaurants,0);
+        console.log(restaurants + "the restaurants");
+        populateResults(restaurants, 0);
 
-			}
-		});
-	}
+      }
+    });
+  }
 
 
   function getGeoLocations(requestType) {
@@ -188,7 +187,7 @@ $(document).ready(function () {
       var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
       var eventImageURL = response._embedded.events[0].images[8].url
       var categoryEvent = "Events"
-      
+
 
       console.log(eventTitle)
       console.log(eventCost)
@@ -198,8 +197,8 @@ $(document).ready(function () {
       console.log(eventURL)
       console.log(eventImageURL)
       console.log(categoryEvent)
-    }
-  )};
+    })
+  };
 
 
 
@@ -207,10 +206,10 @@ $(document).ready(function () {
 
     // Local to your area in melbourne (local) ----------------------------------
     // changing stucture of query to on-success in order to limit async var assignment issues.birdLogo
-    
-  
-  
-  
+
+
+
+
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -221,7 +220,7 @@ $(document).ready(function () {
         "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
       }
     }
-    
+
     $.ajax(settings).done(function (response) {
       console.log("I am a random activity local to the user");
 
@@ -260,7 +259,7 @@ $(document).ready(function () {
         "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
       }
     }
-    
+
     $.ajax(settings).done(function (response) {
       console.log("I am a random activity up to melbourne")
 
@@ -293,7 +292,7 @@ $(document).ready(function () {
         "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
       }
     }
-    
+
     $.ajax(settings).done(function (response) {
       console.log("I am a random activity up to the greater melbourne")
 
@@ -317,99 +316,97 @@ $(document).ready(function () {
   };
 
   // Davids Code ----------------------------------
-    function returnRandom(number) {
-      return(Math.floor(Math.random() * number));
+  function returnRandom(number) {
+    return (Math.floor(Math.random() * number));
+  }
+
+
+  function populateResults(populateThis, source) {
+
+    var sources = ['zomatoAPI', 'ticketMaster', 'tripAdvisor']
+    var cost = ['$', '$$', '$$$', '$$$$', '$$$$$']
+    // cant really finish this until we have more than one API working.
+
+    if (source === 0) {
+
+      zomatoAPI = populateThis;
+      console.log(zomatoAPI);
+      var useThis = returnRandom(populateThis.length);
+      console.log("record to use" + useThis);
+      var addThis = populateThis[useThis];
+      // each function will be like the above - however one piece of code
+      // the results will populate into the input box. with the values of the keys
+      // remaining universal for all of them. 
+
+      // all 3 api's will populate into boxes 1 and two? I think.
+      // the filter function will clear box 1 and box 2.
+      // from here we can repopulate.
+    }
+
+    // if the variable is populated;
+    // added classes - boxOne: nameClass, descClass, locationClass, timeClass, 
+    // div 2
+    // boxTwo: secondDivLongDesc, prettyPic
+
+    if (addThis) {
+
+      var newDivTitle = $("<p>");
+      if (addThis.cat === "food") {
+        newDivTitle.text("Something to eat?");
+      }
+      newDivTitle.attr("class", "nameClassTitle boxOne");
+
+      var newDiv = $("<p>");
+      var theplaceTitle = addThis.name; // used in box 1 and 2
+      newDiv.text(theplaceTitle);
+      newDiv.attr("class", "nameClass boxOne");
+
+      var newDivDesc = $("<p>");
+      newDivDesc.text(addThis.shortdesc);
+      newDivDesc.attr("class", "descClass boxOne");
+
+
+      var newDivLocation = $("<p>");
+      newDivLocation.text("Location : " + addThis.location);
+      newDivLocation.attr("class", "locationClass boxOne");
+
+
+      var newDivOpening = $("<p>");
+      newDivOpening.text("Time : " + addThis.time);
+      newDivOpening.attr("class", "timeClass boxOne");
+
+
+      $("#resultOne").append(newDivTitle, newDiv, newDivDesc, newDivLocation, newDivOpening);
+      $("#resultOne").on("click", function () {
+        window.open(addThis.url);
+      })
+
+      var secondDivTitle = $("<p>");
+      secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
+      secondDivTitle.attr("class", "nameClass boxTwo");
+
+      var secondDivLongDesc = $("<p>");
+      secondDivLongDesc.text(addThis.longdesc);
+      secondDivLongDesc.attr("class", "secondDivLongDesc boxTwo");
+
+      var prettyPic = $("<img>")
+      prettyPic.attr("src", addThis.img);
+      prettyPic.attr("class", "prettyPic boxTwo");
+
+
+      $("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
+
+
+
+
     }
 
 
-         function populateResults(populateThis, source) {
-         
-          var sources = ['zomatoAPI','ticketMaster','tripAdvisor']  
-          var cost = ['$','$$','$$$','$$$$', '$$$$$']   
-            // cant really finish this until we have more than one API working.
-
-          if (source === 0) {
-              
-            zomatoAPI = populateThis;
-            console.log(zomatoAPI);
-            var useThis = returnRandom(populateThis.length);
-              console.log("record to use" + useThis);
-                var addThis = populateThis[useThis];
-                  // each function will be like the above - however one piece of code
-                  // the results will populate into the input box. with the values of the keys
-                  // remaining universal for all of them. 
-
-                  // all 3 api's will populate into boxes 1 and two? I think.
-                  // the filter function will clear box 1 and box 2.
-                  // from here we can repopulate.
-
-                console.log("dumping here");
-                  console.log(addThis);
-
-                }     
-
-                  // if the variable is populated;
-                    // added classes - boxOne: nameClass, descClass, locationClass, timeClass, 
-                    // div 2
-                    // boxTwo: secondDivLongDesc, prettyPic
-
-        if (addThis) {
-
-          var newDivTitle = $("<p>");
-              if (addThis.cat === "food") {newDivTitle.text("Something to eat?");}
-                  newDivTitle.attr("class","nameClassTitle boxOne");
-
-              var newDiv = $("<p>");
-              var theplaceTitle = addThis.name; // used in box 1 and 2
-                  newDiv.text(theplaceTitle);
-                  newDiv.attr("class","nameClass boxOne");
-
-              var newDivDesc = $("<p>");
-                  newDivDesc.text(addThis.shortdesc);                      
-                  newDivDesc.attr("class","descClass boxOne");                       
-
-
-              var newDivLocation = $("<p>");
-                  newDivLocation.text("Location : " + addThis.location);
-                  newDivLocation.attr("class","locationClass boxOne");
-
-
-              var newDivOpening = $("<p>");
-                  newDivOpening.text("Time : " + addThis.time);
-                  newDivOpening.attr("class","timeClass boxOne");
-
-
-         $("#resultOne").append(newDivTitle, newDiv,newDivDesc,newDivLocation,newDivOpening );
-                    $("#resultOne").on("click",function() {
-                      window.open(addThis.url);
-                    })
-
-         var secondDivTitle = $("<p>");
-              secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
-              secondDivTitle.attr("class","nameClass boxTwo");
-
-          var secondDivLongDesc = $("<p>");
-              secondDivLongDesc.text(addThis.longdesc);
-              secondDivLongDesc.attr("class","secondDivLongDesc boxTwo");
-
-          var prettyPic = $("<img>")
-              prettyPic.attr("src",addThis.img);
-              prettyPic.attr("class","prettyPic boxTwo");
-
-
-    $("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
+  }
 
 
 
 
-              }
-
-
-        }
-
-
-
-   
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
