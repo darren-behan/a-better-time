@@ -1,6 +1,6 @@
 // Co-ordinates variables
-var latitude = 'undefined';
-var longitude = 'undefined';
+var latitude = "undefined";
+var longitude = "undefined";
 
 // Category variables(RE)
 var outdoors = false;
@@ -11,79 +11,76 @@ var cost = "";
 var loc = "";
 var time = "";
 
-$(document).ready(function() {
-
+$(document).ready(function () {
   // First page button - Day(RE)
   $(".initBtnOne").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
-        $(".navbar").css("visibility", "visible")
-        $(".contain").css("display", "block")
-        $(".results").css("display", "flex")
-        $(".header").css("display", "block")
+        $(".navbar").css("visibility", "visible");
+        $(".contain").css("display", "block");
+        $(".results").css("display", "flex");
+        $(".header").css("display", "block");
       }, 1000);
     }, 500);
   });
-  
+
   // First page button - Night(RE)
   $(".initBtnTwo").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
-        $(".navbar").css("visibility", "visible")
-        $(".contain").css("display", "block")
-        $(".results").css("display", "flex")
-        $(".header").css("display", "block")
+        $(".navbar").css("visibility", "visible");
+        $(".contain").css("display", "block");
+        $(".results").css("display", "flex");
+        $(".header").css("display", "block");
       }, 1000);
     }, 500);
   });
 
   // Category selection when using filter dropdown(RE)
   $(".cat").on("click", function () {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
-    $(this).css("background-color", "#757575")
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+    $(this).css("background-color", "#757575");
     console.log($(this).text());
     event.stopPropagation();
   });
 
-  $(".cost").on("click", function() {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+  $(".cost").on("click", function () {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     cost = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
   });
 
-  $(".loc").on("click", function() {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+  $(".loc").on("click", function () {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     loc = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
   });
 
-  $(".time").on("click", function() {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)")
+  $(".time").on("click", function () {
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     time = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
   });
 
   // Filter dropdown function(RE)
-  var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function(event) {
+  var dropdown = document.querySelector(".dropdown");
+  dropdown.addEventListener("click", function (event) {
     event.stopPropagation();
-    dropdown.classList.toggle('is-active');
+    dropdown.classList.toggle("is-active");
   });
 
-  function zaMato(lat, lon) {
-    console.log(lat, lon);
-
+  function zomatoAPI() {
+    var latlong = latitude +
+    "&lon=" +
+    longitude;
     var settings = {
       url:
-        "https://developers.zomato.com/api/v2.1/geocode?lat=" +
-        lat +
-        "&lon=" +
-        lon +
+        "https://developers.zomato.com/api/v2.1/geocode?lat=" + latlong +
         "&count=5",
       method: "GET",
       timeout: 0,
@@ -94,47 +91,80 @@ $(document).ready(function() {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
+      var restaurants = [];
+      var restaurantList = response.nearby_restaurants;
+      for (var restaurant of restaurantList) {
+        var data = restaurant.restaurant;
+        // object deconstructing
+        var {
+          name,
+          price_range,
+          url,
+          featured_image,
+          location: {
+            locality
+          },
+        } = data;
+        var restaurantTime = "12:00:00";
+        var restaurantCat = "food";
+
+        restaurants.push({
+          name: name,
+          cost: price_range,
+          url: url,
+          img: featured_image,
+          shortdesc: name +  " specializes in " + data.cuisines + ".",
+          location: locality,
+          longdesc: name + " is the best restaurant in " + locality + ".",
+          time: restaurantTime,
+          cat: restaurantCat
+        });
+      }
+      console.log(restaurants);
+      return restaurants;
     });
   }
 
+  var timeDelay = 500;
+  setTimeout(zomatoAPI, timeDelay);
+
   function getGeoLocations(requestType) {
     if ("geolocation" in navigator) {
-     
       navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
-        });
-    }  
-       
+      });
+    }
+
     if (latitude !== parseInt(latitude, 10) || latitude === "undefined") {
-        // the call failed - use the IP address
+      // the call failed - use the IP address
 
-        $.ajax("http://ip-api.com/json").then(
-          function success(response) {
-            latitude = response.lat;
-            longitude = response.lon;
-            console.log("lat " + latitude + " long + :" + longitude);
-           
-          },
+      $.ajax("http://ip-api.com/json").then(
+        function success(response) {
+          latitude = response.lat;
+          longitude = response.lon;
+          console.log("lat " + latitude + " long + :" + longitude);
+        },
 
-          function fail(data, status) {
-            // If this fails, we need to get the users ip address to find location settings.
-            //console.log("Request failed.  Returned status of", status);
-          }
-        );
-      }  
+        function fail(data, status) {
+          // If this fails, we need to get the users ip address to find location settings.
+          //console.log("Request failed.  Returned status of", status);
+        }
+      );
+    }
   }
 
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
- 
+
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
     var latlong = latitude + "," + longitude;
     var ticketMasterURL =
       "https://app.ticketmaster.com/discovery/v2/events.json?size=100&apikey=" +
-      apiTicketmaster + "&" + latlong;
+      apiTicketmaster +
+      "&" +
+      latlong;
 
     console.log(ticketMasterURL);
 
@@ -146,15 +176,15 @@ $(document).ready(function() {
       success: function (json) {
         console.log(json);
         // showEvents(json);
-      }
-    }).then(function(response) {
+      },
+    }).then(function (response) {
       var eventTitle = response._embedded.events[0].name;
       var eventCost = "$$$"
       var eventTime = response._embedded.events[0].dates.start.localTime
       var eventLocation = response._embedded.events[0]._embedded.venues[0].city.name
       var eventShortDescription = "Promoted by: " + response._embedded.events[0].promoter.name
       var eventURL = response._embedded.events[0].url
-      var eventLongDescription = response._embedded.events[0]
+      var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
       var eventImageURL = response._embedded.events[0].images[8].url
       var categoryEvent = "Events"
       
@@ -173,11 +203,9 @@ $(document).ready(function() {
   var timeDelay = 500;
   setTimeout(ticketMaster(), timeDelay);
 
-
-    setTimeout(function() {
+  setTimeout(function() {
       tripAd();
-
-    }, 2000);
+  }, 2000);
 
   function tripAd() {
 
@@ -194,7 +222,26 @@ $(document).ready(function() {
     }
     
     $.ajax(settings).done(function (response) {
-      console.log(response);
+      console.log("I am a random activity local to the user");
+
+      console.log(response)
+
+      var randNum = Math.floor(Math.random() * 32);
+      var localName = response.data[randNum].name;
+      // var localCost = response.data[randNum].offer_group.lowest_price
+      // var localTime = response.data[randNum].hours.week_ranges[1][0];
+      var localDesc = response.data[randNum].description;
+      var localUrl = response.data[randNum].web_url;
+      var localImag = response.data[randNum].photo.images.small.url;
+      var localCate = response.data[randNum].subcategory[0].name;
+
+      console.log(localName);
+      // console.log(localCost);
+      // console.log(localTime);
+      console.log(localDesc);
+      console.log(localUrl);
+      console.log(localImag);
+      console.log(localCate);
     });
 
     // activities out to melbourne area (near)
@@ -210,7 +257,24 @@ $(document).ready(function() {
     }
     
     $.ajax(settings).done(function (response) {
-      console.log(response)
+      console.log("I am a random activity up to melbourne")
+
+      // var randNum = Math.floor(Math.random() * 32);
+      // var nearName = response[randNum].name;
+      // var nearCost = response[randNum].offer_group.lowest_price;
+      // var nearTime = response.hours.week_ranges;
+      // var nearDesc = response[randNum].description;
+      // var nearUrl = response[randNum].website
+      // var nearImag = response[randNum].photo.images.small.url;
+      // var nearCate = response[randNum].category.name
+
+      // console.log(nearName);
+      // console.log(nearCost);
+      // console.log(nearTime);
+      // console.log(nearDesc);
+      // console.log(nearUrl);
+      // console.log(nearImag);
+      // console.log(nearCate);
     });
 
     // activities out to greater melbourne (near)
@@ -226,9 +290,25 @@ $(document).ready(function() {
     }
     
     $.ajax(settings).done(function (response) {
-      console.log(response)
+      console.log("I am a random activity up to the greater melbourne")
+
+      // var randNum = Math.floor(Math.random() * 32);
+      // var farName = response[randNum].name;
+      // var farCost = response[randNum].offer_group.lowest_price;
+      // var farTime = response.hours.week_ranges;
+      // var farDesc = response[randNum].description;
+      // var farUrl = response[randNum].website
+      // var farImag = response[randNum].photo.images.small.url;
+      // var farCate = response[randNum].category.name
+
+      // console.log(farName);
+      // console.log(farCost);
+      // console.log(farTime);
+      // console.log(farDesc);
+      // console.log(farUrl);
+      // console.log(farImag);
+      // console.log(farCate);
     });
   };
 
 });
-
