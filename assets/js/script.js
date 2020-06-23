@@ -79,9 +79,6 @@ $(document).ready(function () {
   });
 
   function zomatoAPI() {
-    var latlong = latitude +
-      "&lon=" +
-      longitude;
 
     $.ajax({
       url: "https://developers.zomato.com/api/v2.1/geocode?lat=" + latitude + "&lon=" + longitude + "&count=5",
