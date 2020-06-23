@@ -1,8 +1,8 @@
-// Co-ordinates variables
+// Co-ordinates variables ----------------------------------
 var latitude = "undefined";
 var longitude = "undefined";
 
-// Category variables(RE)
+// Category variables(RE) ----------------------------------
 var outdoors = false;
 var events = false;
 var food = true;
@@ -10,12 +10,13 @@ var movies = true;
 var cost = "";
 var loc = "";
 var time = "";
-var zaMato; // global variable for object
+var zaMato; // global variable for object ----------------------------------
 var ticketM;
 
 
 $(document).ready(function () {
-  // First page button - Day(RE)
+
+  // First page button - Day(RE) ----------------------------------
   $(".initBtnOne").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
@@ -28,7 +29,7 @@ $(document).ready(function () {
     }, 500);
   });
 
-  // First page button - Night(RE)
+  // First page button - Night(RE) ----------------------------------
   $(".initBtnTwo").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
@@ -41,7 +42,7 @@ $(document).ready(function () {
     }, 500);
   });
 
-  // Category selection when using filter dropdown(RE)
+  // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     $(this).css("background-color", "#757575");
@@ -70,7 +71,7 @@ $(document).ready(function () {
     event.stopPropagation();
   });
 
-  // Filter dropdown function(RE)
+  // Filter dropdown function(RE) ----------------------------------
   var dropdown = document.querySelector(".dropdown");
   dropdown.addEventListener("click", function (event) {
     event.stopPropagation();
@@ -201,7 +202,120 @@ $(document).ready(function () {
     }
   )};
 
+  // time out function to allow for geolocation to be enabled ----------------------------------
+  setTimeout(function() {
+      tripAd();
+  }, 2000);
 
+  function tripAd() {
+
+    // Local to your area in melbourne (local) ----------------------------------
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng?lunit=km&currency=USD&limit=30&distance=5&lang=en_US&longitude=" + longitude + "&latitude=" + latitude,
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      console.log("I am a random activity local to the user");
+
+      console.log(response)
+
+      var randNum = Math.floor(Math.random() * 32);
+      var localName = response.data[randNum].name;
+      // var localCost = response.data[randNum].offer_group.lowest_price
+      // var localTime = response.data[randNum].hours.week_ranges[1][0];
+      var localDesc = response.data[randNum].description;
+      var localUrl = response.data[randNum].web_url;
+      var localImag = response.data[randNum].photo.images.small.url;
+      var localCate = response.data[randNum].subcategory[0].name;
+
+      // Sometimes the call fails due to not all the returns being the same. If the
+      // call exists we should allow it, otherwise, do not attempt return and value = nil, 
+      // nil value will equal lowest price range and return in both day and night filters.
+
+      console.log(localName);
+      // console.log(localCost);
+      // console.log(localTime);
+      console.log(localDesc);
+      console.log(localUrl);
+      console.log(localImag);
+      console.log(localCate);
+    });
+
+    // activities out to melbourne area (near) ----------------------------------
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://tripadvisor1.p.rapidapi.com/attractions/list?lang=en_US&currency=USD&sort=recommended&lunit=km&location_id=255099",
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      console.log("I am a random activity up to melbourne")
+
+      // var randNum = Math.floor(Math.random() * 32);
+      // var nearName = response[randNum].name;
+      // var nearCost = response[randNum].offer_group.lowest_price;
+      // var nearTime = response.hours.week_ranges;
+      // var nearDesc = response[randNum].description;
+      // var nearUrl = response[randNum].website
+      // var nearImag = response[randNum].photo.images.small.url;
+      // var nearCate = response[randNum].category.name
+
+      // console.log(nearName);
+      // console.log(nearCost);
+      // console.log(nearTime);
+      // console.log(nearDesc);
+      // console.log(nearUrl);
+      // console.log(nearImag);
+      // console.log(nearCate);
+    });
+
+    // activities out to greater melbourne (near) ----------------------------------
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://tripadvisor1.p.rapidapi.com/attractions/list?lang=en_US&currency=USD&sort=recommended&lunit=km&location_id=2699946",
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
+        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      console.log("I am a random activity up to the greater melbourne")
+
+      // var randNum = Math.floor(Math.random() * 32);
+      // var farName = response[randNum].name;
+      // var farCost = response[randNum].offer_group.lowest_price;
+      // var farTime = response.hours.week_ranges;
+      // var farDesc = response[randNum].description;
+      // var farUrl = response[randNum].website
+      // var farImag = response[randNum].photo.images.small.url;
+      // var farCate = response[randNum].category.name
+
+      // console.log(farName);
+      // console.log(farCost);
+      // console.log(farTime);
+      // console.log(farDesc);
+      // console.log(farUrl);
+      // console.log(farImag);
+      // console.log(farCate);
+    });
+  };
+
+  // Davids Code ----------------------------------
     function returnRandom(number) {
       return(Math.floor(Math.random() * number.length));
     }
@@ -226,16 +340,12 @@ $(document).ready(function () {
                     }     
                   
             }
-
-
-
    
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
   var timeDelay = 300;
   setTimeout(zomatoAPI, timeDelay);
-  
-  
+
 
 });
