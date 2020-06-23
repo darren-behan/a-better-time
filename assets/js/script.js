@@ -1,8 +1,8 @@
-// Co-ordinates variables
+// Co-ordinates variables ----------------------------------
 var latitude = "undefined";
 var longitude = "undefined";
 
-// Category variables(RE)
+// Category variables(RE) ----------------------------------
 var outdoors = false;
 var events = false;
 var food = true;
@@ -10,9 +10,13 @@ var movies = true;
 var cost = "";
 var loc = "";
 var time = "";
+var zaMato; // global variable for object ----------------------------------
+var ticketM;
+
 
 $(document).ready(function () {
-  // First page button - Day(RE)
+
+  // First page button - Day(RE) ----------------------------------
   $(".initBtnOne").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
@@ -25,7 +29,7 @@ $(document).ready(function () {
     }, 500);
   });
 
-  // First page button - Night(RE)
+  // First page button - Night(RE) ----------------------------------
   $(".initBtnTwo").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
@@ -38,7 +42,7 @@ $(document).ready(function () {
     }, 500);
   });
 
-  // Category selection when using filter dropdown(RE)
+  // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     $(this).css("background-color", "#757575");
@@ -67,7 +71,7 @@ $(document).ready(function () {
     event.stopPropagation();
   });
 
-  // Filter dropdown function(RE)
+  // Filter dropdown function(RE) ----------------------------------
   var dropdown = document.querySelector(".dropdown");
   dropdown.addEventListener("click", function (event) {
     event.stopPropagation();
@@ -120,13 +124,12 @@ $(document).ready(function () {
           cat: restaurantCat
         });
       }
-      console.log(restaurants);
-      return restaurants;
+      console.log(restaurants + "the restaurants") ;
+      populateResults(restaurants,0);
     });
   }
 
-  var timeDelay = 500;
-  setTimeout(zomatoAPI, timeDelay);
+
 
   function getGeoLocations(requestType) {
     if ("geolocation" in navigator) {
@@ -154,8 +157,7 @@ $(document).ready(function () {
     }
   }
 
-  // this needs to be run straight away to assign the variables.
-  getGeoLocations();
+
 
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
@@ -200,16 +202,14 @@ $(document).ready(function () {
     }
   )};
 
-  var timeDelay = 500;
-  setTimeout(ticketMaster(), timeDelay);
-
+  // time out function to allow for geolocation to be enabled ----------------------------------
   setTimeout(function() {
       tripAd();
   }, 2000);
 
   function tripAd() {
 
-    // Local to your area in melbourne (local)
+    // Local to your area in melbourne (local) ----------------------------------
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -235,6 +235,10 @@ $(document).ready(function () {
       var localImag = response.data[randNum].photo.images.small.url;
       var localCate = response.data[randNum].subcategory[0].name;
 
+      // Sometimes the call fails due to not all the returns being the same. If the
+      // call exists we should allow it, otherwise, do not attempt return and value = nil, 
+      // nil value will equal lowest price range and return in both day and night filters.
+
       console.log(localName);
       // console.log(localCost);
       // console.log(localTime);
@@ -244,7 +248,7 @@ $(document).ready(function () {
       console.log(localCate);
     });
 
-    // activities out to melbourne area (near)
+    // activities out to melbourne area (near) ----------------------------------
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -277,7 +281,7 @@ $(document).ready(function () {
       // console.log(nearCate);
     });
 
-    // activities out to greater melbourne (near)
+    // activities out to greater melbourne (near) ----------------------------------
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -310,5 +314,38 @@ $(document).ready(function () {
       // console.log(farCate);
     });
   };
+
+  // Davids Code ----------------------------------
+    function returnRandom(number) {
+      return(Math.floor(Math.random() * number.length));
+    }
+
+
+         function populateResults(populateThis, source) {
+          var sources = ['zaMato','ticketMaster','tripAdvisor']  
+          
+            // cant really finish this until we have more than one API working.
+
+          if (source === 0) {
+              zaMato = populateThis;
+                var useThis = returnRandom(populateThis);
+                  console.log("record to use" + useThis);
+                    var addThis = populateThis[useThis];
+                      // each function will be like the above - however one piece of code
+                      // the results will populate into the input box. with the values of the keys
+                      // remaining universal for all of them. 
+                    console.log("dumping here");
+                      console.log(addThis);
+
+                    }     
+                  
+            }
+   
+  // this needs to be run straight away to assign the variables.
+  getGeoLocations();
+
+  var timeDelay = 300;
+  setTimeout(zomatoAPI, timeDelay);
+
 
 });
