@@ -221,6 +221,11 @@ $(document).ready(function () {
                       // each function will be like the above - however one piece of code
                       // the results will populate into the input box. with the values of the keys
                       // remaining universal for all of them. 
+
+                      // all 3 api's will populate into boxes 1 and two? I think.
+                      // the filter function will clear box 1 and box 2.
+                      // from here we can repopulate.
+
                     console.log("dumping here");
                       console.log(addThis);
 
