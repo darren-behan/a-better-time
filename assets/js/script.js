@@ -315,6 +315,7 @@ $(document).ready(function () {
 
   function populateResults(populateThis, source) {
 
+
   // check if this is a refined search
   if (populateThis === null) {
     // we know that by the time this function is called, the global variables from the API will be set.
@@ -329,21 +330,27 @@ $(document).ready(function () {
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
 
-    var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
+     var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
     var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
-    
+    // cant really finish this until we have more than one API working.
+
     if (source === 0) {
       zomatoAPI = populateThis;
-      console.log("Dumping Zomato");
-    }
+        console.log("Dumping Zomato");
+          }
     if (source === 2) {
       tripAd = populateThis;
-      console.log("Dumping Trip Add");
-    }
+        console.log("Dumping Trip Add");
+          }
 
-    var useThis = returnRandom(populateThis.length);
-    var addThis = populateThis[useThis];
-  }
+          console.log(populateThis);
+
+
+
+      var useThis = returnRandom(populateThis.length);
+        var addThis = populateThis[useThis];
+    
+
 
     if (addThis) {
 
@@ -365,7 +372,11 @@ $(document).ready(function () {
 
         newDivTitle.text("Something special ?");
         theDivId = '02';
+
       }
+
+    }
+
 
       newDivTitle.attr("class", "nameClassTitle boxOne");
 
@@ -405,9 +416,11 @@ $(document).ready(function () {
       prettyPic.attr("id", theDivId);
       prettyPic.attr("class", "prettyPic boxOne");
 
+
       $("#" + theDivId).on("click", function () {
         window.open(addThis.url);
       })
+
 
 
 
@@ -423,6 +436,7 @@ $(document).ready(function () {
 
 
 
+
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
@@ -431,8 +445,5 @@ $(document).ready(function () {
 
   var timeDelay = 500;
   setTimeout(tripAd, timeDelay);
-
-
-
 
 });
