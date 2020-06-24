@@ -279,22 +279,62 @@ $(document).ready(function () {
       // console.log("record to use" + useThis);
       var addThis = populateThis[useThis];
     
-      
+
     if (addThis) {
+
+      var prettyPicCont = $("<div>")
+      prettyPicCont.attr("class", "prettyPicCont")
+
+      var prettyPic = $("<img>")
+      prettyPic.attr("src", addThis.img);
+      prettyPic.attr("class", "prettyPic boxOne");
+
+      var newDivTitle = $("<p>");
+
       if (addThis.cat === "food") {
-        $(".nameClassTitle").text("Something to eat?");
+        newDivTitle.text("Something to eat?");
       }
-      if (addThis.cat === "trip") {
-        $(".nameClassTitle").text("Something to do?");
-      }
+      newDivTitle.attr("class", "nameClassTitle boxOne");
 
-      $(".prettyPic").attr("src", addThis.img);
-      $(".nameClass").text(addThis.name);
-      $(".locationClass").text("Location : " + addThis.location);
-      $(".costClass").text("Cost : " + cost[addThis.cost]);
-      $(".timeClass").text("Time : " + addThis.time);
-      $(".descClass").text(addThis.longdesc);
+      // --------------------------------------------------
 
+      var newDiv = $("<p>");
+      var theplaceTitle = addThis.name; // used in box 1 and 2
+      newDiv.text(theplaceTitle);
+      newDiv.attr("class", "nameClass boxOne");
+
+      var newDivDesc = $("<p>");
+      newDivDesc.text(addThis.shortdesc);
+      newDivDesc.attr("class", "descClass boxOne");
+
+      var newDivLocation = $("<p>");
+      newDivLocation.text("Location : " + addThis.location);
+      newDivLocation.attr("class", "locationClass boxOne");
+
+      var newDivOpening = $("<p>");
+      newDivOpening.text("Time : " + addThis.time);
+      newDivOpening.attr("class", "timeClass boxOne");
+
+      var webLink = $("<button>");
+      webLink.attr("class", "webClass button is-dark boxOne");
+      webLink.text("Website")
+
+      $(prettyPicCont).append(prettyPic, newDivTitle)
+      $("#resultOne").append(prettyPicCont, newDiv, newDivLocation, newDivOpening, newDivDesc, webLink);
+
+      $(webLink).on("click", function () {
+        window.open(addThis.url);
+      })
+
+      // var secondDivTitle = $("<p>");
+      // secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
+      // secondDivTitle.attr("class", "nameClass boxTwo");
+
+      // var secondDivLongDesc = $("<p>");
+      // secondDivLongDesc.text(addThis.longdesc);
+      // secondDivLongDesc.attr("class", "secondDivLongDesc boxTwo");
+
+      // $("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
       $(".webClass").on("click", function () {
         window.open(addThis.url);
       });
