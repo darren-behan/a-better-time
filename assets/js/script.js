@@ -12,6 +12,8 @@ var loc = "";
 var time = "";
 var zaMato; // global variable for object ----------------------------------
 var ticketM;
+var tripAd;
+
 
 $(document).ready(function () {
   // First page button - Day(RE) ----------------------------------
@@ -245,7 +247,7 @@ $(document).ready(function () {
           });
         }
         console.log(events);
-        populateResults(restaurants, 2);
+        populateResults(events, 2);
       },
     });
   }
@@ -262,23 +264,20 @@ $(document).ready(function () {
 
     if (source === 0) {
       zomatoAPI = populateThis;
-      // console.log(zomatoAPI);
+        console.log("Dumping Zomato");
+          }
+    if (source === 2) {
+      tripAd = populateThis;
+        console.log("Dumping Trip Add");
+          }
+
+          console.log(populateThis);
+
+
+
       var useThis = returnRandom(populateThis.length);
-      // console.log("record to use" + useThis);
-      var addThis = populateThis[useThis];
-      // each function will be like the above - however one piece of code
-      // the results will populate into the input box. with the values of the keys
-      // remaining universal for all of them.
-
-      // all 3 api's will populate into boxes 1 and two? I think.
-      // the filter function will clear box 1 and box 2.
-      // from here we can repopulate.
-    }
-
-    // if the variable is populated;
-    // added classes - boxOne: nameClass, descClass, locationClass, timeClass,
-    // div 2
-    // boxTwo: secondDivLongDesc, prettyPic
+        var addThis = populateThis[useThis];
+    
 
     if (addThis) {
 
@@ -293,10 +292,20 @@ $(document).ready(function () {
 
       if (addThis.cat === "food") {
         newDivTitle.text("Something to eat?");
+        theDivId = '01';
       }
+
+      if (addThis.cat === "Attraction") {
+
+        newDivTitle.text("Something special ?");
+        theDivId = '02';
+        }
+
       newDivTitle.attr("class", "nameClassTitle boxOne");
 
       // --------------------------------------------------
+
+      newDivTitle.attr("class", "nameClassTitle boxOne");
 
       var newDiv = $("<p>");
       var theplaceTitle = addThis.name; // used in box 1 and 2
@@ -307,44 +316,44 @@ $(document).ready(function () {
       newDivDesc.text(addThis.shortdesc);
       newDivDesc.attr("class", "descClass boxOne");
 
+
       var newDivLocation = $("<p>");
       newDivLocation.text("Location : " + addThis.location);
       newDivLocation.attr("class", "locationClass boxOne");
 
+
       var newDivOpening = $("<p>");
       newDivOpening.text("Time : " + addThis.time);
       newDivOpening.attr("class", "timeClass boxOne");
+   
+      var secondDivTitle = $("<p>");
+      secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
+      secondDivTitle.attr("class", "nameClass boxOne");
 
-      var webLink = $("<button>");
-      webLink.attr("class", "webClass button is-dark boxOne");
-      webLink.text("Website")
+      var secondDivLongDesc = $("<p>");
+      secondDivLongDesc.text(addThis.longdesc);
+      secondDivLongDesc.attr("class", "secondDivLongDesc boxOne");
 
-      $(prettyPicCont).append(prettyPic, newDivTitle)
-      $("#resultOne").append(prettyPicCont, newDiv, newDivLocation, newDivOpening, newDivDesc, webLink);
+      var prettyPic = $("<img>")
+      prettyPic.attr("src", addThis.img);
+      prettyPic.attr("id", theDivId);
+      prettyPic.attr("class", "prettyPic boxOne");
 
-      $(webLink).on("click", function () {
+   $("#" + theDivId).on("click", function () {
         window.open(addThis.url);
       })
 
-      // var secondDivTitle = $("<p>");
-      // secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
-      // secondDivTitle.attr("class", "nameClass boxTwo");
 
-      // var secondDivLongDesc = $("<p>");
-      // secondDivLongDesc.text(addThis.longdesc);
-      // secondDivLongDesc.attr("class", "secondDivLongDesc boxTwo");
 
-      // $("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
-      $(".webClass").on("click", function () {
-        window.open(addThis.url);
-      });
+      $("#resultOne").append(newDivTitle, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, prettyPic);
+      //$("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
     }
   }
 
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
-  var timeDelay = 3900;
+  var timeDelay = 900;
   setTimeout(zomatoAPI, timeDelay);
 
   var timeDelay = 500;
