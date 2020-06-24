@@ -311,7 +311,7 @@ $(document).ready(function () {
     return (Math.floor(Math.random() * number));
   }
 
-
+  
   function populateResults(populateThis, source) {
 
     var sources = ['zomatoAPI', 'ticketMaster', 'tripAdvisor']
@@ -344,6 +344,10 @@ $(document).ready(function () {
       if (addThis.cat === "food") {
         $(".nameClassTitle").text("Something to eat?");
       }
+      if (addThis.cat === "trip") {
+        $(".nameClassTitle").text("Something to do?");
+      }
+
       $(".prettyPic").attr("src", addThis.img);
       $(".nameClass").text(addThis.name)
       $(".locationClass").text("Location : " + addThis.location)
@@ -363,7 +367,7 @@ $(document).ready(function () {
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
-  var timeDelay = 3900;
+  var timeDelay = 900;
   setTimeout(zomatoAPI, timeDelay);
 
 
