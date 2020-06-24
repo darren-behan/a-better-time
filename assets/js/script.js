@@ -158,7 +158,7 @@ $(document).ready(function () {
     var latlong = latitude + "," + longitude;
     console.log(latlong)
     var ticketMasterURL =
-      "https://app.ticketmaster.com/discovery/v2/events.json?size=20&dmaId=701&apikey=" +
+      "https://app.ticketmaster.com/discovery/v2/events.json?&size=20&apikey=" +
       apiTicketmaster +
       "&" +
       latlong;
