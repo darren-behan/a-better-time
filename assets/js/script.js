@@ -102,8 +102,6 @@ $(document).ready(function () {
               locality
             },
           } = data;
-          var restaurantTime = "12:00:00";
-          var restaurantCat = "food";
 
           restaurants.push({
             name: name,
@@ -113,14 +111,11 @@ $(document).ready(function () {
             shortdesc: name + " specializes in " + data.cuisines + ".",
             location: locality,
             longdesc: name + " is the best restaurant in " + locality + ".",
-            time: restaurantTime,
-            cat: restaurantCat
+            time: "12:00:00",
+            cat: "food"
           });
         }
-        // console.log("the restaurants are")
-        // console.log(restaurants + "the restaurants");
         populateResults(restaurants, 0);
-
       }
     });
   }
@@ -208,38 +203,39 @@ $(document).ready(function () {
         "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
       },
       success: function(response) {
+        console.log(response);
         var events = [];
         var eventList = response.data;
-        $.each(eventList, function(key) {
-          eventImg = eventList[key].photo;
-          eventCategory = eventList[key].category;
-          eventSubCategory = eventList[key].subcategory;
-        });
         for (var event of eventList) {
           var data = event;
+          if (data.category === undefined || data.photo === undefined || data.subcategory === undefined) {
+            continue;
+          }
           var {
             name,
             web_url,
-            location_string,
+            photo,
+            category,
+            subcategory,
+            address_obj,
           } = data;          
-          var eventTime = "12:00:00";
-          
 
           events.push({
             name: name,
             cost: 3,
             url: web_url,
-            img: eventImg.images.small.url,
-            shortdesc: name + " specializes in " + eventSubCategory[0].name + ".",
-            location: location_string,
-            longdesc: name + " will provide the best entertainment in " + location_string + ".",
-            time: eventTime,
-            cat: eventCategory.name
+            img: photo.images.small.url,
+            shortdesc: name + " specializes in " + subcategory[0].name + ".",
+            location: address_obj,
+            longdesc: name + " will provide the best entertainment in " + address_obj.city + ".",
+            time: "15:00:00",
+            cat: category.name
           });
         }
-        console.log(events);        
+        console.log(events);
+        populateResults(restaurants, 2);        
       }
-    })
+    });
   }
 
   // Davids Code ----------------------------------
