@@ -7,12 +7,13 @@ var outdoors = false;
 var events = false;
 var food = true;
 var movies = true;
-var cost = "";
 var loc = "";
 var time = "";
 var zaMato; // global variable for object ----------------------------------
 var ticketM;
 var tripAd;
+var categories = []; // global variable for selection of categories
+var costSearch = "$";
 
 
 $(document).ready(function () {
@@ -44,19 +45,56 @@ $(document).ready(function () {
 
   // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+
+    var currentStatus = $(this).data("status");
+    // the data-variable status is checked. if it is defined then it is active
+    if ((currentStatus === "active") && (currentStatus !== "undefined")) {
+      $(this).data("status", "inactive");
+      // reset box shadow to nothing
+
+      console.log("removing box shadow");
+         $(this).css("box-shadow", "unset");
+
+      // ok - let's see if this.. category is in the array.
+
+      if (categories.includes($(this).text())) {
+        // the value is currently in the array, let's delete it               
+        categories = categories.filter(item => item !== $(this).text());
+        console.log(categories)
+      }
+    }
+    else
+    // make it active again and add the corney boxshadow effect
+    {
+      $(this).data("status", "active");
+      // add box shadow to original status
+      console.log("adding box shadow");
+      $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+      // now let's add this value to the array
+      categories.push($(this).text());
+
+
+
+    }
+
     console.log($(this).text());
     event.stopPropagation();
   });
   //
   $(".cost").on("click", function () {
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
-    cost = $(this).text();
-    console.log($(this).text());
-    event.stopPropagation();
+
+    // lets reset all the cost buttons to nothing.
+    $(".cost").css("box-shadow", "unset");
+      $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+      event.stopPropagation();
+      // let's set the global var costSearch to this value
+      costSearch = $(this).text();
+
+
   });
 
   $(".loc").on("click", function () {
+    $(".loc").css("box-shadow", "unset");
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     loc = $(this).text();
     console.log($(this).text());
@@ -64,7 +102,13 @@ $(document).ready(function () {
   });
 
   $(".time").on("click", function () {
+
+
+    $(".time").css("box-shadow", "unset");
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+
+
+
     time = $(this).text();
     console.log($(this).text());
     event.stopPropagation();
@@ -270,7 +314,23 @@ $(document).ready(function () {
   }
 
   function populateResults(populateThis, source) {
-    var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
+
+
+  // check if this is a refined search
+  if (populateThis === null) {
+    // we know that by the time this function is called, the global variables from the API will be set.
+    // allow the user to refine it based on the dataset provided.
+    
+    alert("refined search here");
+
+              } 
+       else 
+              {
+
+    // this result has come in from one of the API's
+    // as such, utilise the api data to trigger one event
+
+     var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
     var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
     // cant really finish this until we have more than one API working.
 
@@ -290,6 +350,7 @@ $(document).ready(function () {
       var useThis = returnRandom(populateThis.length);
         var addThis = populateThis[useThis];
     
+
 
     if (addThis) {
 
@@ -311,7 +372,11 @@ $(document).ready(function () {
 
         newDivTitle.text("Something special ?");
         theDivId = '02';
-        }
+
+      }
+
+    }
+
 
       newDivTitle.attr("class", "nameClassTitle boxOne");
 
@@ -337,7 +402,7 @@ $(document).ready(function () {
       var newDivOpening = $("<p>");
       newDivOpening.text("Time : " + addThis.time);
       newDivOpening.attr("class", "timeClass boxOne");
-   
+
       var secondDivTitle = $("<p>");
       secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
       secondDivTitle.attr("class", "nameClass boxOne");
@@ -351,9 +416,11 @@ $(document).ready(function () {
       prettyPic.attr("id", theDivId);
       prettyPic.attr("class", "prettyPic boxOne");
 
-   $("#" + theDivId).on("click", function () {
+
+      $("#" + theDivId).on("click", function () {
         window.open(addThis.url);
       })
+
 
 
 
@@ -361,6 +428,14 @@ $(document).ready(function () {
       //$("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
     }
   }
+
+  $("#goToWork").on("click", function () {
+    // trigger populateResults with null to indicate that this is a refined search
+    populateResults(null);
+  })
+
+
+
 
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
@@ -370,4 +445,5 @@ $(document).ready(function () {
 
   var timeDelay = 500;
   setTimeout(tripAd, timeDelay);
+
 });
