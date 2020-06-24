@@ -196,10 +196,8 @@ $(document).ready(function () {
     })
   };
 
+  // Trip Advisor API call based on users location
   function tripAd() {
-
-    // Local to your area in melbourne (local) ----------------------------------
-    // changing stucture of query to on-success in order to limit async var assignment issues.birdLogo
 
     $.ajax({
       "async": true,
@@ -211,28 +209,36 @@ $(document).ready(function () {
         "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0"
       },
       success: function(response) {
-        console.log(response)
+        var events = [];
+        var eventList = response.data;
+        $.each(eventList, function(key) {
+          eventImg = eventList[key].photo;
+          eventCategory = eventList[key].category;
+          eventSubCategory = eventList[key].subcategory;
+        });
+        for (var event of eventList) {
+          var data = event;
+          var {
+            name,
+            web_url,
+            location_string,
+          } = data;          
+          var eventTime = "12:00:00";
+          
 
-        var randNum = Math.floor(Math.random() * 32);
-        var localName = response.data[randNum].name;
-        // var localCost = response.data[randNum].offer_group.lowest_price
-        // var localTime = response.data[randNum].hours.week_ranges[1][0];
-        var localDesc = response.data[randNum].description;
-        var localUrl = response.data[randNum].web_url;
-        var localImag = response.data[randNum].photo.images.small.url;
-        var localCate = response.data[randNum].subcategory[0].name;
-
-        // Sometimes the call fails due to not all the returns being the same. If the
-        // call exists we should allow it, otherwise, do not attempt return and value = nil, 
-        // nil value will equal lowest price range and return in both day and night filters.
-
-        console.log(localName);
-        // console.log(localCost);
-        // console.log(localTime);
-        console.log(localDesc);
-        console.log(localUrl);
-        console.log(localImag);
-        console.log(localCate);
+          events.push({
+            name: name,
+            cost: 3,
+            url: web_url,
+            img: eventImg.images.small.url,
+            shortdesc: name + " specializes in " + eventSubCategory[0].name + ".",
+            location: location_string,
+            longdesc: name + " will provide the best entertainment in " + location_string + ".",
+            time: eventTime,
+            cat: eventCategory.name
+          });
+        }
+        console.log(events);        
       }
     })
   }
