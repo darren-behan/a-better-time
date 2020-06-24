@@ -151,47 +151,59 @@ $(document).ready(function () {
   function ticketMaster() {
     var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
     var latlong = latitude + "," + longitude;
+    console.log(latlong)
     var ticketMasterURL =
-      "https://app.ticketmaster.com/discovery/v2/events.json?size=100&apikey=" +
-      apiTicketmaster +
-      "&" +
-      latlong;
-
+      "https://app.ticketmaster.com/discovery/v2/events.json?&dmaId=701&size=20&apikey=" +
+      apiTicketmaster
+      // "&" +
+      // latlong;
+  
     console.log(ticketMasterURL);
-
+  
     $.ajax({
       type: "GET",
       url: ticketMasterURL,
       async: true,
       dataType: "json",
-      success: function (json) {
-        console.log(json);
-        // showEvents(json);
-      },
-    }).then(function (response) {
-      var eventTitle = response._embedded.events[0].name;
-      var eventCost = "$$$";
-      var eventTime = response._embedded.events[0].dates.start.localTime;
-      var eventLocation =
-        response._embedded.events[0]._embedded.venues[0].city.name;
-      var eventShortDescription =
-        "Promoted by: " + response._embedded.events[0].promoter.name;
-      var eventURL = response._embedded.events[0].url;
-      var eventLongDescription =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-      var eventImageURL = response._embedded.events[0].images[8].url;
-      var categoryEvent = "Events";
+      success: function (response) {
+      var events = [];
+      var eventList = response._embedded.events;
+      for (var event of eventList) {
+        var data = event;
+        if (data.images === undefined || data.promoter === undefined || data._embedded === undefined || data.dates === undefined) {
+          continue;
+        }
+        
+        var {
+          name,
+          url, 
+          images,
+          // promoter,
+          _embedded, 
+          dates,
+      } = data;
+  
+      var eventCost = "$$$"
+      var categoryEvent = "Events"
+      var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      
+      events.push({
+        name: name,
+        cost: eventCost,
+        url: url,
+        img: images[8].url,
+        shortdesc: "Promoted by: " + data.promoter.name,
+        location: _embedded.venues[0].city.name,
+        longdesc: eventLongDescription,
+        time: dates.start.localTime,
+        cat:categoryEvent
+      })
+    }
+    console.log(events)
+    }
+  })}
 
-      console.log(eventTitle);
-      console.log(eventCost);
-      console.log(eventTime);
-      console.log(eventLocation);
-      console.log(eventShortDescription);
-      console.log(eventURL);
-      console.log(eventImageURL);
-      console.log(categoryEvent);
-    });
-  }
+  ticketMaster();
 
   // Trip Advisor API call based on users location
   function tripAd() {
