@@ -319,7 +319,6 @@ $(document).ready(function () {
   if (populateThis === null) {
     // we know that by the time this function is called, the global variables from the API will be set.
     // allow the user to refine it based on the dataset provided.
-
     
     alert("refined search here");
 
