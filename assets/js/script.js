@@ -130,6 +130,7 @@ $(document).ready(function () {
         longitude +
         "&count=5",
       method: "GET",
+      async : true,
       timeout: 0,
       headers: {
         Accept: "application/json",
@@ -138,6 +139,8 @@ $(document).ready(function () {
       success: function (response) {
         var restaurants = [];
         var restaurantList = response.nearby_restaurants;
+
+
         for (var restaurant of restaurantList) {
           var data = restaurant.restaurant;
           // object deconstructing
@@ -153,6 +156,7 @@ $(document).ready(function () {
             name: name,
             cost: price_range,
             url: url,
+            distance : null,
             img: featured_image,
             shortdesc: name + " specializes in " + data.cuisines + ".",
             location: locality,
@@ -163,11 +167,78 @@ $(document).ready(function () {
         }
         // set global variable zaMato
         zaMato = restaurants;
+      
+
+        // ok now let's update the distance field
+
         populateResults(restaurants, 0);
+        
       },
     });
   }
 
+  function updateArray(sender) {
+    if (sender == 0) { thisArray = zaMato; }
+    if (sender == 2) { thisArray = tripAdvisor; }
+
+      for (i = 0; i < thisArray.length; i++) {
+        var thisAddress = thisArray[i].location;
+
+        $.ajax({
+          url:
+            "http://open.mapquestapi.com/geocoding/v1/address?key=6X1OoAA3I2lIVopuMM6Mp8RzTE8Ig9sq&location=" + thisAddress,
+          method: "GET",
+          async : false,
+          timeout: 0,
+          success: function (response) {
+            theLat = response.results[0].locations[0].latLng.lat;
+            theLng = response.results[0].locations[0].latLng.lng;
+            console.log(theLat, theLng, i);
+            calculateAndUpdate(theLat, theLng, i, sender);
+
+          }
+        
+        });                     
+
+      }
+  }
+
+
+  function calculateAndUpdate(theLat,theLng,i, sender) {
+// this function will itterate through the array and insert the geo location
+// as provided by the original provided data and insert that into 
+// the object
+
+
+
+      // In address. now let's calculate how far it
+      // is from our current location
+
+      const R = 6371e3; // metres
+      const φ1 = latitude * Math.PI/180; // φ, λ in radians
+      const φ2 = theLat * Math.PI/180;
+      const Δφ = (theLat-latitude) * Math.PI/180;
+      const Δλ = (theLng-longitude) * Math.PI/180;
+      
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      
+      const d = Math.floor(R * c); // in metres
+     // console.log("the total distance is " + d);
+
+      if (sender == 0) {
+        // this is zamato
+              zaMato[i].distance = d;
+                                  }
+
+         if (sender == 2) {
+          tripAdvisor[i].distance = d;
+                             }                        
+                                      }
+      
+  
   function getGeoLocations(requestType) {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -220,6 +291,10 @@ $(document).ready(function () {
           continue;
         }
         
+        comnsole.log("top");
+        console.log(event);
+        console.log("bottom");
+
         var {
           name,
           url, 
@@ -232,7 +307,9 @@ $(document).ready(function () {
       var eventCost = "$$$"
       var categoryEvent = "Events"
       var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      
+  
+
+
       events.push({
         name: name,
         cost: eventCost,
@@ -285,16 +362,19 @@ $(document).ready(function () {
             photo,
             category,
             subcategory,
+            address,
             address_obj,
           } = data;
+
 
           events.push({
             name: name,
             cost: 3,
+            distance : null,
             url: web_url,
             img: photo.images.small.url,
             shortdesc: name + " specializes in " + subcategory[0].name + ".",
-            location: address_obj,
+            location: address,
             longdesc:
               name +
               " will provide the best entertainment in " +
@@ -304,8 +384,11 @@ $(document).ready(function () {
             cat: category.name,
           });
         }
-        console.log(events);
+       // console.log(events);
+       // set the global variable
         tripAdvisor = events;
+        // update the distance location from address
+       // updateArray(2);
         populateResults(events, 2);
       },
     });
@@ -316,9 +399,11 @@ $(document).ready(function () {
     return Math.floor(Math.random() * number);
   }
 
+  
+
   function populateResults(populateThis, source) {
-     var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
      var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
+
 
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
@@ -416,9 +501,10 @@ $(document).ready(function () {
 
 
       $("#resultOne").append(newDivTitle, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, prettyPic);
-      //$("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
+    
     
   }
+
 
     function filterResults() {
     // function to view filtered options and send result to populate results
@@ -436,8 +522,8 @@ $(document).ready(function () {
             if (theArray !== "undefined") {
           
     
-              // filter the results based on 
-              const result = theArray.filter(thearrayResult => thearrayResult.cost == (costSearch.length - 1).toString());
+    // filter the results based on 
+      const result = theArray.filter(thearrayResult => thearrayResult.cost == (costSearch.length - 1).toString());
             
         // send the random result for population to the screen assuming we have more than 0 results.
                
@@ -467,10 +553,16 @@ $(document).ready(function () {
   // this needs to be run straight away to assign the variables.
   getGeoLocations();
 
-  var timeDelay = 900;
+  var timeDelay = 500;
   setTimeout(zomatoAPI, timeDelay);
 
   var timeDelay = 500;
   setTimeout(tripAd, timeDelay);
+
+  $('.initBtnOne').on("click",function() {
+    updateArray(0);
+      updateArray(2);
+
+        })
 
 });
