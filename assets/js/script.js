@@ -11,7 +11,7 @@ var loc = "";
 var time = "";
 var zaMato; // global variable for object ----------------------------------
 var ticketM;
-var tripAd;
+var tripAdvisor;
 var categories = []; // global variable for selection of categories
 var costSearch = "$";
 
@@ -161,6 +161,8 @@ $(document).ready(function () {
             cat: "food",
           });
         }
+        // set global variable zaMato
+        zaMato = restaurants;
         populateResults(restaurants, 0);
       },
     });
@@ -262,7 +264,7 @@ $(document).ready(function () {
       method: "GET",
       headers: {
         "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-        "x-rapidapi-key": "fdb9978b68mshd6275eb4a4e31a6p16d146jsn8702ceda1ca0",
+        "x-rapidapi-key": "0c211c59f1msh6b3dc76ba9cbcaap19572cjsnf4d5920b5e14",
       },
       success: function (response) {
         console.log(response);
@@ -303,36 +305,23 @@ $(document).ready(function () {
           });
         }
         console.log(events);
+        tripAdvisor = events;
         populateResults(events, 2);
       },
     });
   }
 
-  // Davids Code ----------------------------------
+
   function returnRandom(number) {
     return Math.floor(Math.random() * number);
   }
 
   function populateResults(populateThis, source) {
-
-
-  // check if this is a refined search
-  if (populateThis === null) {
-    // we know that by the time this function is called, the global variables from the API will be set.
-    // allow the user to refine it based on the dataset provided.
-    
-    alert("refined search here");
-
-              } 
-       else 
-              {
+     var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
+     var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
 
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
-
-     var sources = ["zomatoAPI", "ticketMaster", "tripAdvisor"];
-    var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
-    // cant really finish this until we have more than one API working.
 
     if (source === 0) {
       zomatoAPI = populateThis;
@@ -342,6 +331,8 @@ $(document).ready(function () {
       tripAd = populateThis;
         console.log("Dumping Trip Add");
           }
+
+    
 
           console.log(populateThis);
 
@@ -368,7 +359,7 @@ $(document).ready(function () {
         theDivId = '01';
       }
 
-      if (addThis.cat === "Attraction") {
+      if (addThis.cat === "Activities") {
 
         newDivTitle.text("Something special ?");
         theDivId = '02';
@@ -426,12 +417,48 @@ $(document).ready(function () {
 
       $("#resultOne").append(newDivTitle, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, prettyPic);
       //$("#resultTwo").append(secondDivTitle, secondDivLongDesc, prettyPic);
-    }
+    
   }
 
-  $("#goToWork").on("click", function () {
+    function filterResults() {
+    // function to view filtered options and send result to populate results
+    // itterate through categories
+    // clean up results
+    
+    $(".boxOne").remove();
+
+      for (var theseCategories of categories) {
+        console.log("checking category"+ theseCategories);
+                if (theseCategories === "Food") { theArray = zaMato; var sourceID = 0;}
+                if (theseCategories === "Activities") { theArray = tripAdvisor; var sourceID = 2;}
+                if (theseCategories === "Events") { continue; } // as the events array is not ready yet, exit the loop
+            
+            if (theArray !== "undefined") {
+          
+    
+              // filter the results based on 
+              const result = theArray.filter(thearrayResult => thearrayResult.cost == (costSearch.length - 1).toString());
+            
+        // send the random result for population to the screen assuming we have more than 0 results.
+               
+           if (result.length >  0) {     
+              var doThisOne = returnRandom(result.length);             
+                  populateResults(result, sourceID);
+                      }
+
+
+           
+           
+                }
+              }
+
+
+  }
+
+
+  $(".refineSearch").on("click", function () {
     // trigger populateResults with null to indicate that this is a refined search
-    populateResults(null);
+    filterResults();
   })
 
 
