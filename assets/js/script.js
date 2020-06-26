@@ -58,7 +58,7 @@ $(document).ready(function () {
       // ok - let's see if this.. category is in the array.
 
       if (categories.includes($(this).text())) {
-        // the value is currently in the array, let's delete it               
+        // the value is currently in the array, let's delete it
         categories = categories.filter(item => item !== $(this).text());
         console.log(categories)
       }
@@ -122,7 +122,7 @@ $(document).ready(function () {
   });
 
   function zomatoAPI() {
-    $.ajax({
+    return $.ajax({
       url:
         "https://developers.zomato.com/api/v2.1/geocode?lat=" +
         latitude +
@@ -140,6 +140,7 @@ $(document).ready(function () {
         var restaurants = [];
         var restaurantList = response.nearby_restaurants;
 
+        // console.log('zomatoAPI:', response);
 
         for (var restaurant of restaurantList) {
           var data = restaurant.restaurant;
@@ -149,7 +150,7 @@ $(document).ready(function () {
             price_range,
             url,
             featured_image,
-            location: { locality },
+            location,
           } = data;
 
           restaurants.push({
@@ -159,20 +160,22 @@ $(document).ready(function () {
             distance : null,
             img: featured_image,
             shortdesc: name + " specializes in " + data.cuisines + ".",
-            location: locality,
-            longdesc: name + " is the best restaurant in " + locality + ".",
+            location: location.locality,
+            latitude: +location.latitude || null,
+            longitude: +location.longitude || null,
+            longdesc: name + " is the best restaurant in " + location.locality + ".",
             time: "12:00:00",
             cat: "food",
           });
         }
         // set global variable zaMato
         zaMato = restaurants;
-      
+
 
         // ok now let's update the distance field
 
         populateResults(restaurants, 0);
-        
+
       },
     });
   }
@@ -182,31 +185,17 @@ $(document).ready(function () {
     if (sender == 2) { thisArray = tripAdvisor; }
 
       for (i = 0; i < thisArray.length; i++) {
-        var thisAddress = thisArray[i].location;
 
-        $.ajax({
-          url:
-            "http://open.mapquestapi.com/geocoding/v1/address?key=6X1OoAA3I2lIVopuMM6Mp8RzTE8Ig9sq&location=" + thisAddress,
-          method: "GET",
-          async : false,
-          timeout: 0,
-          success: function (response) {
-            theLat = response.results[0].locations[0].latLng.lat;
-            theLng = response.results[0].locations[0].latLng.lng;
-            console.log(theLat, theLng, i);
-            calculateAndUpdate(theLat, theLng, i, sender);
-
-          }
-        
-        });                     
-
+        if (thisArray[i].latitude !== null && thisArray[i].longitude !== null) {
+          thisArray[i].d = calculateAndUpdate(thisArray[i].latitude, thisArray[i].longitude);
+        }
       }
   }
 
 
   function calculateAndUpdate(theLat,theLng,i, sender) {
 // this function will itterate through the array and insert the geo location
-// as provided by the original provided data and insert that into 
+// as provided by the original provided data and insert that into
 // the object
 
 
@@ -219,49 +208,62 @@ $(document).ready(function () {
       const φ2 = theLat * Math.PI/180;
       const Δφ = (theLat-latitude) * Math.PI/180;
       const Δλ = (theLng-longitude) * Math.PI/180;
-      
+
       const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
                 Math.cos(φ1) * Math.cos(φ2) *
                 Math.sin(Δλ/2) * Math.sin(Δλ/2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      
+
       const d = Math.floor(R * c); // in metres
      // console.log("the total distance is " + d);
 
       if (sender == 0) {
         // this is zamato
-              zaMato[i].distance = d;
-                                  }
+        zaMato[i].distance = d;
+      }
 
-         if (sender == 2) {
-          tripAdvisor[i].distance = d;
-                             }                        
-                                      }
-      
-  
-  function getGeoLocations(requestType) {
+      if (sender == 2) {
+        tripAdvisor[i].distance = d;
+      }
+
+      return d;
+    }
+
+  function getGeoLocationsFromIp(cb) {
+    $.ajax("http://ip-api.com/json").then(
+      function success(response) {
+        latitude = response.lat;
+        longitude = response.lon;
+
+        cb();
+      },
+
+      function fail(data, status) {
+        alert('NO COORDINATES');
+        // If this fails, we need to get the users ip address to find location settings.
+        //console.log("Request failed.  Returned status of", status);
+      }
+    );
+  }
+
+  // cb is a callback
+  function getGeoLocations(cb) {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
+
+        cb();
+
+        // exit
+        return;
+      }, function () {
+        console.log('No rights to access geolocation. Will try to get location from IP`');
+
+        getGeoLocationsFromIp(cb);
       });
-    }
-
-    if (latitude !== parseInt(latitude, 10) || latitude === "undefined") {
-      // the call failed - use the IP address
-
-      $.ajax("http://ip-api.com/json").then(
-        function success(response) {
-          latitude = response.lat;
-          longitude = response.lon;
-          // console.log("lat " + latitude + " long + :" + longitude);
-        },
-
-        function fail(data, status) {
-          // If this fails, we need to get the users ip address to find location settings.
-          //console.log("Request failed.  Returned status of", status);
-        }
-      );
+    } else {
+      getGeoLocationsFromIp(cb);
     }
   }
 
@@ -274,15 +276,17 @@ $(document).ready(function () {
       apiTicketmaster
       // "&" +
       // latlong;
-  
+
     console.log(ticketMasterURL);
-  
-    $.ajax({
+
+    return $.ajax({
       type: "GET",
       url: ticketMasterURL,
       async: true,
       dataType: "json",
       success: function (response) {
+        console.log('ticketMasterURL:', response);
+
       var events = [];
       var eventList = response._embedded.events;
       for (var event of eventList) {
@@ -290,24 +294,24 @@ $(document).ready(function () {
         if (data.images === undefined || data.promoter === undefined || data._embedded === undefined || data.dates === undefined) {
           continue;
         }
-        
+
         comnsole.log("top");
         console.log(event);
         console.log("bottom");
 
         var {
           name,
-          url, 
+          url,
           images,
           // promoter,
-          _embedded, 
+          _embedded,
           dates,
       } = data;
-  
+
       var eventCost = "$$$"
       var categoryEvent = "Events"
       var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  
+
 
 
       events.push({
@@ -326,11 +330,9 @@ $(document).ready(function () {
     }
   })}
 
-  ticketMaster();
-
   // Trip Advisor API call based on users location
   function tripAd() {
-    $.ajax({
+    return $.ajax({
       async: true,
       crossDomain: true,
       url:
@@ -344,7 +346,7 @@ $(document).ready(function () {
         "x-rapidapi-key": "0c211c59f1msh6b3dc76ba9cbcaap19572cjsnf4d5920b5e14",
       },
       success: function (response) {
-        console.log(response);
+        // console.log('tripAd:', response);
         var events = [];
         var eventList = response.data;
         for (var event of eventList) {
@@ -364,6 +366,8 @@ $(document).ready(function () {
             subcategory,
             address,
             address_obj,
+            latitude,
+            longitude
           } = data;
 
 
@@ -375,6 +379,8 @@ $(document).ready(function () {
             img: photo.images.small.url,
             shortdesc: name + " specializes in " + subcategory[0].name + ".",
             location: address,
+            latitude: +latitude, // convert to float by adding +
+            longitude: +longitude,
             longdesc:
               name +
               " will provide the best entertainment in " +
@@ -399,7 +405,7 @@ $(document).ready(function () {
     return Math.floor(Math.random() * number);
   }
 
-  
+
 
   function populateResults(populateThis, source) {
      var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
@@ -417,7 +423,7 @@ $(document).ready(function () {
         console.log("Dumping Trip Add");
           }
 
-    
+
 
           console.log(populateThis);
 
@@ -425,7 +431,7 @@ $(document).ready(function () {
 
       var useThis = returnRandom(populateThis.length);
         var addThis = populateThis[useThis];
-    
+
 
 
     if (addThis) {
@@ -489,27 +495,20 @@ $(document).ready(function () {
 
       var prettyPic = $("<img>")
       prettyPic.attr("src", addThis.img);
-      // prettyPic.attr("id", theDivId);
+      prettyPic.attr("id", theDivId);
       prettyPic.attr("class", "prettyPic boxOne");
 
 
-      // $("#" + theDivId).on("click", function () {
-      //   window.open(addThis.url);
-      // })
-
-      var hoLine = $("<hr>");
-      hoLine.attr("class", "hoLine");
-
-      var webUrl = $("<button>");
-      webUrl.attr("class", "webClass button is-dark");
-      webUrl.text("Website");
-
-      webUrl.on("click", function() {
-        window.open(addThis.url)
+      $("#" + theDivId).on("click", function () {
+        window.open(addThis.url);
       })
 
-      $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, webUrl);
-    
+
+
+
+      $("#resultOne").append(newDivTitle, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, prettyPic);
+
+
   }
 
 
@@ -517,7 +516,7 @@ $(document).ready(function () {
     // function to view filtered options and send result to populate results
     // itterate through categories
     // clean up results
-    
+
     $(".boxOne").remove();
 
       for (var theseCategories of categories) {
@@ -525,23 +524,23 @@ $(document).ready(function () {
                 if (theseCategories === "Food") { theArray = zaMato; var sourceID = 0;}
                 if (theseCategories === "Activities") { theArray = tripAdvisor; var sourceID = 2;}
                 if (theseCategories === "Events") { continue; } // as the events array is not ready yet, exit the loop
-            
+
             if (theArray !== "undefined") {
-          
-    
-    // filter the results based on 
+
+
+    // filter the results based on
       const result = theArray.filter(thearrayResult => thearrayResult.cost == (costSearch.length - 1).toString());
-            
+
         // send the random result for population to the screen assuming we have more than 0 results.
-               
-           if (result.length >  0) {     
-              var doThisOne = returnRandom(result.length);             
+
+           if (result.length >  0) {
+              var doThisOne = returnRandom(result.length);
                   populateResults(result, sourceID);
                       }
 
 
-           
-           
+
+
                 }
               }
 
@@ -558,18 +557,22 @@ $(document).ready(function () {
 
 
   // this needs to be run straight away to assign the variables.
-  getGeoLocations();
+  getGeoLocations(function () {
+   
+    // alternative option is to run everything in parrallel
+    Promise.all([zomatoAPI(), tripAd(), ticketMaster()]).then(() => {
+      // if we are here then we could managed to run zomato, tripAt and ticketMaster in parallel
+      // here we are free to run whatever we want
 
-  var timeDelay = 500;
-  setTimeout(zomatoAPI, timeDelay);
-
-  var timeDelay = 500;
-  setTimeout(tripAd, timeDelay);
-
-  $('.initBtnOne').on("click",function() {
-    updateArray(0);
+      updateArray(0);
       updateArray(2);
+    }).catch(() => {
+      console.log('Whoops, something is wrong');
+    })
 
-        })
+
+  });
+
+
 
 });
