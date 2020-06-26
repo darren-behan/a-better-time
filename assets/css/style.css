@@ -235,7 +235,8 @@ body {
 .prettyPic {
   float: right;
   max-height: 150px;
-  max-width: 50%;
+  /* max-width: 150px; */
+  width: auto;
   opacity: 1;
   overflow: hidden;
   border-radius: 4px;
