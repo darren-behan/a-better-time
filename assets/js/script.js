@@ -7,13 +7,13 @@ var outdoors = false;
 var events = false;
 var food = true;
 var movies = true;
-var loc = "";
-var time = "";
+var loc = "far";
+
 var zaMato; // global variable for object ----------------------------------
 var ticketM;
 var tripAdvisor;
-var categories = []; // global variable for selection of categories
-var costSearch = "$";
+var categories = ["Food","Activities","Events"]; // global variable for selection of categories
+var costSearch = "$$$$";
 
 
 $(document).ready(function () {
@@ -101,18 +101,7 @@ $(document).ready(function () {
     event.stopPropagation();
   });
 
-  $(".time").on("click", function () {
-
-
-    $(".time").css("box-shadow", "unset");
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
-
-
-
-    time = $(this).text();
-    console.log($(this).text());
-    event.stopPropagation();
-  });
+ 
 
   // Filter dropdown function(RE) ----------------------------------
   var dropdown = document.querySelector(".dropdown");
@@ -128,7 +117,7 @@ $(document).ready(function () {
         latitude +
         "&lon=" +
         longitude +
-        "&count=5",
+        "&count=50",
       method: "GET",
       async : true,
       timeout: 0,
@@ -343,7 +332,7 @@ $(document).ready(function () {
       method: "GET",
       headers: {
         "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-        "x-rapidapi-key": "0c211c59f1msh6b3dc76ba9cbcaap19572cjsnf4d5920b5e14",
+        "x-rapidapi-key": "1730421ec2msh67099de7682ba92p1680b6jsnbe83668d17c8",
       },
       success: function (response) {
         // console.log('tripAd:', response);
@@ -414,18 +403,7 @@ $(document).ready(function () {
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
 
-    if (source === 0) {
-      zomatoAPI = populateThis;
-        console.log("Dumping Zomato");
-          }
-    if (source === 2) {
-      tripAd = populateThis;
-        console.log("Dumping Trip Add");
-          }
-
-
-
-          console.log(populateThis);
+   console.log(populateThis);
 
 
 
@@ -518,9 +496,17 @@ $(document).ready(function () {
     function filterResults() {
     // function to view filtered options and send result to populate results
     // itterate through categories
-    // clean up results
+    // clean up results // if they exist
 
     $(".boxOne").remove();
+    $("#resultOne").empty();
+
+
+
+    //$(".hoLine").remove();  
+    
+      console.log(categories);
+      console.log("the categories");
 
       for (var theseCategories of categories) {
         console.log("checking category"+ theseCategories);
@@ -528,20 +514,34 @@ $(document).ready(function () {
                 if (theseCategories === "Activities") { theArray = tripAdvisor; var sourceID = 2;}
                 if (theseCategories === "Events") { continue; } // as the events array is not ready yet, exit the loop
 
-            if (theArray !== "undefined") {
+        
+  
+   if (theArray !== "undefined") {
 
+    // filter the results based on $$$
 
-    // filter the results based on
-      const result = theArray.filter(thearrayResult => thearrayResult.cost == (costSearch.length - 1).toString());
+      var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString() - 1));
 
         // send the random result for population to the screen assuming we have more than 0 results.
 
+      if (result.length > 0) {
+          // filter results based on distance
+         
+          if (loc = "local") {theDistance = 1000;}
+          if (loc = "near") {theDistance = 10000;}
+          if (loc = "far") {theDistance = 100000;}
+            result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
+
+              }
+
            if (result.length >  0) {
-              var doThisOne = returnRandom(result.length);
+            
+            console.log("the filtered result");
+            console.log(result);
+            console.log("------/")
+            var doThisOne = returnRandom(result.length);
                   populateResults(result, sourceID);
                       }
-
-
 
 
                 }
@@ -557,6 +557,13 @@ $(document).ready(function () {
   })
 
 
+  $(".refreshBtn").on("click", function () {
+    // trigger populateResults with null to indicate that this is a refined search
+    filterResults();
+  })
+
+  
+  
 
 
   // this needs to be run straight away to assign the variables.
