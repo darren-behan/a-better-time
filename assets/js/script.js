@@ -52,7 +52,6 @@ $(document).ready(function () {
       $(this).data("status", "inactive");
       // reset box shadow to nothing
 
-      console.log("removing box shadow");
          $(this).css("box-shadow", "unset");
 
       // ok - let's see if this.. category is in the array.
@@ -60,7 +59,6 @@ $(document).ready(function () {
       if (categories.includes($(this).text())) {
         // the value is currently in the array, let's delete it
         categories = categories.filter(item => item !== $(this).text());
-        console.log(categories)
       }
     }
     else
@@ -68,7 +66,6 @@ $(document).ready(function () {
     {
       $(this).data("status", "active");
       // add box shadow to original status
-      console.log("adding box shadow");
       $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
       // now let's add this value to the array
       categories.push($(this).text());
@@ -77,7 +74,6 @@ $(document).ready(function () {
 
     }
 
-    console.log($(this).text());
     event.stopPropagation();
   });
   //
@@ -97,7 +93,6 @@ $(document).ready(function () {
     $(".loc").css("box-shadow", "unset");
     $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
     loc = $(this).text();
-    console.log($(this).text());
     event.stopPropagation();
   });
 
@@ -128,8 +123,6 @@ $(document).ready(function () {
       success: function (response) {
         var restaurants = [];
         var restaurantList = response.nearby_restaurants;
-
-        // console.log('zomatoAPI:', response);
 
         for (var restaurant of restaurantList) {
           var data = restaurant.restaurant;
@@ -162,7 +155,6 @@ $(document).ready(function () {
 
 
         // ok now let's update the distance field
-
         populateResults(restaurants, 0);
 
       },
@@ -204,7 +196,6 @@ $(document).ready(function () {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
       const d = Math.floor(R * c); // in metres
-     // console.log("the total distance is " + d);
 
       if (sender == 0) {
         // this is zamato
@@ -212,6 +203,7 @@ $(document).ready(function () {
       }
 
       if (sender == 2) {
+        // this is trip advisor - bet you could never guess.
         tripAdvisor[i].distance = d;
       }
 
@@ -230,7 +222,6 @@ $(document).ready(function () {
       function fail(data, status) {
         alert('NO COORDINATES');
         // If this fails, we need to get the users ip address to find location settings.
-        //console.log("Request failed.  Returned status of", status);
       }
     );
   }
@@ -244,7 +235,6 @@ $(document).ready(function () {
 
         cb();
 
-        // exit
         return;
       }, function () {
         console.log('No rights to access geolocation. Will try to get location from IP`');
@@ -263,8 +253,6 @@ $(document).ready(function () {
     var ticketMasterURL =
       "https://app.ticketmaster.com/discovery/v2/events.json?&dmaId=701&size=20&apikey=" +
       apiTicketmaster
-      // "&" +
-      // latlong;
 
     console.log(ticketMasterURL);
 
@@ -292,7 +280,6 @@ $(document).ready(function () {
           name,
           url,
           images,
-          // promoter,
           _embedded,
           dates,
       } = data;
@@ -315,7 +302,6 @@ $(document).ready(function () {
         cat:categoryEvent
       })
     }
-    console.log(events)
     }
   })}
 
@@ -335,7 +321,6 @@ $(document).ready(function () {
         "x-rapidapi-key": "1730421ec2msh67099de7682ba92p1680b6jsnbe83668d17c8",
       },
       success: function (response) {
-        // console.log('tripAd:', response);
         var events = [];
         var eventList = response.data;
         for (var event of eventList) {
@@ -379,7 +364,6 @@ $(document).ready(function () {
             cat: category.name,
           });
         }
-       // console.log(events);
        // set the global variable
         tripAdvisor = events;
         // update the distance location from address
@@ -395,7 +379,6 @@ $(document).ready(function () {
   }
 
 
-
   function populateResults(populateThis, source) {
      var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
 
@@ -403,13 +386,9 @@ $(document).ready(function () {
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
 
-   console.log(populateThis);
-
-
 
       var useThis = returnRandom(populateThis.length);
         var addThis = populateThis[useThis];
-
 
 
     if (addThis) {
@@ -500,16 +479,9 @@ $(document).ready(function () {
 
     $(".boxOne").remove();
     $("#resultOne").empty();
-
-
-
-    //$(".hoLine").remove();  
     
-      console.log(categories);
-      console.log("the categories");
-
       for (var theseCategories of categories) {
-        console.log("checking category"+ theseCategories);
+ 
                 if (theseCategories === "Food") { theArray = zaMato; var sourceID = 0;}
                 if (theseCategories === "Activities") { theArray = tripAdvisor; var sourceID = 2;}
                 if (theseCategories === "Events") { continue; } // as the events array is not ready yet, exit the loop
@@ -539,6 +511,7 @@ $(document).ready(function () {
             console.log("the filtered result");
             console.log(result);
             console.log("------/")
+
             var doThisOne = returnRandom(result.length);
                   populateResults(result, sourceID);
                       }
