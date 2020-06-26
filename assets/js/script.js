@@ -18,7 +18,6 @@ var costSearch = "$$$$";
 
 $(document).ready(function () {
   // First page button - Day(RE) ----------------------------------
-  $(".initBtnOne").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
@@ -28,10 +27,8 @@ $(document).ready(function () {
         $(".header").css("display", "block");
       }, 1000);
     }, 500);
-  });
 
   // First page button - Night(RE) ----------------------------------
-  $(".initBtnTwo").on("click", function () {
     setInterval(function () {
       $(".container").fadeOut("slow");
       setInterval(function () {
@@ -41,7 +38,6 @@ $(document).ready(function () {
         $(".header").css("display", "block");
       }, 1000);
     }, 500);
-  });
 
   // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
@@ -141,7 +137,7 @@ $(document).ready(function () {
             latitude: +location.latitude || null,
             longitude: +location.longitude || null,
             longdesc: name + " is the best restaurant in " + location.locality + ".",
-            time: "12:00:00",
+            // time: "12:00:00",
             cat: "food",
           });
         }
@@ -268,7 +264,7 @@ $(document).ready(function () {
             continue;
           }
 
-          comnsole.log("top");
+          console.log("top");
           console.log(event);
           console.log("bottom");
 
@@ -317,6 +313,7 @@ $(document).ready(function () {
         "x-rapidapi-key": "1730421ec2msh67099de7682ba92p1680b6jsnbe83668d17c8",
       },
       success: function (response) {
+        console.log(response)
         var events = [];
         var eventList = response.data;
         for (var event of eventList) {
@@ -355,8 +352,9 @@ $(document).ready(function () {
               " will provide the best entertainment in " +
               address_obj.city +
               ".",
-            time: "15:00:00",
-            cat: category.name,
+            // time: "15:00:00",
+            // cat: category.name,
+            cat: "Activities"
           });
         }
         // set the global variable
@@ -388,12 +386,12 @@ $(document).ready(function () {
 
     if (addThis) {
 
-      var prettyPicCont = $("<div>")
-      prettyPicCont.attr("class", "prettyPicCont")
+      // var prettyPicCont = $("<div>")
+      // prettyPicCont.attr("class", "prettyPicCont")
 
-      var prettyPic = $("<img>")
-      prettyPic.attr("src", addThis.img);
-      prettyPic.attr("class", "prettyPic boxOne");
+      // var prettyPic = $("<img>")
+      // prettyPic.attr("src", addThis.img);
+      // prettyPic.attr("class", "prettyPic boxOne");
 
       var newDivTitle = $("<p>");
 
@@ -451,10 +449,10 @@ $(document).ready(function () {
     prettyPic.attr("class", "prettyPic boxOne");
 
     var hoLine = $("<hr>");
-    hoLine.attr("class", "hoLine");
+    hoLine.attr("class", "hoLine boxOne");
 
     var webUrl = $("<button>");
-    webUrl.attr("class", "webClass button is-dark");
+    webUrl.attr("class", "webClass button is-dark boxOne");
     webUrl.text("Website");
 
     webUrl.on("click", function () {
