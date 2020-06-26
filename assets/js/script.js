@@ -176,7 +176,7 @@ $(document).ready(function () {
   function calculateAndUpdate(theLat, theLng, i, sender) {
     // this function will itterate through the array and insert the distance in meters
     // as provided by the original geo lat locations 
-    
+
     // In address. now let's calculate how far it
     // is from our current location
 
@@ -283,6 +283,9 @@ $(document).ready(function () {
           var eventCost = "$$$"
           var categoryEvent = "Events"
           var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+
+
           events.push({
             name: name,
             cost: eventCost,
@@ -394,22 +397,17 @@ $(document).ready(function () {
 
       var newDivTitle = $("<p>");
 
-      if (addThis.cat === "Food") {
+      if (addThis.cat === "food") {
         newDivTitle.text("Something to eat?");
         theDivId = '01';
       }
 
-  
-      if (addThis.cat === "Events") {
-        newDivTitle.text("A show? ?");
-        theDivId = '02';
-      }
+      if (addThis.cat === "Activities") {
 
-        if (addThis.cat === "Activities") {
         newDivTitle.text("Something special ?");
-        theDivId = '03';
+        theDivId = '02';
+
       }
-  
 
     }
 
@@ -504,11 +502,17 @@ $(document).ready(function () {
         if (result.length > 0) {
           // filter results based on distance
 
-          if (loc = "local") { theDistance = 1000; }
-          if (loc = "near") { theDistance = 10000; }
-          if (loc = "far") { theDistance = 100000; }
+          if (loc = "local") {
+            theDistance = 1000;
+          }
+          if (loc = "near") {
+            theDistance = 10000;
+          }
+          if (loc = "far") {
+            theDistance = 100000;
+          }
           result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
- 
+
         }
 
         if (result.length > 0) {
@@ -519,9 +523,11 @@ $(document).ready(function () {
 
           // Select one result from the filtered array
           var doThisOne = returnRandom(result.length);
-          // populate the results to the window
+          // populate the results to the
           populateResults(result, sourceID);
         }
+
+
       }
     }
 
@@ -540,19 +546,28 @@ $(document).ready(function () {
     filterResults();
   })
 
-  // this needs to be run straight away to assign the variables which are used in a variety of ways.
+
+
+
+
+  // this needs to be run straight away to assign the variables.
   getGeoLocations(function () {
 
-    // run everything in parrallel
+    // alternative option is to run everything in parrallel
     Promise.all([zomatoAPI(), tripAd(), ticketMaster()]).then(() => {
       // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
       // here we are free to run whatever we want
 
-      updateArray(0); // zomato api
-    //  updateArray(1); // this is the ticketmaster API. It needs to be done.
-      updateArray(2);  // tripadvisor api
+      updateArray(0);
+      updateArray(1); // this is the ticketmaster API. It needs to be done.
+      updateArray(2);
     }).catch(() => {
       console.log('Whoops, something is wrong');
     })
+
+
   });
+
+
+
 });
