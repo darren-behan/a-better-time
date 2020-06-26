@@ -7,12 +7,12 @@ var outdoors = false;
 var events = false;
 var food = true;
 var movies = true;
-var loc = "far";
+var loc = "far"; // global variable for selection of location from here.
 
 var zaMato; // global variable for object ----------------------------------
 var ticketM;
 var tripAdvisor;
-var categories = ["Food","Activities","Events"]; // global variable for selection of categories
+var categories = ["Food", "Activities", "Events"]; // global variable for selection of categories
 var costSearch = "$$$$";
 
 
@@ -52,7 +52,7 @@ $(document).ready(function () {
       $(this).data("status", "inactive");
       // reset box shadow to nothing
 
-         $(this).css("box-shadow", "unset");
+      $(this).css("box-shadow", "unset");
 
       // ok - let's see if this.. category is in the array.
 
@@ -60,8 +60,7 @@ $(document).ready(function () {
         // the value is currently in the array, let's delete it
         categories = categories.filter(item => item !== $(this).text());
       }
-    }
-    else
+    } else
     // make it active again and add the corney boxshadow effect
     {
       $(this).data("status", "active");
@@ -69,9 +68,6 @@ $(document).ready(function () {
       $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
       // now let's add this value to the array
       categories.push($(this).text());
-
-
-
     }
 
     event.stopPropagation();
@@ -81,10 +77,10 @@ $(document).ready(function () {
 
     // lets reset all the cost buttons to nothing.
     $(".cost").css("box-shadow", "unset");
-      $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
-      event.stopPropagation();
-      // let's set the global var costSearch to this value
-      costSearch = $(this).text();
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+    event.stopPropagation();
+    // let's set the global var costSearch to this value
+    costSearch = $(this).text();
 
 
   });
@@ -96,7 +92,7 @@ $(document).ready(function () {
     event.stopPropagation();
   });
 
- 
+
 
   // Filter dropdown function(RE) ----------------------------------
   var dropdown = document.querySelector(".dropdown");
@@ -107,14 +103,13 @@ $(document).ready(function () {
 
   function zomatoAPI() {
     return $.ajax({
-      url:
-        "https://developers.zomato.com/api/v2.1/geocode?lat=" +
+      url: "https://developers.zomato.com/api/v2.1/geocode?lat=" +
         latitude +
         "&lon=" +
         longitude +
         "&count=50",
       method: "GET",
-      async : true,
+      async: true,
       timeout: 0,
       headers: {
         Accept: "application/json",
@@ -139,7 +134,7 @@ $(document).ready(function () {
             name: name,
             cost: price_range,
             url: url,
-            distance : null,
+            distance: null,
             img: featured_image,
             shortdesc: name + " specializes in " + data.cuisines + ".",
             location: location.locality,
@@ -154,7 +149,7 @@ $(document).ready(function () {
         zaMato = restaurants;
 
 
-        // ok now let's update the distance field
+        // let's update the distance field
         populateResults(restaurants, 0);
 
       },
@@ -162,53 +157,54 @@ $(document).ready(function () {
   }
 
   function updateArray(sender) {
-    if (sender == 0) { thisArray = zaMato; }
-    if (sender == 2) { thisArray = tripAdvisor; }
+    if (sender == 0) {
+      thisArray = zaMato;
+    }
+    if (sender == 2) {
+      thisArray = tripAdvisor;
+    }
 
-      for (i = 0; i < thisArray.length; i++) {
+    for (i = 0; i < thisArray.length; i++) {
 
-        if (thisArray[i].latitude !== null && thisArray[i].longitude !== null) {
-          thisArray[i].d = calculateAndUpdate(thisArray[i].latitude, thisArray[i].longitude);
-        }
+      if (thisArray[i].latitude !== null && thisArray[i].longitude !== null) {
+        thisArray[i].d = calculateAndUpdate(thisArray[i].latitude, thisArray[i].longitude);
       }
+    }
   }
 
 
-  function calculateAndUpdate(theLat,theLng,i, sender) {
-// this function will itterate through the array and insert the geo location
-// as provided by the original provided data and insert that into
-// the object
+  function calculateAndUpdate(theLat, theLng, i, sender) {
+    // this function will itterate through the array and insert the distance in meters
+    // as provided by the original geo lat locations 
+    
+    // In address. now let's calculate how far it
+    // is from our current location
 
+    const R = 6371e3; // metres
+    const φ1 = latitude * Math.PI / 180; // φ, λ in radians
+    const φ2 = theLat * Math.PI / 180;
+    const Δφ = (theLat - latitude) * Math.PI / 180;
+    const Δλ = (theLng - longitude) * Math.PI / 180;
 
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-      // In address. now let's calculate how far it
-      // is from our current location
+    const d = Math.floor(R * c); // in metres
 
-      const R = 6371e3; // metres
-      const φ1 = latitude * Math.PI/180; // φ, λ in radians
-      const φ2 = theLat * Math.PI/180;
-      const Δφ = (theLat-latitude) * Math.PI/180;
-      const Δλ = (theLng-longitude) * Math.PI/180;
-
-      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-      const d = Math.floor(R * c); // in metres
-
-      if (sender == 0) {
-        // this is zamato
-        zaMato[i].distance = d;
-      }
-
-      if (sender == 2) {
-        // this is trip advisor - bet you could never guess.
-        tripAdvisor[i].distance = d;
-      }
-
-      return d;
+    if (sender == 0) {
+      // this is zamato
+      zaMato[i].distance = d;
     }
+
+    if (sender == 2) {
+      // this is trip advisor - bet you could never guess.
+      tripAdvisor[i].distance = d;
+    }
+
+    return d;
+  }
 
   function getGeoLocationsFromIp(cb) {
     $.ajax("http://ip-api.com/json").then(
@@ -264,54 +260,51 @@ $(document).ready(function () {
       success: function (response) {
         console.log('ticketMasterURL:', response);
 
-      var events = [];
-      var eventList = response._embedded.events;
-      for (var event of eventList) {
-        var data = event;
-        if (data.images === undefined || data.promoter === undefined || data._embedded === undefined || data.dates === undefined) {
-          continue;
+        var events = [];
+        var eventList = response._embedded.events;
+        for (var event of eventList) {
+          var data = event;
+          if (data.images === undefined || data.promoter === undefined || data._embedded === undefined || data.dates === undefined) {
+            continue;
+          }
+
+          comnsole.log("top");
+          console.log(event);
+          console.log("bottom");
+
+          var {
+            name,
+            url,
+            images,
+            _embedded,
+            dates,
+          } = data;
+
+          var eventCost = "$$$"
+          var categoryEvent = "Events"
+          var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+          events.push({
+            name: name,
+            cost: eventCost,
+            url: url,
+            img: images[8].url,
+            shortdesc: "Promoted by: " + data.promoter.name,
+            location: _embedded.venues[0].city.name,
+            longdesc: eventLongDescription,
+            time: dates.start.localTime,
+            cat: categoryEvent
+          })
         }
-
-        comnsole.log("top");
-        console.log(event);
-        console.log("bottom");
-
-        var {
-          name,
-          url,
-          images,
-          _embedded,
-          dates,
-      } = data;
-
-      var eventCost = "$$$"
-      var categoryEvent = "Events"
-      var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-
-
-      events.push({
-        name: name,
-        cost: eventCost,
-        url: url,
-        img: images[8].url,
-        shortdesc: "Promoted by: " + data.promoter.name,
-        location: _embedded.venues[0].city.name,
-        longdesc: eventLongDescription,
-        time: dates.start.localTime,
-        cat:categoryEvent
-      })
-    }
-    }
-  })}
+      }
+    })
+  }
 
   // Trip Advisor API call based on users location
   function tripAd() {
     return $.ajax({
       async: true,
       crossDomain: true,
-      url:
-        "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng?lunit=km&currency=AUD&limit=30&distance=5&lang=en_US&longitude=" +
+      url: "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng?lunit=km&currency=AUD&limit=30&distance=5&lang=en_US&longitude=" +
         longitude +
         "&latitude=" +
         latitude,
@@ -348,15 +341,14 @@ $(document).ready(function () {
           events.push({
             name: name,
             cost: 3,
-            distance : null,
+            distance: null,
             url: web_url,
             img: photo.images.small.url,
             shortdesc: name + " specializes in " + subcategory[0].name + ".",
             location: address,
             latitude: +latitude, // convert to float by adding +
             longitude: +longitude,
-            longdesc:
-              name +
+            longdesc: name +
               " will provide the best entertainment in " +
               address_obj.city +
               ".",
@@ -364,10 +356,10 @@ $(document).ready(function () {
             cat: category.name,
           });
         }
-       // set the global variable
+        // set the global variable
         tripAdvisor = events;
         // update the distance location from address
-       // updateArray(2);
+        // updateArray(2);
         populateResults(events, 2);
       },
     });
@@ -380,15 +372,15 @@ $(document).ready(function () {
 
 
   function populateResults(populateThis, source) {
-     var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
+    var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
 
 
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
 
 
-      var useThis = returnRandom(populateThis.length);
-        var addThis = populateThis[useThis];
+    var useThis = returnRandom(populateThis.length);
+    var addThis = populateThis[useThis];
 
 
     if (addThis) {
@@ -402,123 +394,136 @@ $(document).ready(function () {
 
       var newDivTitle = $("<p>");
 
-      if (addThis.cat === "food") {
+      if (addThis.cat === "Food") {
         newDivTitle.text("Something to eat?");
         theDivId = '01';
       }
 
-      if (addThis.cat === "Activities") {
-
-        newDivTitle.text("Something special ?");
+  
+      if (addThis.cat === "Events") {
+        newDivTitle.text("A show? ?");
         theDivId = '02';
-
       }
+
+        if (addThis.cat === "Activities") {
+        newDivTitle.text("Something special ?");
+        theDivId = '03';
+      }
+  
 
     }
 
 
-      newDivTitle.attr("class", "nameClassTitle boxOne");
+    newDivTitle.attr("class", "nameClassTitle boxOne");
 
-      // --------------------------------------------------
+    // --------------------------------------------------
 
-      newDivTitle.attr("class", "nameClassTitle boxOne");
+    newDivTitle.attr("class", "nameClassTitle boxOne");
 
-      var newDiv = $("<p>");
-      var theplaceTitle = addThis.name; // used in box 1 and 2
-      newDiv.text(theplaceTitle);
-      newDiv.attr("class", "nameClass boxOne");
+    var newDiv = $("<p>");
+    var theplaceTitle = addThis.name; // used in box 1 and 2
+    newDiv.text(theplaceTitle);
+    newDiv.attr("class", "nameClass boxOne");
 
-      var newDivDesc = $("<p>");
-      newDivDesc.text(addThis.shortdesc);
-      newDivDesc.attr("class", "descClass boxOne");
-
-
-      var newDivLocation = $("<p>");
-      newDivLocation.text("Location : " + addThis.location);
-      newDivLocation.attr("class", "locationClass boxOne");
+    var newDivDesc = $("<p>");
+    newDivDesc.text(addThis.shortdesc);
+    newDivDesc.attr("class", "descClass boxOne");
 
 
-      var newDivOpening = $("<p>");
-      newDivOpening.text("Time : " + addThis.time);
-      newDivOpening.attr("class", "timeClass boxOne");
+    var newDivLocation = $("<p>");
+    newDivLocation.text("Location : " + addThis.location);
+    newDivLocation.attr("class", "locationClass boxOne");
 
-      var secondDivTitle = $("<p>");
-      secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
-      secondDivTitle.attr("class", "nameClass boxOne");
 
-      var secondDivLongDesc = $("<p>");
-      secondDivLongDesc.text(addThis.longdesc);
-      secondDivLongDesc.attr("class", "secondDivLongDesc boxOne");
+    var newDivOpening = $("<p>");
+    newDivOpening.text("Time : " + addThis.time);
+    newDivOpening.attr("class", "timeClass boxOne");
 
-      var prettyPic = $("<img>")
-      prettyPic.attr("src", addThis.img);
-      prettyPic.attr("id", theDivId);
-      prettyPic.attr("class", "prettyPic boxOne");
+    var secondDivTitle = $("<p>");
+    secondDivTitle.text(theplaceTitle + " --- Cost : " + cost[addThis.cost]);
+    secondDivTitle.attr("class", "nameClass boxOne");
 
-      var hoLine = $("<hr>");
-      hoLine.attr("class", "hoLine");
+    var secondDivLongDesc = $("<p>");
+    secondDivLongDesc.text(addThis.longdesc);
+    secondDivLongDesc.attr("class", "secondDivLongDesc boxOne");
 
-      var webUrl = $("<button>");
-      webUrl.attr("class", "webClass button is-dark");
-      webUrl.text("Website");
+    var prettyPic = $("<img>")
+    prettyPic.attr("src", addThis.img);
+    prettyPic.attr("id", theDivId);
+    prettyPic.attr("class", "prettyPic boxOne");
 
-      webUrl.on("click", function() {
-        window.open(addThis.url)
-      });
+    var hoLine = $("<hr>");
+    hoLine.attr("class", "hoLine");
 
-      $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, webUrl);
+    var webUrl = $("<button>");
+    webUrl.attr("class", "webClass button is-dark");
+    webUrl.text("Website");
+
+    webUrl.on("click", function () {
+      window.open(addThis.url)
+    });
+
+    $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, webUrl);
 
 
   }
 
 
-    function filterResults() {
+  function filterResults() {
     // function to view filtered options and send result to populate results
     // itterate through categories
     // clean up results // if they exist
 
     $(".boxOne").remove();
     $("#resultOne").empty();
-    
-      for (var theseCategories of categories) {
- 
-                if (theseCategories === "Food") { theArray = zaMato; var sourceID = 0;}
-                if (theseCategories === "Activities") { theArray = tripAdvisor; var sourceID = 2;}
-                if (theseCategories === "Events") { continue; } // as the events array is not ready yet, exit the loop
 
-        
-  
-   if (theArray !== "undefined") {
+    for (var theseCategories of categories) {
 
-    // filter the results based on $$$
+      if (theseCategories === "Food") {
+        theArray = zaMato;
+        var sourceID = 0;
+      }
+      if (theseCategories === "Activities") {
+        theArray = tripAdvisor;
+        var sourceID = 2;
+      }
+      if (theseCategories === "Events") {
+        continue;
+      } // as the events array is not ready yet, exit the loop
 
-      var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString() - 1));
+
+
+      if (theArray !== "undefined") {
+
+        // filter the results based on $$$
+
+        var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString() - 1));
 
         // send the random result for population to the screen assuming we have more than 0 results.
 
-      if (result.length > 0) {
+        if (result.length > 0) {
           // filter results based on distance
-         
-          if (loc = "local") {theDistance = 1000;}
-          if (loc = "near") {theDistance = 10000;}
-          if (loc = "far") {theDistance = 100000;}
-            result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
 
-              }
+          if (loc = "local") { theDistance = 1000; }
+          if (loc = "near") { theDistance = 10000; }
+          if (loc = "far") { theDistance = 100000; }
+          result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
+ 
+        }
 
-           if (result.length >  0) {
-            
-            console.log("the filtered result");
-            console.log(result);
-            console.log("------/")
+        if (result.length > 0) {
 
-            var doThisOne = returnRandom(result.length);
-                  populateResults(result, sourceID);
-                      }
+          console.log("the filtered result");
+          console.log(result);
+          console.log("------/")
 
-
-                }
-              }
+          // Select one result from the filtered array
+          var doThisOne = returnRandom(result.length);
+          // populate the results to the window
+          populateResults(result, sourceID);
+        }
+      }
+    }
 
 
   }
@@ -535,27 +540,19 @@ $(document).ready(function () {
     filterResults();
   })
 
-  
-  
-
-
-  // this needs to be run straight away to assign the variables.
+  // this needs to be run straight away to assign the variables which are used in a variety of ways.
   getGeoLocations(function () {
-   
-    // alternative option is to run everything in parrallel
+
+    // run everything in parrallel
     Promise.all([zomatoAPI(), tripAd(), ticketMaster()]).then(() => {
-      // if we are here then we could managed to run zomato, tripAt and ticketMaster in parallel
+      // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
       // here we are free to run whatever we want
 
-      updateArray(0);
-      updateArray(2);
+      updateArray(0); // zomato api
+    //  updateArray(1); // this is the ticketmaster API. It needs to be done.
+      updateArray(2);  // tripadvisor api
     }).catch(() => {
       console.log('Whoops, something is wrong');
     })
-
-
   });
-
-
-
 });
