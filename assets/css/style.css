@@ -226,43 +226,33 @@ body {
 }
 
 /* Individual results containers */
-#resultOne,
-#resultTwo {
+#resultOne {
   position: relative;
   background: rgb(32, 32, 32);
   padding: 16px !important;
 }
 
-.prettyPicCont {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 200px;
-  border-radius: 4px;
-}
-
 .prettyPic {
-  height: auto;
-  max-width: 100%;
-  opacity: 0.5;
+  float: right;
+  max-height: 150px;
+  max-width: 50%;
+  opacity: 1;
   overflow: hidden;
   border-radius: 4px;
 }
 
 .nameClassTitle {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  background-color: white;
-  color: rgb(36, 36, 36);
-  opacity: 0.7;
-  padding: 16px;
-  border-radius: 4px 4px 0px 0px;
+  color: white;
+}
+
+.hoLine {
+  background-color: grey !important;
+  margin-top: 8px;
 }
 
 .nameClass {
   text-decoration: underline;
+  margin-bottom: 8px;
 }
 
 .descClass {
@@ -276,53 +266,9 @@ body {
   font-family: Righteous, cursive;
   color: rgb(237, 237, 237);
   font-size: 18px;
+  margin-top: 8px;
+  margin-bottom: 24px;
 }
-
-.prettyPicContTwo {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 200px;
-  border-radius: 4px;
-}
-
-.prettyPicTwo {
-  height: auto;
-  max-width: 100%;
-  opacity: 0.5;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.nameClassTitleTwo {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  background-color: white;
-  color: rgb(36, 36, 36);
-  opacity: 0.7;
-  padding: 16px;
-  border-radius: 4px 4px 0px 0px;
-}
-
-.nameClassTwo {
-  text-decoration: underline;
-}
-
-.descClassTwo {
-  background-color: rgb(36, 36, 36);
-  width: 100%;
-  padding: 16px;
-  border-radius: 4px;
-}
-
-.webClassTwo {
-  font-family: Righteous, cursive;
-  color: rgb(237, 237, 237);
-  font-size: 18px;
-}
-
 
 /* Mobile responsiveness */
 @media screen and (max-width: 940px) {
