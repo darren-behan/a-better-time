@@ -498,15 +498,18 @@ $(document).ready(function () {
       prettyPic.attr("id", theDivId);
       prettyPic.attr("class", "prettyPic boxOne");
 
+      var hoLine = $("<hr>");
+      hoLine.attr("class", "hoLine");
 
-      $("#" + theDivId).on("click", function () {
-        window.open(addThis.url);
-      })
+      var webUrl = $("<button>");
+      webUrl.attr("class", "webClass button is-dark");
+      webUrl.text("Website");
 
+      webUrl.on("click", function() {
+        window.open(addThis.url)
+      });
 
-
-
-      $("#resultOne").append(newDivTitle, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, prettyPic);
+      $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, webUrl);
 
 
   }
