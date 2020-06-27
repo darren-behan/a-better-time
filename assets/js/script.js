@@ -53,7 +53,7 @@ $(document).ready(function () {
         categories = categories.filter(item => item !== $(this).text());
       }
     } else
-    // make it active again and add the corney boxshadow effect
+    // make it active again
     {
       $(this).data("status", "active");
       // add box shadow to original status
@@ -451,7 +451,9 @@ console.log("the total displayed number is " + totalDisplayed)
   if (totalDisplayed === 0) {
           // tell the user their filter is too far refined
           console.log("make visible here");
-
+          modal.css("display", "block")
+          modal.addClass('is-active');
+          modal.addClass('is-clipped');
       }
   }
   // this needs to be run straight away to assign the variables.
@@ -485,7 +487,7 @@ $(".okay").on("click", function() {
   modal.css("display", "none");
 });
 
+modal.removeClass('is-active');
+modal.removeClass('is-clipped');
 // On failed request on filtering, show this and the modal pops up, the user then clicks okay and it closes.
 // modal.css("display", "block");
-modal.attr("class", "is-active");
-
