@@ -13,18 +13,27 @@ var tripAdvisor;
 var categories = ["Food", "Activities"]; // global variable for selection of categories
 var costSearch = "$$$$";
 
+var modal = $(".modal");
+
 $(document).ready(function () {
 
   // First Page
-  setInterval(function () {
+  setInterval(function() {
+    $(".brandStatement").fadeIn("slow")
+  }, 1000);
+  
+  setInterval(function() {
     $(".container").fadeOut("slow");
+    $(".brandStatement").fadeOut("slow");
+    $(".hintOne").fadeOut("slow");
     setInterval(function () {
       $(".navbar").css("visibility", "visible");
       $(".contain").css("display", "block");
       $(".results").css("display", "flex");
       $(".header").css("display", "block");
-    }, 1000);
-  }, 500);
+    }, 500);
+  }, 3000);
+
 
   // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
@@ -312,7 +321,7 @@ $(document).ready(function () {
 
       if (addThis.cat === "Activities") {
 
-        newDivTitle.text("Something special ?");
+        newDivTitle.text("Something special?");
         theDivId = '02';
 
       }
@@ -452,3 +461,12 @@ $(document).ready(function () {
     filterResults();
   })
 });
+
+// No results-----------------------------------------------------------
+$(".okay").on("click", function() {
+  modal.css("display", "none");
+});
+
+// On failed request on filtering, show this and the modal pops up, the user then clicks okay and it closes.
+// modal.css("display", "block");
+modal.attr("class", "is-active");
