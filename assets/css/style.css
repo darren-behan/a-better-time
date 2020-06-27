@@ -262,6 +262,10 @@ body {
 }
 
 /* No results modal */
+
+.modal {
+  z-index: 999;
+}
 .modal-background {
   background-color: rgb(32, 32, 32, 0)
 }
