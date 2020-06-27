@@ -10,9 +10,17 @@ Plan your next date --> [Date Planner](https://darren-behan.github.io/a-better-t
 ## User Story
 
 ```
-AS A traveler
-I WANT to see the weather outlook for a city I'm going to visit
-SO THAT I can plan a trip accordingly
+As busy modern day human beings...
+We want help to minimise stress when planning what to do in our free time... 
+So that we can make an informed and stress free decision about where to eat or where to go and do activities near us
+When we open the app
+Then we will be presented with a random choice 
+When we press “submit”
+Then we’re presented with the best places to eat/movies to watch/concerts to see
+When we click on an event
+Then a new section pops up showing informations regarding the concerts, including the availability, artist’s past album and a button to buy the ticket concert
+When we click on ‘buy ticket’ button
+Then we am redirected to a location where I can buy the concert’s ticket
 ```
 
 ## Application Requirements
