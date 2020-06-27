@@ -262,6 +262,9 @@ body {
 }
 
 /* No results modal */
+.modal-background {
+  background-color: rgb(32, 32, 32, 0)
+}
 
 .modal-content {
   width: 300px;
