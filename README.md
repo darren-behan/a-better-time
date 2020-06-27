@@ -42,5 +42,5 @@ Then we am redirected to a location where I can buy the concert’s ticket
 * Must be deployed to GitHub Pages
 
 ```
-This app is powered by Bulma, Javascript, jQuery & server-side API's.
+This app is powered by Bulma, Javascript, jQuery, server-side API's & externally sourced code.
 ```
