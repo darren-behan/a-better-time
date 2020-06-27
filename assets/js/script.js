@@ -4,40 +4,27 @@ var longitude = "undefined";
 
 // Category variables(RE) ----------------------------------
 var outdoors = false;
-var events = false;
 var food = true;
 var movies = true;
 var loc = "far"; // global variable for selection of location from here.
 
-var zaMato; // global variable for object ----------------------------------
-var ticketM;
+var zoMato; // global variable for object ----------------------------------
 var tripAdvisor;
-var categories = ["Food", "Activities" ]; // global variable for selection of categories
+var categories = ["Food", "Activities"]; // global variable for selection of categories
 var costSearch = "$$$$";
 
-
 $(document).ready(function () {
-  // First page button - Day(RE) ----------------------------------
-    setInterval(function () {
-      $(".container").fadeOut("slow");
-      setInterval(function () {
-        $(".navbar").css("visibility", "visible");
-        $(".contain").css("display", "block");
-        $(".results").css("display", "flex");
-        $(".header").css("display", "block");
-      }, 1000);
-    }, 500);
 
-  // First page button - Night(RE) ----------------------------------
+  // First Page
+  setInterval(function () {
+    $(".container").fadeOut("slow");
     setInterval(function () {
-      $(".container").fadeOut("slow");
-      setInterval(function () {
-        $(".navbar").css("visibility", "visible");
-        $(".contain").css("display", "block");
-        $(".results").css("display", "flex");
-        $(".header").css("display", "block");
-      }, 1000);
-    }, 500);
+      $(".navbar").css("visibility", "visible");
+      $(".contain").css("display", "block");
+      $(".results").css("display", "flex");
+      $(".header").css("display", "block");
+    }, 1000);
+  }, 500);
 
   // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
@@ -88,8 +75,6 @@ $(document).ready(function () {
     event.stopPropagation();
   });
 
-
-
   // Filter dropdown function(RE) ----------------------------------
   var dropdown = document.querySelector(".dropdown");
   dropdown.addEventListener("click", function (event) {
@@ -137,12 +122,11 @@ $(document).ready(function () {
             latitude: +location.latitude || null,
             longitude: +location.longitude || null,
             longdesc: name + " is the best restaurant in " + location.locality + ".",
-            // time: "12:00:00",
             cat: "food",
           });
         }
         // set global variable zaMato
-        zaMato = restaurants;
+        zoMato = restaurants;
 
 
         // let's update the distance field
@@ -154,7 +138,7 @@ $(document).ready(function () {
 
   function updateArray(sender) {
     if (sender == 0) {
-      thisArray = zaMato;
+      thisArray = zoMato;
     }
     if (sender == 2) {
       thisArray = tripAdvisor;
@@ -168,7 +152,7 @@ $(document).ready(function () {
     }
   }
 
-
+  // Calculates distance for filter 
   function calculateAndUpdate(theLat, theLng, i, sender) {
     // this function will itterate through the array and insert the distance in meters
     // as provided by the original geo lat locations 
@@ -191,7 +175,7 @@ $(document).ready(function () {
 
     if (sender == 0) {
       // this is zamato
-      zaMato[i].distance = d;
+      zoMato[i].distance = d;
     }
 
     if (sender == 2) {
@@ -238,8 +222,6 @@ $(document).ready(function () {
     }
   }
 
-
-
   // Trip Advisor API call based on users location
   function tripAd() {
     return $.ajax({
@@ -271,7 +253,6 @@ $(document).ready(function () {
             name,
             web_url,
             photo,
-            category,
             subcategory,
             address,
             address_obj,
@@ -294,21 +275,19 @@ $(document).ready(function () {
               " will provide the best entertainment in " +
               address_obj.city +
               ".",
-             cat: "Activities"
+            cat: "Activities"
           });
         }
         // set the global variable
         tripAdvisor = events;
-       populateResults(events, 2);
+        populateResults(events, 2);
       },
     });
   }
 
-
   function returnRandom(number) {
     return Math.floor(Math.random() * number);
   }
-
 
   function populateResults(populateThis, source) {
     var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
@@ -394,7 +373,6 @@ $(document).ready(function () {
 
   }
 
-
   function filterResults() {
     // function to view filtered options and send result to populate results
     // itterate through categories
@@ -406,7 +384,7 @@ $(document).ready(function () {
     for (var theseCategories of categories) {
 
       if (theseCategories === "Food") {
-        theArray = zaMato;
+        theArray = zoMato;
         var sourceID = 0;
       }
       if (theseCategories === "Activities") {
@@ -414,20 +392,15 @@ $(document).ready(function () {
         var sourceID = 2;
       }
 
-      
-
-
       if (theArray !== "undefined") {
 
         // filter the results based on $$$
-
         var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString() - 1));
 
         // send the random result for population to the screen assuming we have more than 0 results.
-
         if (result.length > 0) {
-          // filter results based on distance
 
+          // filter results based on distance
           if (loc = "local") {
             theDistance = 1000;
           }
@@ -438,11 +411,9 @@ $(document).ready(function () {
             theDistance = 100000;
           }
           result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
-
         }
 
         if (result.length > 0) {
-
           console.log("the filtered result");
           console.log(result);
           console.log("------/")
@@ -452,18 +423,9 @@ $(document).ready(function () {
           // populate the results to the
           populateResults(result, sourceID);
         }
-
-
       }
     }
-
-
   }
-
-
-
-
-
 
   // this needs to be run straight away to assign the variables.
   getGeoLocations(function () {
@@ -474,25 +436,19 @@ $(document).ready(function () {
       // here we are free to run whatever we want
 
       updateArray(0);
-        updateArray(2);
+      updateArray(2);
     }).catch(() => {
       console.log('Whoops, something is wrong');
     })
-
-
   });
-
 
   $(".refineSearch").on("click", function () {
     // trigger populateResults with null to indicate that this is a refined search
     filterResults();
   })
 
-
   $(".refreshBtn").on("click", function () {
     // trigger populateResults with null to indicate that this is a refined search
     filterResults();
   })
-
-
 });
