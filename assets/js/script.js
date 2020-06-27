@@ -152,7 +152,7 @@ $(document).ready(function () {
     }
   }
 
-  // Calculates distance for filter 
+  // Calculates distance for filter (sourced from => https://medium.com/@RichLloydMiles/calculate-the-distance-between-two-points-on-earth-using-javascript-38e12c9a0f52)
   function calculateAndUpdate(theLat, theLng, i, sender) {
     // this function will itterate through the array and insert the distance in meters
     // as provided by the original geo lat locations 
