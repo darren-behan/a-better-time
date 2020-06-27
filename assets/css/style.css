@@ -60,30 +60,6 @@ body {
   font-size: 35px;
 }
 
-/* Initial page buttons */
-.initBtnOne,
-.initBtnTwo {
-  display: flex;
-  padding: 30px 60px 30px 60px;
-  margin: 30px 10px 0 10px;
-  justify-self: center;
-  justify-items: center;
-  background-color: rgb(50, 50, 50);
-  border-radius: 4px;
-  font-family: 'Righteous', cursive;
-  font-size: 24px;
-  color: rgb(220, 220, 220) !important;
-}
-.initBtnOne:hover,
-.initBtnTwo:hover {
-  background-color: rgb(80, 63, 255) !important;
-}
-
-.initButtons {
-  display: flex;
-  justify-content: center;
-}
-
 /* Explore screen */
 /* Header/ Drop down menu */
 .header {
@@ -167,8 +143,7 @@ body {
 }
 
 .costRefine,
-.locRefine,
-.timeRefine {
+.locRefine {
   position: relative;
   background-color: rgb(36, 36, 36);
   height: 41px;
@@ -176,7 +151,6 @@ body {
   border-radius: 4px;
 }
 
-.timeRefine span,
 .locRefine span,
 .costRefine span {
   position: absolute;
@@ -204,14 +178,14 @@ body {
 }
 
 .refineSearch:hover {
-  background-color: #4692bf;
-  border-color: #4692bf;
+  background-color: rgb(65, 49, 250);
+  border-color: rgb(65, 49, 250);
   color: #EDEDED;
 }
 
 .refineSearch:focus {
-  background-color: #3787b6;
-  border-color: #3787b6;
+  background-color: rgb(65, 49, 250);
+  border-color: rgb(65, 49, 250);
   color: #EDEDED;
 }
 
@@ -243,7 +217,7 @@ body {
 }
 
 .nameClassTitle {
-  color: white;
+  color: grey;
 }
 
 .hoLine {
@@ -296,13 +270,6 @@ body {
   .centreImage {
     height: 190px;
     width: 240px;
-  }
-
-  .initBtnOne,
-  .initBtnTwo {
-    font-size: 16px;
-    padding: 5px 25px 5px 25px !important;
-    border-radius: 4px;
   }
 
   .navTitle {
