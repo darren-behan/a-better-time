@@ -10,17 +10,17 @@ Plan your next date --> [Date Planner](https://darren-behan.github.io/a-better-t
 ## User Story
 
 ```
-As busy modern day human beings...
+As busy modern day working professionals...
 We want help to minimise stress when planning what to do in our free time... 
-So that we can make an informed and stress free decision about where to eat or where to go and do activities near us
+So that we can make an informed and stress free decision about where to eat or what are good activities near us.
 When we open the app
-Then we will be presented with a random choice 
-When we press “submit”
-Then we’re presented with the best places to eat/movies to watch/concerts to see
-When we click on an event
-Then a new section pops up showing informations regarding the concerts, including the availability, artist’s past album and a button to buy the ticket concert
-When we click on ‘buy ticket’ button
-Then we am redirected to a location where I can buy the concert’s ticket
+Then we will be presented with a random selection of activities.
+When we press “filter options”
+Then we’re presented with the ability to refine our search by cost/location and activity.
+When we click on any of these, then click “Refine search”
+Then a new section pops up showing new options relevant to our refinement. 
+When we click on ‘website’
+Then we are redirected to the relevant search results website to book our dining/activity.
 ```
 
 ## Application Requirements
