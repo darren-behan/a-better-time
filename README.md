@@ -1,28 +1,38 @@
 # date-planner-app
+```
 An app to plan your date night
+```
 
-##classes
+![Date Planner](./assets/images/app.png)
 
-Navbar {
-    navTitle = navbar h1 text
-    birdLogo = navbar bird image
-}
+Plan your next date --> [Date Planner](https://darren-behan.github.io/a-better-time/)
 
-start up page {
-    container = start page container
-    centreImage = start page bird logo
-    initButtons = start page button container
-    initBtnOne = stay in button
-    initBtnTwo = go out button
-}
-stay in initial page {
-    contain = wrapper container
-    toggle = movie/ food toggle switch container
-    movieBtn = movie toggle button
-    foodBtn = food toggle button
-    input = input field
-    table = category table
-    tableHeader = "category"
-    tableContent = categories
-    searchBtn = search
-    results = grey container behind everything, where the results of the search will go. on mobile the container will stretch under the other content. 
+## User Story
+
+```
+AS A traveler
+I WANT to see the weather outlook for a city I'm going to visit
+SO THAT I can plan a trip accordingly
+```
+
+## Application Requirements
+
+* Must use at least two server-side APIs
+
+* Must use a CSS framework _other than_ Bootstrap
+
+* Must be interactive (i.e: accept and respond to user input)
+
+* Use at least one new third-party API
+
+* Must have a polished UI
+
+* Must meet good quality coding standards
+
+* Does not use alerts, confirms or prompts (look into _modals_)
+
+* Must be deployed to GitHub Pages
+
+```
+This app is powered by Bulma, Javascript, jQuery & server-side API's.
+```
