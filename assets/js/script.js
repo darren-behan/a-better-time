@@ -12,7 +12,7 @@ var zoMato; // global variable for object ----------------------------------
 var tripAdvisor;
 var categories = ["Food", "Activities"]; // global variable for selection of categories
 var costSearch = "$$$$";
-
+var totalDisplayed = 0;
 var modal = $(".modal");
 
 $(document).ready(function () {
@@ -57,7 +57,7 @@ $(document).ready(function () {
     {
       $(this).data("status", "active");
       // add box shadow to original status
-      $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+      $(this).css("box-shadow", "inset 4px 4px 4px rgba(80, 63, 255, 0.25)");
       // now let's add this value to the array
       categories.push($(this).text());
     }
@@ -69,7 +69,8 @@ $(document).ready(function () {
 
     // lets reset all the cost buttons to nothing.
     $(".cost").css("box-shadow", "unset");
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(80, 63, 255, 0.25)");
     event.stopPropagation();
     // let's set the global var costSearch to this value
     costSearch = $(this).text();
@@ -79,7 +80,7 @@ $(document).ready(function () {
 
   $(".loc").on("click", function () {
     $(".loc").css("box-shadow", "unset");
-    $(this).css("box-shadow", "inset 4px 4px 4px rgba(0, 0, 0, 0.25)");
+    $(this).css("box-shadow", "inset 4px 4px 4px rgba(80, 63, 255, 0.25)");
     loc = $(this).text();
     event.stopPropagation();
   });
@@ -301,6 +302,9 @@ $(document).ready(function () {
   function populateResults(populateThis, source) {
     var cost = ["$", "$$", "$$$", "$$$$", "$$$$$"];
 
+    console.log("make invisible here");
+
+
 
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
@@ -389,6 +393,7 @@ $(document).ready(function () {
 
     $(".boxOne").remove();
     $("#resultOne").empty();
+     totalDisplayed = 0;
 
     for (var theseCategories of categories) {
 
@@ -423,6 +428,7 @@ $(document).ready(function () {
         }
 
         if (result.length > 0) {
+          totalDisplayed = totalDisplayed + result.length;
           console.log("the filtered result");
           console.log(result);
           console.log("------/")
@@ -432,10 +438,22 @@ $(document).ready(function () {
           // populate the results to the
           populateResults(result, sourceID);
         }
-      }
-    }
-  }
 
+      
+
+        }
+
+
+      }
+    
+
+console.log("the total displayed number is " + totalDisplayed)
+  if (totalDisplayed === 0) {
+          // tell the user their filter is too far refined
+          console.log("make visible here");
+
+      }
+  }
   // this needs to be run straight away to assign the variables.
   getGeoLocations(function () {
 
@@ -470,3 +488,4 @@ $(".okay").on("click", function() {
 // On failed request on filtering, show this and the modal pops up, the user then clicks okay and it closes.
 // modal.css("display", "block");
 modal.attr("class", "is-active");
+
