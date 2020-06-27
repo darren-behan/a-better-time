@@ -12,7 +12,7 @@ var loc = "far"; // global variable for selection of location from here.
 var zaMato; // global variable for object ----------------------------------
 var ticketM;
 var tripAdvisor;
-var categories = ["Food", "Activities", "Events"]; // global variable for selection of categories
+var categories = ["Food", "Activities" ]; // global variable for selection of categories
 var costSearch = "$$$$";
 
 
@@ -238,65 +238,7 @@ $(document).ready(function () {
     }
   }
 
-  function ticketMaster() {
-    var apiTicketmaster = "2fd4BLBJMbQOCZ46tstmLFQbHrYGeXCs";
-    var latlong = latitude + "," + longitude;
-    console.log(latlong)
-    var ticketMasterURL =
-      "https://app.ticketmaster.com/discovery/v2/events.json?&dmaId=701&size=20&apikey=" +
-      apiTicketmaster
 
-    console.log(ticketMasterURL);
-
-    return $.ajax({
-      type: "GET",
-      url: ticketMasterURL,
-      async: true,
-      dataType: "json",
-      success: function (response) {
-        console.log('ticketMasterURL:', response);
-
-        var events = [];
-        var eventList = response._embedded.events;
-        for (var event of eventList) {
-          var data = event;
-          if (data.images === undefined || data.promoter === undefined || data._embedded === undefined || data.dates === undefined) {
-            continue;
-          }
-
-          console.log("top");
-          console.log(event);
-          console.log("bottom");
-
-          var {
-            name,
-            url,
-            images,
-            _embedded,
-            dates,
-          } = data;
-
-          var eventCost = "$$$"
-          var categoryEvent = "Events"
-          var eventLongDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-
-
-          events.push({
-            name: name,
-            cost: eventCost,
-            url: url,
-            img: images[8].url,
-            shortdesc: "Promoted by: " + data.promoter.name,
-            location: _embedded.venues[0].city.name,
-            longdesc: eventLongDescription,
-            time: dates.start.localTime,
-            cat: categoryEvent
-          })
-        }
-      }
-    })
-  }
 
   // Trip Advisor API call based on users location
   function tripAd() {
@@ -352,16 +294,12 @@ $(document).ready(function () {
               " will provide the best entertainment in " +
               address_obj.city +
               ".",
-            // time: "15:00:00",
-            // cat: category.name,
-            cat: "Activities"
+             cat: "Activities"
           });
         }
         // set the global variable
         tripAdvisor = events;
-        // update the distance location from address
-        // updateArray(2);
-        populateResults(events, 2);
+       populateResults(events, 2);
       },
     });
   }
@@ -385,13 +323,6 @@ $(document).ready(function () {
 
 
     if (addThis) {
-
-      // var prettyPicCont = $("<div>")
-      // prettyPicCont.attr("class", "prettyPicCont")
-
-      // var prettyPic = $("<img>")
-      // prettyPic.attr("src", addThis.img);
-      // prettyPic.attr("class", "prettyPic boxOne");
 
       var newDivTitle = $("<p>");
 
@@ -430,7 +361,6 @@ $(document).ready(function () {
     newDivLocation.text("Location : " + addThis.location);
     newDivLocation.attr("class", "locationClass boxOne");
 
-
     var newDivOpening = $("<p>");
     newDivOpening.text("Time : " + addThis.time);
     newDivOpening.attr("class", "timeClass boxOne");
@@ -459,7 +389,7 @@ $(document).ready(function () {
       window.open(addThis.url)
     });
 
-    $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, newDivOpening, webUrl);
+    $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, webUrl);
 
 
   }
@@ -483,10 +413,8 @@ $(document).ready(function () {
         theArray = tripAdvisor;
         var sourceID = 2;
       }
-      if (theseCategories === "Events") {
-        continue;
-      } // as the events array is not ready yet, exit the loop
 
+      
 
 
       if (theArray !== "undefined") {
@@ -533,6 +461,28 @@ $(document).ready(function () {
   }
 
 
+
+
+
+
+  // this needs to be run straight away to assign the variables.
+  getGeoLocations(function () {
+
+    // alternative option is to run everything in parrallel
+    Promise.all([zomatoAPI(), tripAd()]).then(() => {
+      // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
+      // here we are free to run whatever we want
+
+      updateArray(0);
+        updateArray(2);
+    }).catch(() => {
+      console.log('Whoops, something is wrong');
+    })
+
+
+  });
+
+
   $(".refineSearch").on("click", function () {
     // trigger populateResults with null to indicate that this is a refined search
     filterResults();
@@ -543,29 +493,6 @@ $(document).ready(function () {
     // trigger populateResults with null to indicate that this is a refined search
     filterResults();
   })
-
-
-
-
-
-  // this needs to be run straight away to assign the variables.
-  getGeoLocations(function () {
-
-    // alternative option is to run everything in parrallel
-    Promise.all([zomatoAPI(), tripAd(), ticketMaster()]).then(() => {
-      // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
-      // here we are free to run whatever we want
-
-      updateArray(0);
-      updateArray(1); // this is the ticketmaster API. It needs to be done.
-      updateArray(2);
-    }).catch(() => {
-      console.log('Whoops, something is wrong');
-    })
-
-
-  });
-
 
 
 });
