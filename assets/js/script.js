@@ -13,7 +13,8 @@ var tripAdvisor;
 var categories = ["Food", "Activities"]; // global variable for selection of categories
 var costSearch = "$$$$";
 var totalDisplayed = 0;
-var modal = $(".modal");
+var modal = $(".modalOne");
+var modalLoad = $(".modalTwo");
 
 $(document).ready(function () {
 
@@ -409,7 +410,7 @@ $(document).ready(function () {
       if (theArray !== "undefined") {
 
         // filter the results based on $$$
-        var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString() - 1));
+        var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString()));
 
         // send the random result for population to the screen assuming we have more than 0 results.
         if (result.length > 0) {
@@ -451,21 +452,34 @@ console.log("the total displayed number is " + totalDisplayed)
   if (totalDisplayed === 0) {
           // tell the user their filter is too far refined
           console.log("make visible here");
-          modal.css("display", "block")
-          modal.addClass('is-active');
-          modal.addClass('is-clipped');
+         
       }
   }
-  // this needs to be run straight away to assign the variables.
+  
+  // display the pretty graphic
+
+      modalLoad.css("display", "block")
+      modalLoad.addClass('is-active');
+      modalLoad.addClass('is-clipped');
+  
   getGeoLocations(function () {
 
     // alternative option is to run everything in parrallel
+
+
+
     Promise.all([zomatoAPI(), tripAd()]).then(() => {
       // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
       // here we are free to run whatever we want
 
       updateArray(0);
       updateArray(2);
+
+      // hide the loading div
+      modalLoad.css("display", "none")
+      modalLoad.removeClass('is-active');
+      modalLoad.removeClass('is-clipped');
+
     }).catch(() => {
       console.log('Whoops, something is wrong');
     })
