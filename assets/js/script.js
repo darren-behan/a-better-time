@@ -17,13 +17,12 @@ var modal = $(".modalOne");
 var modalLoad = $(".modalTwo");
 
 $(document).ready(function () {
-
   // First Page
-  setInterval(function() {
-    $(".brandStatement").fadeIn("slow")
+  setInterval(function () {
+    $(".brandStatement").fadeIn("slow");
   }, 1000);
-  
-  setInterval(function() {
+
+  setInterval(function () {
     $(".container").fadeOut("slow");
     $(".brandStatement").fadeOut("slow");
     $(".hintOne").fadeOut("slow");
@@ -35,13 +34,11 @@ $(document).ready(function () {
     }, 500);
   }, 3000);
 
-
   // Category selection when using filter dropdown(RE) ----------------------------------
   $(".cat").on("click", function () {
-
     var currentStatus = $(this).data("status");
     // the data-variable status is checked. if it is defined then it is active
-    if ((currentStatus === "active") && (currentStatus !== "undefined")) {
+    if (currentStatus === "active" && currentStatus !== "undefined") {
       $(this).data("status", "inactive");
       // reset box shadow to nothing
 
@@ -51,11 +48,15 @@ $(document).ready(function () {
 
       if (categories.includes($(this).text())) {
         // the value is currently in the array, let's delete it
-        categories = categories.filter(item => item !== $(this).text());
+        categories = categories.filter((item) => item !== $(this).text());
       }
-    } else
+    }
     // make it active again
-    {
+    else {
+      // because categories is already in the array at time of setting the global variable,
+      // lets check again just to make sure it is not here
+
+      categories = categories.filter((item) => item !== $(this).text());
       $(this).data("status", "active");
       // add box shadow to original status
       $(this).css("box-shadow", "inset 4px 4px 4px rgba(80, 63, 255, 0.25)");
@@ -67,7 +68,6 @@ $(document).ready(function () {
   });
   //
   $(".cost").on("click", function () {
-
     // lets reset all the cost buttons to nothing.
     $(".cost").css("box-shadow", "unset");
 
@@ -75,8 +75,6 @@ $(document).ready(function () {
     event.stopPropagation();
     // let's set the global var costSearch to this value
     costSearch = $(this).text();
-
-
   });
 
   $(".loc").on("click", function () {
@@ -95,7 +93,8 @@ $(document).ready(function () {
 
   function zomatoAPI() {
     return $.ajax({
-      url: "https://developers.zomato.com/api/v2.1/geocode?lat=" +
+      url:
+        "https://developers.zomato.com/api/v2.1/geocode?lat=" +
         latitude +
         "&lon=" +
         longitude +
@@ -114,13 +113,7 @@ $(document).ready(function () {
         for (var restaurant of restaurantList) {
           var data = restaurant.restaurant;
           // object deconstructing
-          var {
-            name,
-            price_range,
-            url,
-            featured_image,
-            location,
-          } = data;
+          var { name, price_range, url, featured_image, location } = data;
 
           restaurants.push({
             name: name,
@@ -132,17 +125,16 @@ $(document).ready(function () {
             location: location.locality,
             latitude: +location.latitude || null,
             longitude: +location.longitude || null,
-            longdesc: name + " is the best restaurant in " + location.locality + ".",
+            longdesc:
+              name + " is the best restaurant in " + location.locality + ".",
             cat: "food",
           });
         }
         // set global variable zaMato
         zoMato = restaurants;
 
-
         // let's update the distance field
         populateResults(restaurants, 0);
-
       },
     });
   }
@@ -156,9 +148,11 @@ $(document).ready(function () {
     }
 
     for (i = 0; i < thisArray.length; i++) {
-
       if (thisArray[i].latitude !== null && thisArray[i].longitude !== null) {
-        thisArray[i].d = calculateAndUpdate(thisArray[i].latitude, thisArray[i].longitude);
+        thisArray[i].d = calculateAndUpdate(
+          thisArray[i].latitude,
+          thisArray[i].longitude
+        );
       }
     }
   }
@@ -166,20 +160,20 @@ $(document).ready(function () {
   // Calculates distance for filter (sourced from => https://medium.com/@RichLloydMiles/calculate-the-distance-between-two-points-on-earth-using-javascript-38e12c9a0f52)
   function calculateAndUpdate(theLat, theLng, i, sender) {
     // this function will itterate through the array and insert the distance in meters
-    // as provided by the original geo lat locations 
+    // as provided by the original geo lat locations
 
     // In address. now let's calculate how far it
     // is from our current location
 
     const R = 6371e3; // metres
-    const φ1 = latitude * Math.PI / 180; // φ, λ in radians
-    const φ2 = theLat * Math.PI / 180;
-    const Δφ = (theLat - latitude) * Math.PI / 180;
-    const Δλ = (theLng - longitude) * Math.PI / 180;
+    const φ1 = (latitude * Math.PI) / 180; // φ, λ in radians
+    const φ2 = (theLat * Math.PI) / 180;
+    const Δφ = ((theLat - latitude) * Math.PI) / 180;
+    const Δλ = ((theLng - longitude) * Math.PI) / 180;
 
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) *
-      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     const d = Math.floor(R * c); // in metres
@@ -207,8 +201,11 @@ $(document).ready(function () {
       },
 
       function fail(data, status) {
-        alert('NO COORDINATES');
-        // If this fails, we need to get the users ip address to find location settings.
+        // in the event that neither the long or lat is not available,
+        // provide a melbourne cbd location
+
+        latitude = "-37.813629";
+        longitude = "144.963058";
       }
     );
   }
@@ -216,18 +213,23 @@ $(document).ready(function () {
   // cb is a callback
   function getGeoLocations(cb) {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
 
-        cb();
+          cb();
 
-        return;
-      }, function () {
-        console.log('No rights to access geolocation. Will try to get location from IP`');
+          return;
+        },
+        function () {
+          console.log(
+            "No rights to access geolocation. Will try to get location from IP`"
+          );
 
-        getGeoLocationsFromIp(cb);
-      });
+          getGeoLocationsFromIp(cb);
+        }
+      );
     } else {
       getGeoLocationsFromIp(cb);
     }
@@ -238,7 +240,8 @@ $(document).ready(function () {
     return $.ajax({
       async: true,
       crossDomain: true,
-      url: "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng?lunit=km&currency=AUD&limit=30&distance=5&lang=en_US&longitude=" +
+      url:
+        "https://tripadvisor1.p.rapidapi.com/attractions/list-by-latlng?lunit=km&currency=AUD&limit=30&distance=5&lang=en_US&longitude=" +
         longitude +
         "&latitude=" +
         latitude,
@@ -248,7 +251,7 @@ $(document).ready(function () {
         "x-rapidapi-key": "1730421ec2msh67099de7682ba92p1680b6jsnbe83668d17c8",
       },
       success: function (response) {
-        console.log(response)
+        console.log(response);
         var events = [];
         var eventList = response.data;
         for (var event of eventList) {
@@ -268,9 +271,8 @@ $(document).ready(function () {
             address,
             address_obj,
             latitude,
-            longitude
+            longitude,
           } = data;
-
 
           events.push({
             name: name,
@@ -282,11 +284,12 @@ $(document).ready(function () {
             location: address,
             latitude: +latitude, // convert to float by adding +
             longitude: +longitude,
-            longdesc: name +
+            longdesc:
+              name +
               " will provide the best entertainment in " +
               address_obj.city +
               ".",
-            cat: "Activities"
+            cat: "Activities",
           });
         }
         // set the global variable
@@ -305,34 +308,25 @@ $(document).ready(function () {
 
     console.log("make invisible here");
 
-
-
     // this result has come in from one of the API's
     // as such, utilise the api data to trigger one event
-
 
     var useThis = returnRandom(populateThis.length);
     var addThis = populateThis[useThis];
 
-
     if (addThis) {
-
       var newDivTitle = $("<p>");
 
       if (addThis.cat === "food") {
         newDivTitle.text("Something to eat?");
-        theDivId = '01';
+        theDivId = "01";
       }
 
       if (addThis.cat === "Activities") {
-
         newDivTitle.text("Something special?");
-        theDivId = '02';
-
+        theDivId = "02";
       }
-
     }
-
 
     newDivTitle.attr("class", "nameClassTitle boxOne");
 
@@ -348,7 +342,6 @@ $(document).ready(function () {
     var newDivDesc = $("<p>");
     newDivDesc.text(addThis.shortdesc);
     newDivDesc.attr("class", "descClass boxOne");
-
 
     var newDivLocation = $("<p>");
     newDivLocation.text("Location : " + addThis.location);
@@ -366,7 +359,7 @@ $(document).ready(function () {
     secondDivLongDesc.text(addThis.longdesc);
     secondDivLongDesc.attr("class", "secondDivLongDesc boxOne");
 
-    var prettyPic = $("<img>")
+    var prettyPic = $("<img>");
     prettyPic.attr("src", addThis.img);
     prettyPic.attr("id", theDivId);
     prettyPic.attr("class", "prettyPic boxOne");
@@ -379,12 +372,18 @@ $(document).ready(function () {
     webUrl.text("Website");
 
     webUrl.on("click", function () {
-      window.open(addThis.url)
+      window.open(addThis.url);
     });
 
-    $("#resultOne").append(newDivTitle, hoLine, prettyPic, newDiv, secondDivLongDesc, newDivLocation, webUrl);
-
-
+    $("#resultOne").append(
+      newDivTitle,
+      hoLine,
+      prettyPic,
+      newDiv,
+      secondDivLongDesc,
+      newDivLocation,
+      webUrl
+    );
   }
 
   function filterResults() {
@@ -394,10 +393,9 @@ $(document).ready(function () {
 
     $(".boxOne").remove();
     $("#resultOne").empty();
-     totalDisplayed = 0;
+    totalDisplayed = 0;
 
     for (var theseCategories of categories) {
-
       if (theseCategories === "Food") {
         theArray = zoMato;
         var sourceID = 0;
@@ -408,96 +406,96 @@ $(document).ready(function () {
       }
 
       if (theArray !== "undefined") {
-
         // filter the results based on $$$
-        var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString()));
+        result = theArray.filter(
+          (thearrayResult) =>
+            thearrayResult.cost <= parseInt(costSearch.length).toString()
+        );
 
         // send the random result for population to the screen assuming we have more than 0 results.
         if (result.length > 0) {
-
           // filter results based on distance
-          if (loc = "local") {
+          if ((loc = "local")) {
             theDistance = 1000;
           }
-          if (loc = "near") {
+          if ((loc = "near")) {
             theDistance = 10000;
           }
-          if (loc = "far") {
+          if ((loc = "far")) {
             theDistance = 100000;
           }
-          result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
-        
+          result = result.filter(
+            (thearrayResult) => thearrayResult.d <= theDistance
+          );
 
-        if (result.length > 0) {
-          totalDisplayed = totalDisplayed + result.length;
+          if (result.length > 0) {
+            totalDisplayed = totalDisplayed + result.length;
 
-          // Select one result from the filtered array
-          var doThisOne = returnRandom(result.length);
-          // populate the results to the
-          populateResults(result, sourceID);
+            // Select one result from the filtered array
+            var doThisOne = returnRandom(result.length);
+            // populate the results to the
+            populateResults(result, sourceID);
+          }
         }
       }
     }
-  }
-    
 
-console.log("the total displayed number is " + totalDisplayed)
-  if (totalDisplayed === 0) {
-          // tell the user their filter is too far refined
-          console.log("make visible here");
-          modal.css("display", "block")
-          modal.addClass('is-active');
-          modal.addClass('is-clipped');
-
-
-      }
+    console.log("the total displayed number is " + totalDisplayed);
+    if (totalDisplayed === 0) {
+      // tell the user their filter is too far refined
+      console.log("make visible here");
+      modal.css("display", "block");
+      modal.addClass("is-active");
+      modal.addClass("is-clipped");
+    }
   }
 
   // display the pretty graphic
 
-      modalLoad.css("display", "block")
-      modalLoad.addClass('is-active');
-      modalLoad.addClass('is-clipped');
-  
-  getGeoLocations(function () {
+  modalLoad.css("display", "block");
+  modalLoad.addClass("is-active");
+  modalLoad.addClass("is-clipped");
 
+  getGeoLocations(function () {
     // alternative option is to run everything in parrallel
 
+    Promise.all([zomatoAPI(), tripAd()])
+      .then(() => {
+        // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
+        // here we are free to run whatever we want
 
+        updateArray(0);
+        updateArray(2);
 
-    Promise.all([zomatoAPI(), tripAd()]).then(() => {
-      // if we are here then we have managed to run zomato, tripAt and ticketMaster in parallel
-      // here we are free to run whatever we want
-
-      updateArray(0);
-      updateArray(2);
-
-      // hide the loading div
-      modalLoad.css("display", "none")
-      modalLoad.removeClass('is-active');
-      modalLoad.removeClass('is-clipped');
-
-    }).catch(() => {
-      console.log('Whoops, something is wrong');
-    })
+        // hide the loading div
+        modalLoad.css("display", "none");
+        modalLoad.removeClass("is-active");
+        modalLoad.removeClass("is-clipped");
+      })
+      .catch(() => {
+        console.log("Whoops, something is wrong");
+      });
   });
 
-  $(".refineSearch").on("click", function () {
-    // trigger populateResults with null to indicate that this is a refined search
-    filterResults();
-  })
+  $(".refineSearch")
+    .off()
+    .on("click", function () {
+      // trigger populateResults with null to indicate that this is a refined search
+      filterResults();
+    });
 
-  $(".refreshBtn").on("click", function () {
-    // trigger populateResults with null to indicate that this is a refined search
-    filterResults();
-  })
+  $(".refreshBtn")
+    .off()
+    .on("click", function () {
+      // trigger populateResults with null to indicate that this is a refined search
+      filterResults();
+    });
 });
 
 // No results-----------------------------------------------------------
-$(".okay").on("click", function() {
+$(".okay").on("click", function () {
   modal.css("display", "none");
 });
 
-modal.removeClass('is-active');
-modal.removeClass('is-clipped');
-
+modal.removeClass("is-active");
+modal.removeClass("is-clipped");
