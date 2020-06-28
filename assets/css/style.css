@@ -273,7 +273,7 @@ body {
 .modal-content {
   width: 300px;
   height: 165px;
-  margin: 100px auto;
+  margin: 200px auto;
   background-color: rgb(249, 247, 247);
   border-radius: 4px;
   padding: 16px;
@@ -291,7 +291,7 @@ body {
   justify-content: center;
 }
 .okay {
-  margin-top: 40px;
+  margin-top: 25px;
   justify-items: center;
   justify-self: center;
   font-family: 'Righteous', cursive;
