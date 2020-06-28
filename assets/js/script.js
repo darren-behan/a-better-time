@@ -207,8 +207,12 @@ $(document).ready(function () {
       },
 
       function fail(data, status) {
-        alert('NO COORDINATES');
-        // If this fails, we need to get the users ip address to find location settings.
+       
+        // in the event that neither the long or lat is not available,
+        // provide a melbourne cbd location
+
+       latitude = "-37.813629";
+       longitude = "144.963058";
       }
     );
   }
