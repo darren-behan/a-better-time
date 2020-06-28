@@ -452,7 +452,11 @@ console.log("the total displayed number is " + totalDisplayed)
   if (totalDisplayed === 0) {
           // tell the user their filter is too far refined
           console.log("make visible here");
-         
+          modal.css("display", "block")
+          modal.addClass('is-active');
+          modal.addClass('is-clipped');
+
+
       }
   }
 
