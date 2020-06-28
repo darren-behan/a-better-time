@@ -56,6 +56,10 @@ $(document).ready(function () {
     } else
     // make it active again
     {
+      // because categories is already in the array at time of setting the global variable,
+      // lets check again just to make sure it is not here
+
+      categories = categories.filter(item => item !== $(this).text());
       $(this).data("status", "active");
       // add box shadow to original status
       $(this).css("box-shadow", "inset 4px 4px 4px rgba(80, 63, 255, 0.25)");
@@ -414,7 +418,7 @@ $(document).ready(function () {
       if (theArray !== "undefined") {
 
         // filter the results based on $$$
-        var result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString()));
+         result = theArray.filter(thearrayResult => thearrayResult.cost <= (parseInt(costSearch.length).toString()));
 
         // send the random result for population to the screen assuming we have more than 0 results.
         if (result.length > 0) {
@@ -486,12 +490,12 @@ console.log("the total displayed number is " + totalDisplayed)
     })
   });
 
-  $(".refineSearch").on("click", function () {
+  $(".refineSearch").off().on("click", function () {
     // trigger populateResults with null to indicate that this is a refined search
     filterResults();
   })
 
-  $(".refreshBtn").on("click", function () {
+  $(".refreshBtn").off().on("click", function () {
     // trigger populateResults with null to indicate that this is a refined search
     filterResults();
   })
