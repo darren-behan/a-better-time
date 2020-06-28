@@ -426,7 +426,7 @@ $(document).ready(function () {
             theDistance = 100000;
           }
           result = result.filter(thearrayResult => thearrayResult.d <= theDistance);
-        }
+        
 
         if (result.length > 0) {
           totalDisplayed = totalDisplayed + result.length;
@@ -436,13 +436,9 @@ $(document).ready(function () {
           // populate the results to the
           populateResults(result, sourceID);
         }
-
-      
-
-        }
-
-
       }
+    }
+  }
     
 
 console.log("the total displayed number is " + totalDisplayed)
