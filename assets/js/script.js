@@ -455,7 +455,7 @@ console.log("the total displayed number is " + totalDisplayed)
          
       }
   }
-  
+
   // display the pretty graphic
 
       modalLoad.css("display", "block")
@@ -503,5 +503,4 @@ $(".okay").on("click", function() {
 
 modal.removeClass('is-active');
 modal.removeClass('is-clipped');
-// On failed request on filtering, show this and the modal pops up, the user then clicks okay and it closes.
-// modal.css("display", "block");
+
