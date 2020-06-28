@@ -245,7 +245,7 @@ $(document).ready(function () {
       method: "GET",
       headers: {
         "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-        "x-rapidapi-key": "1730421ec2msh67099de7682ba92p1680b6jsnbe83668d17c8",
+        "x-rapidapi-key": "8138a11da9mshfc11bc8c3d90f4dp1d2441jsn9396043e3d4b",
       },
       success: function (response) {
         console.log(response)
