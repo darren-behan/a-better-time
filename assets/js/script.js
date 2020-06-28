@@ -430,9 +430,6 @@ $(document).ready(function () {
 
         if (result.length > 0) {
           totalDisplayed = totalDisplayed + result.length;
-          console.log("the filtered result");
-          console.log(result);
-          console.log("------/")
 
           // Select one result from the filtered array
           var doThisOne = returnRandom(result.length);
