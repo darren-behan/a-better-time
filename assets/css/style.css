@@ -230,6 +230,7 @@ body {
   opacity: 1;
   overflow: hidden;
   border-radius: 4px;
+  margin: 0 0 8px 8px;
 }
 
 .nameClassTitle {
@@ -310,6 +311,7 @@ body {
 }
 
 .modal-contentTwo {
+  margin: 300px auto;
   text-align: center;
 }
 
@@ -352,5 +354,16 @@ body {
 
   .navTitle {
     display: none;
+  }
+}
+@media screen and (max-width: 500px) {
+  .nameClass,
+  .descClass,
+  .webClass {
+    clear: both;
+  }
+  .prettyPic {
+    float: none;
+    margin: 0;
   }
 }
