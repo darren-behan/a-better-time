@@ -1,131 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-  <link rel="icon" href="./assets/images/favicon.png" sizes="16x16" type="image/svg">
-  <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link rel="icon" href="./assets/images/favicon.png" sizes="16x16" type="image/svg">
+    <link rel="stylesheet" href="./assets/css/style.css" />
 
-  <title>A Better Time</title>
-</head>
+    <title>A Better Time</title>
+  </head>
 
-<body>
-  <!-- Navbar -->
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a href="index.html" class="navbar-item">
-        <img class="birdLogo" src="./assets/images/birds2.png">
-        <h1 class="navTitle">A Better Time</h1>
-      </a>
-    </div>
-  </nav>
-
-  <!-- starter page-->
-  <div class="container">
-    <h1>A Better Time</h1>
-    <img class="centreImage" src="./assets/images/bigbird2.png">
-    <h2 class="brandStatement">Because let's be honest, you're useless...</h2>
-    <p class="hintOne">Note: Location services must be enabled to ensure correct functionality<img class="hintOneImage" src="./assets/images/smileys-happy.png"></p>
-  </div>
-  
-  <!-- Explore page -->
-  <div class="header">
-    <div class="dropMenu dropdown is-left">
-      <div class="dropdown-trigger">
-        <button class=" refineDrop button" aria-haspopup="true" aria-controls="dropdown-menu2">
-          <span>Filter Options</span>
-          <span class="icon is-small">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </button>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a href="index.html" class="navbar-item">
+          <img class="birdLogo" src="./assets/images/birds2.png" alt="bird logo image navbar">
+          <h1 class="navTitle">A Better Time</h1>
+        </a>
       </div>
-      <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-        <div class="dropdown-content">
-          <div class="dropdown-item">
-            <table class="table is-hoverable">
-              <thead>
-                <tr class="tableHeader">
-                  <th>Categories</th>
-                </tr>
-              </thead>
-              <tbody class="tableContent">
-                <tr>
-                  <th class="cat">Activities</th>
-                </tr>
-                  <th class="cat">Food</th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="dropdown-item">
-            <div class="buttons has-addons is-right costRefine">
-              <span>Cost</span>
-              <button class="button is-small refineBtn cost">$ </button>
-              <button class="button is-small refineBtn cost">$$ </button>
-              <button class="button is-small refineBtn cost">$$$ </button>
+    </nav>
+
+    <!-- starter page-->
+    <div class="container">
+      <h1>A Better Time</h1>
+      <img class="centreImage" src="./assets/images/bigbird2.png" alt="main bird logo image">
+      <h2 class="brandStatement">Because let's be honest, you're useless...</h2>
+      <p class="hintOne">Note: Location services must be enabled to ensure correct functionality<img class="hintOneImage" src="./assets/images/smileys-happy.png" alt="smiley face"></p>
+    </div>
+    
+    <!-- Explore page -->
+    <div class="header">
+      <div class="dropMenu dropdown is-left">
+        <div class="dropdown-trigger">
+          <button class=" refineDrop button" aria-haspopup="true" aria-controls="dropdown-menu2">
+            <span>Filter Options</span>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item">
+              <table class="table is-hoverable">
+                <thead>
+                  <tr class="tableHeader">
+                    <th>Categories</th>
+                  </tr>
+                </thead>
+                <tbody class="tableContent">
+                  <tr>
+                    <th class="cat">Activities</th>
+                  </tr>
+                    <th class="cat">Food</th>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
-          <div class="dropdown-item">
-            <div class="buttons has-addons is-right locRefine">
-              <span>Location</span>
-              <button class="button is-small refineBtn loc">local </button>
-              <button class="button is-small refineBtn loc">near </button>
-              <button class="button is-small refineBtn loc">far </button>
+            <div class="dropdown-item">
+              <div class="buttons has-addons is-right costRefine">
+                <span>Cost</span>
+                <button class="button is-small refineBtn cost">$ </button>
+                <button class="button is-small refineBtn cost">$$ </button>
+                <button class="button is-small refineBtn cost">$$$ </button>
+              </div>
             </div>
-          </div>
-          <div class="dropdown-item">
-            <button class="button refineSearch">Refine search</button>
+            <div class="dropdown-item">
+              <div class="buttons has-addons is-right locRefine">
+                <span>Location</span>
+                <button class="button is-small refineBtn loc">local </button>
+                <button class="button is-small refineBtn loc">near </button>
+                <button class="button is-small refineBtn loc">far </button>
+              </div>
+            </div>
+            <div class="dropdown-item">
+              <button class="button refineSearch">Refine search</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <section class="refreshSect">
-      <button class="button is-dark refreshBtn">Refresh</button>
-    </section>
-  </div>
-
-  <!-- Results Section -->
-  <div class="results column">
-    <div class="tile is-ancestor">
-      <div class="tile is-vertical is-12">
-        <div class="tile">
-          <div class="tile is-parent is-vertical">
-            <article class="tile is-child notification is-info" id="resultOne">
-              <header class="boxOne"></header>
-            </article>
-          </div>
-        </div>
-    </div>
-  </div>
-
-  <div class="modal is-active modalOne">
-    <div class="modal-background"></div>
-    <div class="modal-content modal-contentOne" >
-      <p>Sorry, no results found - try expanding your search !<img class="okayImage" src="./assets/images/smileys-disappointed.png"></p>
-      <section class="okayBtn">
-        <button class="okay button is-dark">Okay</button>
+      <section class="refreshSect">
+        <button class="button is-dark refreshBtn">Refresh</button>
       </section>
     </div>
-  </div>
 
-  <div class="modal modalTwo">
-    <div class="modal-background"></div>
-    <div class="modal-content modal-contentTwo" >
-      <img class="load" src="./assets/images/loading.png">
+    <!-- Results Section -->
+    <div class="results column">
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-12">
+          <div class="tile">
+            <div class="tile is-parent is-vertical">
+              <article class="tile is-child notification is-info" id="resultOne">
+                <header class="boxOne"></header>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <div class="modal is-active modalOne">
+      <div class="modal-background"></div>
+      <div class="modal-content modal-contentOne" >
+        <p>Sorry, no results found - try expanding your search !<img class="okayImage" src="./assets/images/smileys-disappointed.png" alt="disappointed face"></p>
+        <section class="okayBtn">
+          <button class="okay button is-dark">Okay</button>
+        </section>
+      </div>
+    </div>
+
+    <div class="modal modalTwo">
+      <div class="modal-background"></div>
+      <div class="modal-content modal-contentTwo" >
+        <img class="load" src="./assets/images/loading.png" alt="loading symbol">
+      </div>
+    </div>
 
 
 
 
-  <!-- Scripts -->
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="assets/js/script.js"></script>
-</body>
+    <!-- Scripts -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/js/script.js"></script>
+  </body>
 
 </html>

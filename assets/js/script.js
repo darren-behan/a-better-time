@@ -31,6 +31,7 @@ $(document).ready(function () {
       $(".contain").css("display", "block");
       $(".results").css("display", "flex");
       $(".header").css("display", "block");
+      modalLoad.css("visibility", "visible")
     }, 500);
   }, 3000);
 
@@ -363,6 +364,7 @@ $(document).ready(function () {
     prettyPic.attr("src", addThis.img);
     prettyPic.attr("id", theDivId);
     prettyPic.attr("class", "prettyPic boxOne");
+    prettyPic.attr("alt", theplaceTitle + " image")
 
     var hoLine = $("<hr>");
     hoLine.attr("class", "hoLine boxOne");
