@@ -455,9 +455,14 @@ $(document).ready(function () {
   modalLoad.css("display", "block");
   modalLoad.addClass("is-active");
   modalLoad.addClass("is-clipped");
+  
+  $(".cat").data("status","active");
+  $(".cat").css("box-shadow", "inset 4px 4px 4px rgba(80, 63, 255, 0.25)");
 
   getGeoLocations(function () {
     // alternative option is to run everything in parrallel
+
+
 
     Promise.all([zomatoAPI(), tripAd()])
       .then(() => {
