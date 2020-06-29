@@ -306,6 +306,10 @@ body {
 
 /* Loading animation */
 
+.modalTwo {
+  visibility: hidden;
+}
+
 .load {
   animation: rotation 1.5s infinite linear;
 }
